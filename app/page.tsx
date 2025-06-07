@@ -1,8 +1,8 @@
 import Image from "next/image";
 
 export default function Home() {
-  const text = "[#b02b03]";
-  const bg = "[#ffebe6]";
+  // const text = "[#b02b03]";
+  // const bg = "[#ffebe6]";
   return (
     <div>
       <div className="bg-[#b02b03] h-[40vh] rounded-b-[80%]">
