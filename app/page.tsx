@@ -5,18 +5,18 @@ export default function Home() {
   // const bg = "[#ffebe6]";
   return (
     <div>
-      <div className="bg-[#b02b03] h-[40vh] rounded-b-[80%]">
+      <div className="bg-[#b02b03] h-[30vh] rounded-b-[80%]">
         <Image
           src="/imgs/Logo.png"
           alt="Logo"
           width={150}
           height={150}
-          className="rounded-md mx-auto relative top-[7vh] md:w-[35vh]"
+          className="rounded-md mx-auto relative top-[7vh] md:w-[30vh]"
         />
       </div>
       <button
         style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
-        className="bg-[#b02b03] text-[4.5vh] text-[#ffebe6] p-[1.5vh] rounded-xl block mx-auto mt-[15vh]"
+        className="bg-[#b02b03] text-[4.5vh] text-[#ffebe6] p-[1.5vh] rounded-xl block mx-auto mt-[30vh]"
       >
         Order Now
       </button>
