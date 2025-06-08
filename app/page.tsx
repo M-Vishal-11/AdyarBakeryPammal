@@ -9,8 +9,8 @@ export default function Home() {
         <Image
           src="/imgs/Logo.png"
           alt="Logo"
-          width={150}
-          height={150}
+          width={160}
+          height={160}
           className="rounded-md mx-auto relative top-[7vh] md:w-[30vh]"
         />
       </div>
@@ -26,28 +26,28 @@ export default function Home() {
           height={54}
           width={54}
           alt="menu"
-          className="w-[7.5vh]"
+          className="w-[7vh] sm:w-[7.5vh]"
         />
         <Image
           src="icons/discount.svg"
           height={54}
           width={54}
           alt="discount"
-          className="w-[7.5vh]"
+          className="w-[7vh] sm:w-[7.5vh]"
         />
         <Image
           src="icons/account.svg"
           height={54}
           width={54}
           alt="account"
-          className="w-[7.5vh]"
+          className="w-[7vh] sm:w-[7.5vh]"
         />
         <Image
           src="icons/cart.svg"
           height={54}
           width={54}
           alt="cart"
-          className="w-[7.5vh]"
+          className="w-[7vh] sm:w-[7.5vh]"
         />
       </footer>
     </div>
