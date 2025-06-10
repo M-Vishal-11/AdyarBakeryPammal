@@ -84,7 +84,7 @@ export default function page() {
                 Discount: <span>₹50</span>
               </li>
               <li>
-                Today's saved: <span>₹50</span>
+                Today&apos;s saved: <span>₹50</span>
               </li>
               <li className="underline underline-offset-3 font-bold">
                 Total Amount: <span>₹100</span>

@@ -4,8 +4,10 @@ const page = () => {
   return (
     <div>
       <div className="mb-[3vh]">
-        <h1 className="text-[5vh] font-bold text-center">Today's Offers %</h1>
-        <hr className="opacity-25" />
+        <h1 className="text-[5vh] font-bold text-center">
+          Today&apos;s Offers %
+        </h1>
+        <hr className="border-t border-[#D9D9D9]" />
       </div>
       <div className="flex justify-end-safe gap-2">
         <button className="bg-[#ff1a1a] hover:bg-[#b30000] active:bg-[#b30000] text-white rounded-lg px-1 shadow-md active:shadow-xl">
