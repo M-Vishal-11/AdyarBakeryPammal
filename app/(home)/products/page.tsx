@@ -14,13 +14,58 @@ export default function page() {
       <div>
         {/* Categories */}
         <details className="mb-2">
-          <summary className="font-semibold text-topcolor text-xl ml-2 mt-3">
+          <summary className="font-semibold text-topcolor text-xl ml-2 mt-3 sticky top-0">
             Category
           </summary>
           <hr className="mb-2" />
 
           {/* Products */}
-          <div className="flex flex-col gap-[3vh] lg:grid lg:grid-cols-2 lg:gap-[6vh] lg:mr-2">
+          <div className="flex flex-col gap-[3vh] lg:grid lg:grid-cols-2 lg:gap-[6vh] lg:mr-4">
+            <article className="flex flex-row gap-[2vh] relative">
+              <Image
+                src="imgs/img.svg"
+                width={120}
+                height={60}
+                alt="img"
+                className=""
+              />
+              <div className="leading-normal">
+                <h1 className="w-full line-clamp-1 font-semibold text-xl">
+                  paneer cake word dokf dklfj
+                </h1>
+                <div className="text-sm leading-4">
+                  <p className="text-green-900 font-bold">
+                    Paneer cake for free
+                  </p>
+                  <p className="text-green-900 font-bold">pan cake for free</p>
+                  <p className="text-green-900 font-bold">pan cake for free</p>
+                  <p className="text-green-900 font-bold">pan cake for free</p>
+                </div>
+                <h1>₹100</h1>
+              </div>
+              <button className="bg-[#ff1a1a] text-white p-1 rounded-lg absolute right-0 bottom-1">
+                Add To Cart
+              </button>
+            </article>
+            <article className="flex flex-row gap-[2vh] relative">
+              <Image
+                src="imgs/img.svg"
+                width={120}
+                height={60}
+                alt="img"
+                className=""
+              />
+              <div className="">
+                <h1 className="w-full line-clamp-1 font-semibold text-xl">
+                  paneer cake word dokf dklfj
+                </h1>
+                <h1>₹100</h1>
+              </div>
+              <button className="bg-[#ff1a1a] text-white p-1 rounded-lg absolute right-0 bottom-1">
+                Add To Cart
+              </button>
+            </article>
+
             <article className="flex flex-row gap-[2vh] relative">
               <Image
                 src="imgs/img.svg"
