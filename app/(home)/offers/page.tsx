@@ -1,10 +1,9 @@
 "use client";
 import { useState } from "react";
 import ExpandCollapseBtn from "../products/btn";
-import ProductCategory from "@/app/functions/productcategory";
 import ProductCategoryOffers from "./productCategoryOffers";
 
-const page = () => {
+const Page = () => {
   const [expand, setExpand] = useState(true);
 
   return (
@@ -25,4 +24,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

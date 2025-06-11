@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface ButtonIconProps {
   url: string;
@@ -16,7 +17,7 @@ const ButtonIcon = ({ url, alt, address }: ButtonIconProps) => {
       }}
       className="cursor-pointer active:scale-90 transition-transform duration-200"
     >
-      <img
+      <Image
         src={url}
         height={54}
         width={54}
