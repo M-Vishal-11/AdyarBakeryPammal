@@ -1,3 +1,6 @@
+import Nextbtn from "./functions/nextbtn";
+import Prebtn from "./functions/prebtn";
+
 export default function page() {
   return (
     <div className="min-h-screen flex flex-col">
@@ -96,12 +99,8 @@ export default function page() {
         </div>
       </form>
       <div className="flex flex-row justify-between mt-[4vh]">
-        <button className="bg-amber-500 hover:bg-amber-600 active:bg-amber-600 text-white text-lg rounded-xl mb-5 px-4 py-2 mt-3 md:mr-2">
-          <span className="transform rotate-180 inline-block">➤</span> Back
-        </button>
-        <button className="bg-amber-500 hover:bg-amber-600 active:bg-amber-600 text-white text-lg rounded-xl mb-5 px-4 py-2 mt-3 md:mr-2">
-          Next ➤
-        </button>
+        <Prebtn />
+        <Nextbtn />
       </div>
     </div>
   );

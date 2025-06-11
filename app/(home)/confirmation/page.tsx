@@ -1,3 +1,6 @@
+import Backbtn from "./functions/backbtn";
+import PlaceOrderbtn from "./functions/placeOrderbtn";
+
 export default function page() {
   return (
     <div>
@@ -32,13 +35,9 @@ export default function page() {
       </div>
       <hr className="border-t border-[#D9D9D9] w-3xl" />
       <div>
-        <button className="bg-amber-500 hover:bg-amber-600 active:bg-amber-600 text-white w-40 h-14 text-2xl rounded-xl mb-5 p-2 mt-4 ">
-          Place Order
-        </button>
+        <PlaceOrderbtn />
       </div>
-      <button className="bg-gray-500 opacity-35 hover:opacity-100 hover:bg-gray-700 active:opacity-100 active:bg-gray-700 text-white text-lg rounded-xl mb-5 px-4 py-2 mt-3">
-        <span className="transform rotate-180 inline-block">➤</span> Back
-      </button>
+      <Backbtn />
     </div>
   );
 }

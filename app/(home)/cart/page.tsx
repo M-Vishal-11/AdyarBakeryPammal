@@ -1,4 +1,6 @@
 import ProductCard from "@/app/functions/productcard";
+import BuyNowlg from "./functions/buynowlg";
+import BuyNowPhone from "./functions/buynowphone";
 
 export default function page() {
   return (
@@ -38,9 +40,7 @@ export default function page() {
           <hr className="mt-5 border-t border-[#D9D9D9]" />
         </div>
         <div className="lg:border-l-2 border-[#D9D9D9] lg:pl-5 flex flex-col">
-          <button className="hidden lg:block bg-amber-500 hover:bg-amber-600 active:bg-amber-600 text-white p-4 text-2xl w-52 rounded-xl mb-5">
-            Buy Now
-          </button>
+          <BuyNowlg />
           <div className="mb-3 ml-2 lg:ml-0">
             <h1 className="underline font-bold underline-offset-3 mt-5">
               Invoice:
@@ -64,9 +64,7 @@ export default function page() {
             </ol>
           </div>
           <hr className="border-t border-[#D9D9D9]" />
-          <button className="inline-block lg:hidden bg-amber-500 hover:bg-amber-600 active:bg-amber-600 text-white text-lg w-30 rounded-xl mb-5 p-2 ml-auto mt-3 mr-2">
-            Buy Now
-          </button>
+          <BuyNowPhone />
         </div>
       </div>
     </div>
