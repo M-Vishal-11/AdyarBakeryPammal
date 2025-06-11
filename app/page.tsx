@@ -1,8 +1,7 @@
 import Image from "next/image";
+import ButtonIcon from "./functions/buttonicon";
 
 export default function Home() {
-  // const text = "[#b02b03]";
-  // const bg = "[#ffebe6]";
   return (
     <div>
       <div className="bg-[#b02b03] h-[30vh] rounded-b-[80%]">
@@ -21,34 +20,10 @@ export default function Home() {
         Order Now
       </button>
       <footer className="absolute bottom-3 w-full bg-[#FFDAD1] flex flex-row justify-evenly items-center py-1">
-        <Image
-          src="icons/menu.svg"
-          height={54}
-          width={54}
-          alt="menu"
-          className="w-[7vh] sm:w-[7.5vh]"
-        />
-        <Image
-          src="icons/discount.svg"
-          height={54}
-          width={54}
-          alt="discount"
-          className="w-[7vh] sm:w-[7.5vh]"
-        />
-        <Image
-          src="icons/account.svg"
-          height={54}
-          width={54}
-          alt="account"
-          className="w-[7vh] sm:w-[7.5vh]"
-        />
-        <Image
-          src="icons/cart.svg"
-          height={54}
-          width={54}
-          alt="cart"
-          className="w-[7vh] sm:w-[7.5vh]"
-        />
+        <ButtonIcon url="icons/menu.svg" alt="menu" address="/products" />
+        <ButtonIcon url="icons/discount.svg" alt="discount" address="/offers" />
+        <ButtonIcon url="icons/account.svg" alt="account" address="#" />
+        <ButtonIcon url="icons/cart.svg" alt="cart" address="/cart" />
       </footer>
     </div>
   );

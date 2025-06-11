@@ -20,7 +20,7 @@ export default function RootLayout({
         <input
           type="text"
           placeholder="Search"
-          className="bg-topcolor text-background p-1 rounded-xl w-3/4 md:w-2/5 pr-10 pl-2 focus:ring-0 focus:outline-4 focus: outline-offset-2 focus:outline-[#e60000]"
+          className="bg-topcolor text-background p-1 rounded-xl w-3/4 md:w-2/5 pr-10 pl-2 focus:ring-0 focus:outline-4 focus: outline-offset-2 focus:outline-[#e60000] transition duration-200"
         />
         <Image
           src="icons/search.svg"
