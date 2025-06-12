@@ -3,8 +3,8 @@ import Prebtn from "./functions/prebtn";
 
 export default function page() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <h1 className="font-medium text-2xl mt-[5vh] ml-3">Address:</h1>
+    <div className="min-h-screen flex flex-col p-3">
+      <h1 className="font-medium text-2xl mt-[5vh] ml-1">Address:</h1>
       <hr className="border-t border-[#D9D9D9]" />
       <form className="mt-[3vh] ml-4 flex gap-[4vh] flex-col lg:grid lg:grid-cols-2">
         <div>

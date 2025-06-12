@@ -7,19 +7,22 @@ const Page = () => {
   const [expand, setExpand] = useState(true);
 
   return (
-    <div>
-      <div className="mb-[3vh]">
-        <h1 className="text-[5vh] font-bold text-center mb-[1vh]">
-          Today&apos;s Offers %
+    <div className="px-4 pb-6">
+      {/* Header */}
+      <div className="mb-6 text-center">
+        <h1 className="text-[4.5vh] sm:text-[5vh] font-extrabold text-[var(--top-color)] tracking-wide">
+          Today&apos;s Offers <span className="text-red-500">%</span>
         </h1>
-        <hr className="border-t border-[#D9D9D9]" />
+        <hr className="mt-2 border-t border-[#D9D9D9]" />
       </div>
-      <ExpandCollapseBtn setExpand={setExpand} />
-      <div>
-        {/* Categories */}
 
-        <ProductCategoryOffers open={expand} />
+      {/* Expand/Collapse Button */}
+      <div className="mb-4 flex justify-center">
+        <ExpandCollapseBtn setExpand={setExpand} />
       </div>
+
+      {/* Product Categories */}
+      <ProductCategoryOffers open={expand} />
     </div>
   );
 };

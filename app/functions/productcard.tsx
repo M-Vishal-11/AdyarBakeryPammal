@@ -1,4 +1,5 @@
 import Image from "next/image";
+import AddToCartbtn from "./AddToCartbtn";
 
 interface ProductCardProps {
   productName: string;
@@ -20,32 +21,36 @@ const ProductCard = ({
   line5,
 }: ProductCardProps) => {
   return (
-    <article className="flex flex-row gap-[2vh] relative">
-      <Image
-        src="imgs/img.svg"
-        width={120}
-        height={60}
-        alt="img"
-        className=""
-      />
-      <div className="leading-normal">
-        <h1 className="w-full line-clamp-1 font-semibold text-xl">
-          {productName}
-        </h1>
-        {line1 && (
-          <div className="text-sm leading-4">
-            <p className="text-green-900 font-bold">{line1}</p>
-            {line2 && <p className="text-green-900 font-bold">{line2}</p>}
-            {line3 && <p className="text-green-900 font-bold">{line3}</p>}
-            {line4 && <p className="text-green-900 font-bold">{line4}</p>}
-            {line5 && <p className="text-green-900 font-bold">{line5}</p>}
-          </div>
-        )}
-        <h1>₹{price}</h1>
+    <article className="flex gap-4 bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition-shadow duration-200 relative ">
+      <div className="flex-shrink-0 bg-gray-200">
+        <Image
+          src="/imgs/img.svg"
+          width={100}
+          height={100}
+          alt="img"
+          className="rounded-lg object-cover h-auto"
+        />
       </div>
-      <button className="bg-[#ff1a1a] text-white p-1 rounded-lg absolute bottom-1 right-2">
-        Add To Cart
-      </button>
+
+      <div className="flex flex-col justify-between w-full">
+        <div>
+          <h1 className="text-xl font-semibold text-gray-900 line-clamp-1">
+            {productName}
+          </h1>
+          <div className="mt-1 space-y-1 text-green-700 text-sm font-medium leading-snug">
+            {line1 && <p>{line1}</p>}
+            {line2 && <p>{line2}</p>}
+            {line3 && <p>{line3}</p>}
+            {line4 && <p>{line4}</p>}
+            {line5 && <p>{line5}</p>}
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between mt-4">
+          <span className="text-lg font-bold text-black">₹{price}</span>
+          <AddToCartbtn />
+        </div>
+      </div>
     </article>
   );
 };

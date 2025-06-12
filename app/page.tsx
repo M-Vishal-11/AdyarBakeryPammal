@@ -4,8 +4,9 @@ import OrderNowHome from "./functions/orderNowHome";
 
 export default function Home() {
   return (
-    <div>
-      <div className="bg-[#b02b03] h-[30vh] rounded-b-[80%]">
+    <div className="relative min-h-screen bg-[var(--background)]">
+      {/* Header with Logo */}
+      <div className="bg-[var(--top-color)] h-[30vh] rounded-b-[80%] relative">
         <Image
           src="/imgs/Logo.png"
           alt="Logo"
@@ -14,12 +15,16 @@ export default function Home() {
           className="rounded-md mx-auto relative top-[7vh] md:w-[30vh]"
         />
       </div>
+
+      {/* Order Now Section */}
       <OrderNowHome />
-      <footer className="absolute bottom-3 w-full bg-[#FFDAD1] flex flex-row justify-evenly items-center py-1">
-        <ButtonIcon url="icons/menu.svg" alt="menu" address="/products" />
-        <ButtonIcon url="icons/discount.svg" alt="discount" address="/offers" />
-        <ButtonIcon url="icons/account.svg" alt="account" address="#" />
-        <ButtonIcon url="icons/cart.svg" alt="cart" address="/cart" />
+
+      {/* Footer with Buttons */}
+      <footer className="fixed bottom-0 left-0 right-0 bg-[#FFDAD1] border-t border-gray-300 flex justify-evenly items-center py-2 z-50 shadow-md">
+        <ButtonIcon url="icons/menu.svg" alt="Menu" address="/products" />
+        <ButtonIcon url="icons/discount.svg" alt="Offers" address="/offers" />
+        <ButtonIcon url="icons/account.svg" alt="Account" address="#" />
+        <ButtonIcon url="icons/cart.svg" alt="Cart" address="/cart" />
       </footer>
     </div>
   );
