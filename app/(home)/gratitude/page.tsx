@@ -9,7 +9,7 @@ const Confetti = dynamic(() => import("react-confetti"), {
   loading: () => null,
 });
 
-const bakeryEmojis = ["🥖", "🍪", "🥨", "🧁", "🍩"];
+const bakeryEmojis = ["🥖", "🍪", "🎂", "🧁", "🍩", "☕"];
 
 interface EmojiProps {
   fontSize: string;
