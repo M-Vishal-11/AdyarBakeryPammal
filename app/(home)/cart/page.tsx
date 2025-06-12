@@ -14,6 +14,7 @@ export default function Page() {
             <ProductCard
               productName="Paneer Cake Deluxe"
               price={100}
+              discountedPrice={20}
               line1="Pan cake for free"
               line2="Extra Cheese"
               line3="Limited Edition"

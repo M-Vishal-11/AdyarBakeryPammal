@@ -4,6 +4,7 @@ import AddToCartbtn from "./AddToCartbtn";
 interface ProductCardProps {
   productName: string;
   price: number;
+  discountedPrice?: number;
   line1?: string;
   line2?: string;
   line3?: string;
@@ -14,6 +15,7 @@ interface ProductCardProps {
 const ProductCard = ({
   productName,
   price,
+  discountedPrice,
   line1,
   line2,
   line3,
@@ -47,7 +49,18 @@ const ProductCard = ({
         </div>
 
         <div className="flex items-center justify-between mt-4">
-          <span className="text-lg font-bold text-black">₹{price}</span>
+          {discountedPrice ? (
+            <div className="flex flex-col">
+              <span className="text-sm line-through text-gray-500">
+                ₹{price}
+              </span>
+              <span className="text-lg font-bold text-green-700">
+                ₹{discountedPrice}
+              </span>
+            </div>
+          ) : (
+            <span className="text-lg font-bold text-black">₹{price}</span>
+          )}
           <AddToCartbtn />
         </div>
       </div>
