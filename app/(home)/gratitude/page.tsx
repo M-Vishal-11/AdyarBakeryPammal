@@ -1,59 +1,213 @@
 "use client";
-import { motion } from "framer-motion";
-import Confetti from "react-confetti";
-import { useEffect, useState } from "react";
+import { motion, useAnimationControls } from "framer-motion";
+import dynamic from "next/dynamic";
+import { useEffect, useState, useCallback } from "react";
+
+// Dynamically import Confetti to reduce initial bundle size
+const Confetti = dynamic(() => import("react-confetti"), {
+  ssr: false,
+  loading: () => null,
+});
+
+const bakeryEmojis = ["🥖", "🍪", "🥨", "🧁", "🍩"];
+
+interface EmojiProps {
+  fontSize: string;
+  rotate: number;
+  x: number;
+  delay: number;
+  duration: number;
+}
 
 export default function GratitudePage() {
-  const [showConfetti, setShowConfetti] = useState(true);
+  const [showConfetti, setShowConfetti] = useState(false);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [showSurprise, setShowSurprise] = useState(false);
+  const [emojiProps, setEmojiProps] = useState<EmojiProps[]>([]);
+  const controls = useAnimationControls();
 
-  // Update window size
-  useEffect(() => {
-    setDimensions({ width: window.innerWidth, height: window.innerHeight });
-    const timeout = setTimeout(() => setShowConfetti(false), 5000); // Stop after 5s
-    return () => clearTimeout(timeout);
+  // Resize handler
+  const handleResize = useCallback(() => {
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
   }, []);
 
+  useEffect(() => {
+    const isMobile = window.innerWidth < 768;
+    setShowConfetti(!isMobile);
+    handleResize();
+
+    const confettiTimeout = setTimeout(() => setShowConfetti(false), 8000);
+    const surpriseTimeout = setTimeout(() => setShowSurprise(true), 3000);
+
+    controls.start("visible");
+    window.addEventListener("resize", handleResize);
+
+    const newProps = bakeryEmojis.map(() => ({
+      fontSize: `${16 + Math.random() * 16}px`,
+      rotate: Math.random() * 360,
+      x: Math.random() * window.innerWidth,
+      delay: Math.random() * 5,
+      duration: 5 + Math.random() * 10,
+    }));
+    setEmojiProps(newProps);
+
+    return () => {
+      clearTimeout(confettiTimeout);
+      clearTimeout(surpriseTimeout);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [controls, handleResize]);
+
+  const containerVariants = {
+    hidden: { scale: 0.5, opacity: 0 },
+    visible: {
+      scale: 1,
+      opacity: 1,
+      transition: { type: "spring", stiffness: 100, damping: 10 },
+    },
+  };
+
+  const floatingItemVariants = {
+    initial: (custom: number) => ({
+      y: -50,
+      x: emojiProps[custom]?.x ?? 0,
+      opacity: 0,
+      rotate: emojiProps[custom]?.rotate ?? 0,
+    }),
+    animate: (custom: number) => ({
+      y: dimensions.height + 50,
+      opacity: [0, 1, 1, 0],
+      rotate: emojiProps[custom]?.rotate ?? 0,
+      transition: {
+        duration: emojiProps[custom]?.duration ?? 10,
+        delay: emojiProps[custom]?.delay ?? 0,
+        repeat: Infinity,
+        ease: "linear",
+      },
+    }),
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#FFF8F5] px-4">
-      {showConfetti && (
-        <Confetti width={dimensions.width} height={dimensions.height} />
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-[#FFF0E5] to-[#FFE8D6] px-4 overflow-hidden">
+      {showConfetti && dimensions.width > 0 && (
+        <Confetti
+          width={dimensions.width}
+          height={dimensions.height}
+          recycle={false}
+          gravity={0.2}
+          numberOfPieces={dimensions.width < 768 ? 150 : 300}
+          colors={["#B02B03", "#FF9A76", "#FFD166", "#83C5BE", "#FF6B6B"]}
+        />
       )}
 
       <motion.div
-        initial={{ scale: 0.5, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", stiffness: 100, damping: 10 }}
-        className="bg-white rounded-3xl shadow-xl p-8 text-center max-w-md w-full"
+        variants={containerVariants}
+        initial="hidden"
+        animate={controls}
+        className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 text-center max-w-md w-full relative overflow-hidden"
       >
-        <motion.h1
-          className="text-4xl font-bold text-[#B02B03] mb-4"
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
+        <motion.div
+          className="absolute -top-8 -left-8 text-4xl sm:text-5xl"
+          animate={{ rotate: [0, 15, -15, 0] }}
+          transition={{ repeat: Infinity, duration: 4 }}
+          aria-hidden="true"
         >
-          🎉 Thank You!
-        </motion.h1>
+          🥐
+        </motion.div>
+        <motion.div
+          className="absolute -bottom-8 -right-8 text-4xl sm:text-5xl"
+          animate={{ rotate: [0, -15, 15, 0] }}
+          transition={{ repeat: Infinity, duration: 5, delay: 1 }}
+          aria-hidden="true"
+        >
+          🍰
+        </motion.div>
 
-        <motion.p
-          className="text-gray-600 text-lg mb-6"
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
         >
-          Your order has been placed successfully. We’re preparing your
-          delicious items with love. ❤️
-        </motion.p>
+          <motion.h1
+            className="text-4xl sm:text-5xl font-bold text-[#B02B03] mb-4 sm:mb-6"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.2, type: "spring" }}
+          >
+            🎉 Order Confirmed!
+          </motion.h1>
 
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="bg-[#B02B03] text-white px-6 py-3 rounded-full font-semibold shadow-md hover:shadow-lg transition"
-          onClick={() => (window.location.href = "/products")}
-        >
-          Continue Shopping
-        </motion.button>
+          <motion.p
+            className="text-gray-700 text-base sm:text-lg mb-6 leading-relaxed"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            Your delicious treats are being freshly prepared with love! Our
+            bakers are working their magic right now. 🧑‍🍳✨
+          </motion.p>
+
+          {showSurprise && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="bg-[#FFF8F5] p-3 sm:p-4 rounded-xl mb-6 border border-[#FFD6C2]"
+            >
+              <p className="font-semibold text-[#B02B03] text-sm sm:text-base">
+                🎁 Surprise! You&apos;ve earned 10 loyalty points with this
+                order!
+              </p>
+              <p className="text-xs sm:text-sm mt-1 text-gray-600">
+                Only 40 more points for a free pastry!
+              </p>
+            </motion.div>
+          )}
+
+          <div className="space-y-3 sm:space-y-4">
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 5px 15px rgba(176, 43, 3, 0.3)",
+              }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-gradient-to-r from-[#B02B03] to-[#E85D04] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-bold shadow-lg hover:shadow-xl transition-all w-full text-sm sm:text-base"
+              onClick={() => (window.location.href = "/products")}
+            >
+              Continue Shopping
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="border-2 border-[#B02B03] text-[#B02B03] px-6 py-2 sm:px-8 sm:py-3 rounded-full font-semibold transition-all w-full text-sm sm:text-base"
+              onClick={() => (window.location.href = "/account/orders")}
+            >
+              Track Your Order
+            </motion.button>
+          </div>
+        </motion.div>
       </motion.div>
+
+      {/* Floating bakery emojis */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        {emojiProps.map((props, index) => (
+          <motion.div
+            key={index}
+            className="absolute"
+            custom={index}
+            initial="initial"
+            animate="animate"
+            variants={floatingItemVariants}
+            aria-hidden="true"
+            style={{ fontSize: props.fontSize }}
+          >
+            {bakeryEmojis[index]}
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 }
