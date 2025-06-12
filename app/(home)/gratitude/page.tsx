@@ -22,7 +22,6 @@ interface EmojiProps {
 export default function GratitudePage() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  // const [showSurprise, setShowSurprise] = useState(false);
   const [emojiProps, setEmojiProps] = useState<EmojiProps[]>([]);
   const controls = useAnimationControls();
 
@@ -35,16 +34,14 @@ export default function GratitudePage() {
   }, []);
 
   useEffect(() => {
-    const isMobile = window.innerWidth < 768;
-    setShowConfetti(!isMobile);
     handleResize();
+    setShowConfetti(true); // Always show confetti
 
     const confettiTimeout = setTimeout(() => setShowConfetti(false), 8000);
-    // const surpriseTimeout = setTimeout(() => setShowSurprise(true), 3000);
-
     controls.start("visible");
     window.addEventListener("resize", handleResize);
 
+    // Generate props for emoji animation
     const newProps = bakeryEmojis.map(() => ({
       fontSize: `${16 + Math.random() * 16}px`,
       rotate: Math.random() * 360,
@@ -56,7 +53,6 @@ export default function GratitudePage() {
 
     return () => {
       clearTimeout(confettiTimeout);
-      // clearTimeout(surpriseTimeout);
       window.removeEventListener("resize", handleResize);
     };
   }, [controls, handleResize]);
@@ -98,7 +94,7 @@ export default function GratitudePage() {
           height={dimensions.height}
           recycle={false}
           gravity={0.2}
-          numberOfPieces={dimensions.width < 768 ? 150 : 300}
+          numberOfPieces={dimensions.width < 768 ? 100 : 300}
           colors={["#B02B03", "#FF9A76", "#FFD166", "#83C5BE", "#FF6B6B"]}
         />
       )}
@@ -149,22 +145,6 @@ export default function GratitudePage() {
             Why step out when your favorites are coming to you? Enjoy a cozy
             meal at home!
           </motion.p>
-
-          {/* {showSurprise && (
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              className="bg-[#FFF8F5] p-3 sm:p-4 rounded-xl mb-6 border border-[#FFD6C2]"
-            >
-              <p className="font-semibold text-[#B02B03] text-sm sm:text-base">
-                🎁 Surprise! You&apos;ve earned 10 loyalty points with this
-                order!
-              </p>
-              <p className="text-xs sm:text-sm mt-1 text-gray-600">
-                Only 40 more points for a free pastry!
-              </p>
-            </motion.div>
-          )} */}
 
           <div className="space-y-3 sm:space-y-4">
             <motion.button
