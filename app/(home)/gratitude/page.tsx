@@ -22,7 +22,7 @@ interface EmojiProps {
 export default function GratitudePage() {
   const [showConfetti, setShowConfetti] = useState(false);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const [showSurprise, setShowSurprise] = useState(false);
+  // const [showSurprise, setShowSurprise] = useState(false);
   const [emojiProps, setEmojiProps] = useState<EmojiProps[]>([]);
   const controls = useAnimationControls();
 
@@ -40,7 +40,7 @@ export default function GratitudePage() {
     handleResize();
 
     const confettiTimeout = setTimeout(() => setShowConfetti(false), 8000);
-    const surpriseTimeout = setTimeout(() => setShowSurprise(true), 3000);
+    // const surpriseTimeout = setTimeout(() => setShowSurprise(true), 3000);
 
     controls.start("visible");
     window.addEventListener("resize", handleResize);
@@ -56,7 +56,7 @@ export default function GratitudePage() {
 
     return () => {
       clearTimeout(confettiTimeout);
-      clearTimeout(surpriseTimeout);
+      // clearTimeout(surpriseTimeout);
       window.removeEventListener("resize", handleResize);
     };
   }, [controls, handleResize]);
@@ -146,11 +146,11 @@ export default function GratitudePage() {
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            Your delicious treats are being freshly prepared with love! Our
-            bakers are working their magic right now. 🧑‍🍳✨
+            Why step out when your favorites are coming to you? Enjoy a cozy
+            meal at home!
           </motion.p>
 
-          {showSurprise && (
+          {/* {showSurprise && (
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -164,7 +164,7 @@ export default function GratitudePage() {
                 Only 40 more points for a free pastry!
               </p>
             </motion.div>
-          )}
+          )} */}
 
           <div className="space-y-3 sm:space-y-4">
             <motion.button
