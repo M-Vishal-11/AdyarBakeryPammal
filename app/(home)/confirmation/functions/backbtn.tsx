@@ -8,7 +8,7 @@ const Backbtn = () => {
       onClick={() => {
         router.push("/address");
       }}
-      className="bg-gray-500 opacity-35 hover:opacity-100 hover:bg-gray-700 active:opacity-100 active:bg-gray-700 text-white text-lg rounded-xl mb-5 px-4 py-2 mt-3 
+      className="bg-gray-500 opacity-35 hover:opacity-100 hover:bg-gray-700 active:opacity-100 active:bg-gray-700 text-white text-lg rounded-xl mb-5 px-4 py-2 mt-3 w-30
       shadow-md hover:shadow-lg
       cursor-pointer active:scale-90 transition-transform duration-200"
     >

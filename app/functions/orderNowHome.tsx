@@ -6,7 +6,7 @@ export default function OrderNowHome() {
   return (
     <button
       onClick={() => {
-        router.push("/products");
+        router.push("/shop");
       }}
       style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
       className="bg-[#b02b03] text-[4.5vh] text-[#ffebe6] p-[1.5vh] rounded-xl block mx-auto mt-[30vh] 
