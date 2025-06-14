@@ -1,30 +1,35 @@
 import Image from "next/image";
-import ButtonIcon from "./functions/buttonicon";
 import OrderNowHome from "./functions/orderNowHome";
+import NavbarPhone from "./functions/NavbarPhone";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-[var(--background)]">
-      {/* Header with Logo */}
-      <div className="bg-[var(--top-color)] h-[30vh] rounded-b-[80%] relative">
+    <div className="relative min-h-screen bg-[var(--background)] flex flex-col">
+      {/* Header with Logo - Improved with priority loading and sizes prop */}
+      <header className="bg-[var(--top-color)] h-[30vh] rounded-b-[80%] relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-[var(--top-color)] to-transparent opacity-90"></div>
         <Image
           src="/imgs/Logo.png"
-          alt="Logo"
+          alt="Company Logo"
           width={160}
           height={160}
-          className="rounded-md mx-auto relative top-[7vh] md:w-[30vh]"
+          priority
+          sizes="(max-width: 768px) 160px, 300px"
+          className="rounded-md mx-auto relative top-[7vh] md:w-[30vh] object-contain drop-shadow-lg"
         />
-      </div>
+      </header>
 
-      {/* Order Now Section */}
-      <OrderNowHome />
+      {/* Main Content - Added flex-grow for proper footer positioning */}
+      <main className="flex-grow">
+        {/* Order Now Section - Wrapped in container for better spacing */}
+        <div className="container mx-auto px-4 py-8">
+          <OrderNowHome />
+        </div>
+      </main>
 
-      {/* Footer with Buttons */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-[#FFDAD1] border-t border-gray-300 flex justify-evenly items-center py-2 z-50 shadow-md">
-        <ButtonIcon url="icons/menu.svg" alt="Menu" address="/products" />
-        <ButtonIcon url="icons/discount.svg" alt="Offers" address="/offers" />
-        <ButtonIcon url="icons/account.svg" alt="Account" address="#" />
-        <ButtonIcon url="icons/cart.svg" alt="Cart" address="/cart" />
+      {/* Footer Navigation - Positioned at bottom */}
+      <footer className="sticky bottom-0 z-10">
+        <NavbarPhone />
       </footer>
     </div>
   );
