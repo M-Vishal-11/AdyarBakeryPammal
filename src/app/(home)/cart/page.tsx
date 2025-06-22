@@ -1,4 +1,4 @@
-import ProductCard from "@/app/functions/productcard";
+import ProductCard from "@/src/app/functions/productcard";
 import BuyNowlg from "./functions/buynowlg";
 import BuyNowPhone from "./functions/buynowphone";
 

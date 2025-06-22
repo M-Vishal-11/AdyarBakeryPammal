@@ -1,4 +1,4 @@
-import ProductCard from "@/app/functions/productcard";
+import ProductCard from "@/src/app/functions/productcard";
 
 interface ProductCardProps {
   open: boolean;

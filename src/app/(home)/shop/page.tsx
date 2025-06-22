@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import ProductCategory from "@/app/functions/productcategory";
+import ProductCategory from "@/src/app/functions/productcategory";
 import ExpandCollapseBtn from "./btn";
 
 export default function Page() {

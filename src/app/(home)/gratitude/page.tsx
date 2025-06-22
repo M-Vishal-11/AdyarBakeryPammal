@@ -154,7 +154,7 @@ export default function GratitudePage() {
               }}
               whileTap={{ scale: 0.95 }}
               className="bg-gradient-to-r from-[#B02B03] to-[#E85D04] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-full font-bold shadow-lg hover:shadow-xl transition-all w-full text-sm sm:text-base"
-              onClick={() => (window.location.href = "/products")}
+              onClick={() => (window.location.href = "/shop")}
             >
               Continue Shopping
             </motion.button>
