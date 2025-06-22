@@ -1,7 +1,11 @@
+"use client";
+import { useState } from "react";
 import Backbtn from "./functions/backbtn";
 import PlaceOrderbtn from "./functions/placeOrderbtn";
 
 export default function Page() {
+  const [paymentMethod, setPaymentMethod] = useState("");
+
   return (
     <div className="bg-[#FFF9F7] min-h-screen p-4 lg:p-8 text-gray-800">
       <div className="max-w-md mx-auto space-y-6">
@@ -88,11 +92,18 @@ export default function Page() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Select payment option
             </label>
-            <select className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#FF6B4A] focus:border-[#FF6B4A] sm:text-sm rounded-lg">
-              <option>Cash on Delivery</option>
-              <option>Credit/Debit Card</option>
-              <option>UPI</option>
-              <option selected disabled></option>
+            <select
+              required
+              value={paymentMethod}
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#FF6B4A] focus:border-[#FF6B4A] sm:text-sm rounded-lg"
+            >
+              <option value="" disabled>
+                Select Payment Method
+              </option>
+              <option value="COD">Cash on Delivery</option>
+              <option value="Card">Credit/Debit Card</option>
+              <option value="UPI">UPI</option>
             </select>
           </div>
         </div>
@@ -100,7 +111,7 @@ export default function Page() {
         {/* Action Buttons */}
         <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-4 mt-8">
           <Backbtn />
-          <PlaceOrderbtn />
+          <PlaceOrderbtn payment={paymentMethod} />
         </div>
       </div>
     </div>

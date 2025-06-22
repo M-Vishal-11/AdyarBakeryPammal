@@ -1,13 +1,21 @@
 "use client";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
-const PlaceOrderbtn = () => {
+const PlaceOrderbtn = ({ payment }: any) => {
   const router = useRouter();
+
+  const PlaceOrderBtnfn = () => {
+    if (payment === "") {
+      toast.error("Please select a payment method");
+    } else {
+      router.push("/gratitude");
+    }
+  };
+
   return (
     <button
-      onClick={() => {
-        router.push("/gratitude");
-      }}
+      onClick={PlaceOrderBtnfn}
       className="bg-amber-500 hover:bg-amber-600 active:bg-amber-600 text-white 
       shadow-md hover:shadow-lg
       w-40 h-14 text-2xl rounded-xl mb-5 p-2 mt-4 
