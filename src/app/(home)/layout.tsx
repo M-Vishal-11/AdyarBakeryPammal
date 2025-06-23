@@ -86,7 +86,7 @@ const footerSections = [
   {
     title: "Contact",
     items: {
-      "Email Us": "mailto:moorthy@gmail.coom",
+      "Email Us": "mailto:moorthy@gmail.com",
       "+91 9841733588": "tel:+919841733588",
     },
   },

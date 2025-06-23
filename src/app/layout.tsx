@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Playfair, Montserrat } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 
-const playfair = Playfair({
-  variable: "--font-playfair-head",
-  subsets: ["latin"],
-});
+// const playfair = Playfair({
+//   variable: "--font-playfair-head",
+//   subsets: ["latin"],
+// });
 
 const montserrat = Montserrat({
   variable: "--font-montserrat", // fixed typo
@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${playfair.variable} ${montserrat.variable} antialiased min-h-full flex flex-col`}
+        className={`${montserrat.variable} antialiased min-h-full flex flex-col`}
       >
         {children}
         <Toaster position="top-center" />
