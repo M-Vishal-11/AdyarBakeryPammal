@@ -14,7 +14,16 @@ export async function POST(request: NextRequest) {
       currency: "INR",
     });
     return NextResponse.json(payment);
-  } catch (error: any) {
-    return NextResponse.json({ message: "Server Error" }, { status: 500 });
+  } catch (error: unknown) {
+    let message = "Unknown error occurred";
+
+    if (error instanceof Error) {
+      message = error.message;
+    }
+
+    return NextResponse.json(
+      { message: "Server Error: " + message },
+      { status: 500 }
+    );
   }
 }
