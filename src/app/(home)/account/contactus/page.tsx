@@ -13,7 +13,7 @@ export default function ContactUS() {
   const emailAddress = "adyarbakeryjmj@gmail.com";
   const location = "Adyar Bakery & Sweet Shop, Gandhi Nagar, Adyar, Chennai";
 
-  const handleCopy = (text: any) => {
+  const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success("Copied to clipboard!");
   };
@@ -118,7 +118,7 @@ export default function ContactUS() {
 
         <div className="mt-12 text-center">
           <p className="text-gray-500">
-            We're open daily from 7:00 AM to 10:00 PM
+            We&apos;re open daily from 7:00 AM to 10:00 PM
           </p>
           <p className="text-gray-500 mt-2">Email responses within 24 hours</p>
         </div>
