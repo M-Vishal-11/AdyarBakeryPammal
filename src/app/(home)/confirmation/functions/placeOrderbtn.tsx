@@ -111,10 +111,18 @@ const PlaceOrderbtn = ({ payment }: PlaceOrderBtnProps) => {
       />
       <button
         onClick={PlaceOrderBtnfn}
-        className="bg-amber-500 hover:bg-amber-600 active:bg-amber-600 text-white 
-        shadow-md hover:shadow-lg
-        w-40 h-14 text-2xl rounded-xl mb-5 p-2 mt-4 
-        cursor-pointer active:scale-90 transition-transform duration-200"
+        className={`flex items-center justify-center 
+                 ${
+                   !payment
+                     ? "bg-amber-300 cursor-not-allowed"
+                     : "bg-amber-500 hover:bg-amber-600 active:bg-amber-600"
+                 } 
+                 text-white border border-amber-600
+                 shadow-sm hover:shadow-md
+                 w-full sm:w-40 h-12 text-lg rounded-lg
+                 cursor-pointer active:scale-[98%] transition-all duration-200`}
+        disabled={!payment}
+        aria-label="Place order"
       >
         Place Order
       </button>

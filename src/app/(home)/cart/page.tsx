@@ -64,7 +64,8 @@ export default function Page() {
                 </li>
                 <li className="flex justify-between">
                   <span className="text-gray-600">Delivery:</span>
-                  <span className="text-green-600">₹0</span>
+                  <span className="text-gray-600">₹20</span>
+                  {/* <span className="text-green-600">FREE</span> */}
                 </li>
                 <li className="flex justify-between">
                   <span className="text-gray-600">Discount:</span>

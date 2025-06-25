@@ -44,10 +44,13 @@ export default function Page() {
               <span className="text-gray-600">Items (4)</span>
               <span>₹150</span>
             </div>
+
             <div className="flex justify-between py-2">
               <span className="text-gray-600">Delivery</span>
-              <span className="text-green-600 font-medium">FREE</span>
+              {/* <span className="text-green-600 font-medium">FREE</span> */}
+              <span>₹20</span>
             </div>
+
             <div className="flex justify-between py-2">
               <span className="text-gray-600">Discount</span>
               <span className="text-green-600 font-medium">-₹50</span>
@@ -64,7 +67,7 @@ export default function Page() {
 
             <div className="flex justify-between py-2 text-lg font-bold">
               <span>Total Amount</span>
-              <span className="text-[#FF6B4A]">₹100</span>
+              <span className="text-[#FF6B4A]">₹120</span>
             </div>
           </div>
         </div>

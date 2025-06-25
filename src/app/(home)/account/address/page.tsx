@@ -1,4 +1,3 @@
-import Nextbtn from "./functions/nextbtn";
 import Prebtn from "./functions/prebtn";
 
 export default function Page() {
@@ -92,9 +91,8 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="flex justify-between mb-5 mt-3 md:mr-2">
+          <div className="mt-3 md:mr-2 mb-5">
             <Prebtn />
-            <Nextbtn />
           </div>
         </form>
       </div>

@@ -1,19 +1,33 @@
 "use client";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Backbtn = () => {
-  const router = useRouter();
   return (
-    <button
-      onClick={() => {
-        router.push("/address");
-      }}
-      className="bg-gray-500 opacity-35 hover:opacity-100 hover:bg-gray-700 active:opacity-100 active:bg-gray-700 text-white text-lg rounded-xl mb-5 px-4 py-2 mt-3 w-30
-      shadow-md hover:shadow-lg
-      cursor-pointer active:scale-90 transition-transform duration-200"
+    <Link
+      href="/address"
+      className="inline-flex items-center justify-center gap-2 
+                 bg-white border border-[#FF6B4A] text-[#FF6B4A] 
+                 hover:bg-[#FFF0EB] text-sm md:text-base rounded-lg 
+                 py-2 px-4 h-[42px]  /* Fixed height */
+                 shadow-sm hover:shadow-md
+                 transition-all duration-200 active:scale-[98%] 
+                 font-medium"
+      aria-label="Go back"
     >
-      <span className="transform rotate-180 inline-block">➤</span> Back
-    </button>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-4 w-4" /* Smaller icon */
+        viewBox="0 0 20 20"
+        fill="currentColor"
+      >
+        <path
+          fillRule="evenodd"
+          d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+          clipRule="evenodd"
+        />
+      </svg>
+      <span>Back</span>
+    </Link>
   );
 };
 
