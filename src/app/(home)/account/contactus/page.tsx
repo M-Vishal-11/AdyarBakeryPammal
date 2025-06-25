@@ -1,11 +1,20 @@
 "use client";
+import dynamic from "next/dynamic";
 import toast from "react-hot-toast";
-import {
-  FaPhone,
-  FaWhatsapp,
-  FaEnvelope,
-  FaMapMarkerAlt,
-} from "react-icons/fa";
+
+// Dynamically import icons to reduce initial bundle size
+const FaPhone = dynamic(() =>
+  import("react-icons/fa").then((mod) => mod.FaPhone)
+);
+const FaWhatsapp = dynamic(() =>
+  import("react-icons/fa").then((mod) => mod.FaWhatsapp)
+);
+const FaEnvelope = dynamic(() =>
+  import("react-icons/fa").then((mod) => mod.FaEnvelope)
+);
+const FaMapMarkerAlt = dynamic(() =>
+  import("react-icons/fa").then((mod) => mod.FaMapMarkerAlt)
+);
 
 export default function ContactUS() {
   const phoneNumber = "9841733588";
@@ -62,7 +71,7 @@ export default function ContactUS() {
             </div>
           </div>
 
-          {/* Email Card - Fixed */}
+          {/* Email Card */}
           <div
             className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#FFD1C2] hover:border-[#FF6B4A] cursor-pointer"
             onClick={() => handleCopy(emailAddress)}
@@ -88,7 +97,7 @@ export default function ContactUS() {
             </div>
           </div>
 
-          {/* Location Card */}
+          {/* Location Card - Lazy loaded map */}
           <div className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-[#FFD1C2] hover:border-[#FF6B4A] col-span-1 md:col-span-2">
             <div className="flex items-center gap-4">
               <div className="bg-[#FFEBE6] p-4 rounded-full">
@@ -101,9 +110,9 @@ export default function ContactUS() {
                 <p className="text-gray-600 mt-1">{location}</p>
               </div>
             </div>
-            <div className="mt-6 h-64 rounded-lg overflow-hidden">
+            <div className="mt-6 h-64 rounded-lg overflow-hidden bg-gray-100">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.722853981507!2d80.1360095!3d12.9731492!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525fcdc303dcaf%3A0xf909a317885e3a96!2sAdyar%20Bakery%20%26%20Sweet%20Shop!5e0!3m2!1sen!2sin!4v1719393851230!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.981363897164!2d80.13807249999999!3d12.9730437!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525fcdc303dcaf%3A0xf909a317885e3a96!2sAdyar%20Bakery%20%26%20Sweet%20Shop!5e0!3m2!1sen!2sin!4v1750842163023!5m2!1sen!2sin"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
@@ -111,7 +120,7 @@ export default function ContactUS() {
                 loading="lazy"
                 className="rounded-lg"
                 title="Adyar Bakery Location"
-              ></iframe>
+              />
             </div>
           </div>
         </div>
