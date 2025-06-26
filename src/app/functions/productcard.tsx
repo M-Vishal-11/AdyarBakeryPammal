@@ -1,5 +1,5 @@
-import Image from "next/image";
 import AddToCartbtn from "./AddToCartbtn";
+import ImageClicked from "./ImageClicked";
 
 interface ProductCardProps {
   productName: string;
@@ -24,14 +24,8 @@ const ProductCard = ({
 }: ProductCardProps) => {
   return (
     <article className="flex gap-4 bg-white rounded-2xl shadow-md p-4 hover:shadow-lg transition-shadow duration-200 relative ">
-      <div className="flex-shrink-0 bg-gray-200">
-        <Image
-          src="/imgs/img.svg"
-          width={100}
-          height={100}
-          alt="img"
-          className="rounded-lg object-cover h-auto"
-        />
+      <div className="flex-shrink-0">
+        <ImageClicked />
       </div>
 
       <div className="flex flex-col justify-between w-full">
