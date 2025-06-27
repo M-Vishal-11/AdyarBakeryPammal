@@ -5,7 +5,7 @@ const ShopStatus = ({
   setIsShopOpen,
 }: {
   isShopOpen: boolean;
-  setIsShopOpen: any;
+  setIsShopOpen: (isShopOpen: boolean) => void;
 }) => {
   return (
     <div className="bg-white rounded-xl shadow-lg p-6 mb-8 transition-all duration-300 hover:shadow-xl">

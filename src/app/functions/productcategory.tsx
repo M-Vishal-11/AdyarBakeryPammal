@@ -6,10 +6,7 @@ interface ProductCardProps {
   category: string;
 }
 
-export default function ProductCategory({
-  open = true,
-  category,
-}: ProductCardProps) {
+export default function ProductCategory({ open, category }: ProductCardProps) {
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8 transition-all duration-300 hover:shadow-xl">
       <details className="group" open={open}>

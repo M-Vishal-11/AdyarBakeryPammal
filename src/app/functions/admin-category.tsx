@@ -3,11 +3,19 @@ import { FiPlus } from "react-icons/fi";
 import AdminProductCard from "./admin-productCard";
 import DropdownSVG from "../../components/icons/svgs/DropdownSVG";
 
-export default function AdminCategory({ category }: { category: string }) {
+interface AdminCategoryProps {
+  category: string;
+  expand: boolean;
+}
+
+export default function AdminCategory({
+  category,
+  expand,
+}: AdminCategoryProps) {
   return (
     <>
       <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8 transition-all duration-300 hover:shadow-xl">
-        <details className="group">
+        <details className="group" open={expand}>
           <summary className="flex justify-between items-center p-6 cursor-pointer bg-gradient-to-r from-orange-100 to-orange-200 hover:from-orange-200 hover:to-orange-300 transition-all duration-300">
             <div className="flex items-center">
               <h2 className="text-xl font-semibold text-gray-800">

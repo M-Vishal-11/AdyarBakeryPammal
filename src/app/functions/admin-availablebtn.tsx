@@ -5,7 +5,7 @@ export default function Availabilitybtn({
   isAvailable,
   setIsAvailable,
 }: {
-  setIsAvailable: any;
+  setIsAvailable: (isAvailable: boolean) => void;
   isAvailable: boolean;
 }) {
   return (

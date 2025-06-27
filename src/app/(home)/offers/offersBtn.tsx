@@ -5,7 +5,7 @@ const OffersBtn = ({
   setExpand,
 }: {
   expand: boolean;
-  setExpand: any;
+  setExpand: (expand: boolean) => void;
 }) => {
   return (
     <button

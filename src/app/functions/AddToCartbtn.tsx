@@ -28,7 +28,7 @@ export default function AddToCartbtn() {
           md:w-32 md:h-11"
         >
           <span
-            onClick={(e) => {
+            onClick={() => {
               setqnty((prev) => Math.max(prev - 1, 0));
             }}
             className="text-xl w-1/3 grow text-left flex items-center justify-start
@@ -47,7 +47,7 @@ export default function AddToCartbtn() {
             {qnty}
           </span>
           <span
-            onClick={(e) => {
+            onClick={() => {
               setqnty(qnty + 1);
             }}
             className="text-xl w-1/3 grow text-right flex items-center justify-end

@@ -1,10 +1,8 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
-import AdminProductCard from "../functions/admin-productCard";
-import { FiPlus, FiShoppingBag, FiSun, FiMoon } from "react-icons/fi";
 import ShopStatus from "../functions/admin-ShopStatus";
 import AdminCategory from "../functions/admin-category";
+import OffersBtn from "../(home)/offers/offersBtn";
 
 export default function AdminDashboard() {
   const [isShopOpen, setIsShopOpen] = useState(false);
@@ -26,9 +24,12 @@ export default function AdminDashboard() {
 
           {/* Shop Status Card */}
           <ShopStatus isShopOpen={isShopOpen} setIsShopOpen={setIsShopOpen} />
+          <div className="mb-6 flex justify-center">
+            <OffersBtn expand={expand} setExpand={setExpand} />
+          </div>
 
           {/* Products Section */}
-          <AdminCategory category="Category1" />
+          <AdminCategory category="Category1" expand={expand} />
         </div>
       </div>
     </div>
