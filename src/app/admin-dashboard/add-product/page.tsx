@@ -4,10 +4,14 @@ import { createProduct } from "@/app/api/admin/addProduct/actions";
 import { useState } from "react";
 import Link from "next/link";
 import BackSVG from "@/components/icons/svgs/BackSVG";
+import { useSearchParams } from "next/navigation";
 
 export default function ProductForm() {
+  const searchParams = useSearchParams();
+  const categoryParams = searchParams.get("category");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [offer, setOffer] = useState<string>("no");
+  const [category, setCategory] = useState(categoryParams);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -36,7 +40,7 @@ export default function ProductForm() {
             className="text-[#ff8c66] hover:text-[#ff704d] flex items-center"
           >
             <BackSVG />
-            Back to Admin Dashboard
+            Back
           </Link>
           <h1 className="text-2xl font-bold text-gray-800">Add New Product</h1>
         </div>
@@ -85,6 +89,10 @@ export default function ProductForm() {
               <input
                 type="text"
                 name="category"
+                value={category as string}
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                }}
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff8c66]"
                 placeholder="Enter category"
