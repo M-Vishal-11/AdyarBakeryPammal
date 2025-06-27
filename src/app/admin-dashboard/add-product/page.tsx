@@ -2,6 +2,8 @@
 
 import { createProduct } from "@/app/api/admin/addProduct/actions";
 import { useState } from "react";
+import Link from "next/link";
+import BackSVG from "@/components/icons/svgs/BackSVG";
 
 export default function ProductForm() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -26,14 +28,22 @@ export default function ProductForm() {
   return (
     <div className="min-h-screen bg-[#ffebe6] py-8 px-4">
       <div className="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">
-          Add New Product
-        </h1>
+        <div className="flex justify-between items-center mb-6">
+          <Link
+            href="/admin-dashboard"
+            className="text-[#ff8c66] hover:text-[#ff704d] flex items-center"
+          >
+            <BackSVG />
+            Back to Admin Dashboard
+          </Link>
+          <h1 className="text-2xl font-bold text-gray-800">Add New Product</h1>
+        </div>
 
         <form
           className="space-y-4"
           action={createProduct as unknown as (formData: FormData) => void}
         >
+          {/* Rest of your form remains exactly the same */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Product Name */}
             <div className="space-y-1">
@@ -149,7 +159,6 @@ export default function ProductForm() {
             </button>
             <button
               type="submit"
-              onClick={handleReset}
               className="px-4 py-2 text-sm font-medium text-white bg-[#ff8c66] rounded-md hover:bg-[#ff704d] focus:outline-none focus:ring-2 focus:ring-[#ff8c66]"
             >
               Publish Product

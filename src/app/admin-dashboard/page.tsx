@@ -9,6 +9,7 @@ export default function AdminDashboard() {
   const [isShopOpen, setIsShopOpen] = useState(true);
   const [loading, setLoading] = useState(true);
   const [expand, setExpand] = useState(true);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchShopStatus = async () => {
@@ -38,6 +39,14 @@ export default function AdminDashboard() {
 
     infoToEndPoint();
   }, [isShopOpen]);
+
+  useEffect(() => {
+    const extractCategories = async () => {
+      const res = await axios.get("/api/productsDisplay/extractCategories");
+      setCategories(res.data.categories);
+    };
+    extractCategories();
+  }, []);
 
   if (loading) {
     return (
@@ -69,7 +78,9 @@ export default function AdminDashboard() {
           </div>
 
           {/* Products Section */}
-          <AdminCategory category="Category1" expand={expand} />
+          {categories.map((category, i) => (
+            <AdminCategory key={i} category={category} expand={expand} />
+          ))}
         </div>
       </div>
     </div>

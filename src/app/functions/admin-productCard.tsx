@@ -7,22 +7,14 @@ interface adminProductCardProps {
   productName: string;
   price: number;
   discountedPrice?: number;
-  line1?: string;
-  line2?: string;
-  line3?: string;
-  line4?: string;
-  line5?: string;
+  descriptions: Array<string>;
 }
 
 const AdminProductCard = ({
   productName,
   price,
   discountedPrice,
-  line1,
-  line2,
-  line3,
-  line4,
-  line5,
+  descriptions,
 }: adminProductCardProps) => {
   const [isAvailable, setIsAvailable] = useState(true);
 
@@ -65,11 +57,12 @@ const AdminProductCard = ({
 
           {/* Description Lines */}
           <div className="space-y-1 text-sm text-gray-600">
-            {line1 && <p className="line-clamp-1">{line1}</p>}
-            {line2 && <p className="line-clamp-1">{line2}</p>}
-            {line3 && <p className="line-clamp-1">{line3}</p>}
-            {line4 && <p className="line-clamp-1">{line4}</p>}
-            {line5 && <p className="line-clamp-1">{line5}</p>}
+            {descriptions &&
+              descriptions.map((line, i) => (
+                <p key={i} className="line-clamp-1">
+                  {line}
+                </p>
+              ))}
           </div>
         </div>
 
