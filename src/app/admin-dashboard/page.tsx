@@ -6,8 +6,24 @@ import OffersBtn from "../(home)/offers/offersBtn";
 import axios from "axios";
 
 export default function AdminDashboard() {
-  const [isShopOpen, setIsShopOpen] = useState(false);
+  const [isShopOpen, setIsShopOpen] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [expand, setExpand] = useState(true);
+
+  useEffect(() => {
+    const fetchShopStatus = async () => {
+      try {
+        const res = await axios.get("/api/shopOpenStatus/shopStatus");
+        setIsShopOpen(res.data.shopStatus.isOpen);
+      } catch (error: any) {
+        console.error("Error fetching shop status:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchShopStatus();
+  }, []);
 
   useEffect(() => {
     const infoToEndPoint = async () => {
@@ -22,6 +38,14 @@ export default function AdminDashboard() {
 
     infoToEndPoint();
   }, [isShopOpen]);
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-80">
+        <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#ffebe6]">
