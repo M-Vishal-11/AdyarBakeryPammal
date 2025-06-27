@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Backbtn from "./functions/backbtn";
 import PlaceOrderbtn from "./functions/placeOrderbtn";
+import InvoiceSummary from "@/components/helperFunctions/InvoiceSummary";
 
 export default function Page() {
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -20,57 +21,7 @@ export default function Page() {
         </div>
 
         {/* Invoice */}
-        <div className="bg-white rounded-xl border border-[#FFE5DC] shadow-sm p-6 transition-all hover:shadow-md">
-          <div className="flex items-center mb-4">
-            <div className="bg-[#FFF0EB] p-2 rounded-full mr-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-[#FF6B4A]"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm2.5 3a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6.207.293a1 1 0 00-1.414 0l-6 6a1 1 0 101.414 1.414l6-6a1 1 0 000-1.414zM12.5 10a1.5 1.5 0 100 3 1.5 1.5 0 000-3z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-            <h2 className="text-xl font-bold text-[#333]">Order Summary</h2>
-          </div>
-
-          <div className="space-y-3">
-            <div className="flex justify-between py-2">
-              <span className="text-gray-600">Items (4)</span>
-              <span>₹150</span>
-            </div>
-
-            <div className="flex justify-between py-2">
-              <span className="text-gray-600">Delivery</span>
-              {/* <span className="text-green-600 font-medium">FREE</span> */}
-              <span>₹20</span>
-            </div>
-
-            <div className="flex justify-between py-2">
-              <span className="text-gray-600">Discount</span>
-              <span className="text-green-600 font-medium">-₹50</span>
-            </div>
-
-            <div className="border-t border-dashed border-gray-200 my-3"></div>
-
-            <div className="flex justify-between py-2 text-green-600">
-              <span className="font-semibold">You Save</span>
-              <span className="font-semibold">₹50</span>
-            </div>
-
-            <div className="border-t border-gray-200 my-3"></div>
-
-            <div className="flex justify-between py-2 text-lg font-bold">
-              <span>Total Amount</span>
-              <span className="text-[#FF6B4A]">₹120</span>
-            </div>
-          </div>
-        </div>
+        <InvoiceSummary />
 
         {/* Payment Method */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-[#FFE5DC]">

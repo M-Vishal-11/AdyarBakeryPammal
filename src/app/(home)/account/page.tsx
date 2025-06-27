@@ -2,13 +2,12 @@
 import { UserButton, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import Address from "./functions/Address";
 import GeneralIcon from "./functions/generalIcon";
-import Orders from "./functions/Orders";
-import ContactUS from "./functions/ContactUs";
-import ProfileIcon from "./functions/profileIcon";
-import Operator from "./functions/Operator";
-import Admin from "./functions/Admin";
+import AddressSVG from "@/components/icons/svgs/AddressSVG";
+import OrdersSVG from "@/components/icons/svgs/OrdersSVG";
+import ContactusSVG from "@/components/icons/svgs/ContactusSVG";
+import ProfileiconSVG from "@/components/icons/svgs/ProfileiconSVG";
+import AdminSVG from "@/components/icons/svgs/AdminSVG";
 
 export default function SettingsPage() {
   const { user } = useUser();
@@ -70,7 +69,7 @@ export default function SettingsPage() {
             IconName="Your Addresses"
             IconDescription="Manage your delivery addresses"
           >
-            <Address />
+            <AddressSVG />
           </GeneralIcon>
 
           <GeneralIcon
@@ -78,7 +77,7 @@ export default function SettingsPage() {
             IconName="Your Orders"
             IconDescription="View order history and track shipments"
           >
-            <Orders />
+            <OrdersSVG />
           </GeneralIcon>
 
           <GeneralIcon
@@ -86,14 +85,14 @@ export default function SettingsPage() {
             IconName="Contact Us"
             IconDescription="Get help or send feedback"
           >
-            <ContactUS />
+            <ContactusSVG />
           </GeneralIcon>
           <GeneralIcon
             address="/user-profile"
             IconName="Security/Profile"
             IconDescription="Manage password and security settings"
           >
-            <ProfileIcon />
+            <ProfileiconSVG />
           </GeneralIcon>
 
           {role === "admin" && (
@@ -103,14 +102,14 @@ export default function SettingsPage() {
                 IconName="Order Management"
                 IconDescription="Accept and manage incoming orders"
               >
-                <Operator />
+                <ProfileiconSVG />
               </GeneralIcon>
               <GeneralIcon
                 address="/admin-dashboard"
                 IconName="Admin Console"
                 IconDescription="Manage menu and settings"
               >
-                <Admin />
+                <AdminSVG />
               </GeneralIcon>
             </>
           )}
@@ -120,7 +119,7 @@ export default function SettingsPage() {
               IconName="Order Management"
               IconDescription="Accept and manage incoming orders"
             >
-              <Operator />
+              <ProfileiconSVG />
             </GeneralIcon>
           )}
         </div>

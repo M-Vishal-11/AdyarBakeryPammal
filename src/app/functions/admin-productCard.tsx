@@ -1,7 +1,9 @@
-import AddToCartBtn from "./AddToCartbtn";
+import Link from "next/link";
 import ImageClicked from "./ImageClicked";
+import { useState } from "react";
+import Availabilitybtn from "./admin-availablebtn";
 
-interface ProductCardProps {
+interface adminProductCardProps {
   productName: string;
   price: number;
   discountedPrice?: number;
@@ -12,7 +14,7 @@ interface ProductCardProps {
   line5?: string;
 }
 
-const ProductCard = ({
+const AdminProductCard = ({
   productName,
   price,
   discountedPrice,
@@ -21,7 +23,9 @@ const ProductCard = ({
   line3,
   line4,
   line5,
-}: ProductCardProps) => {
+}: adminProductCardProps) => {
+  const [isAvailable, setIsAvailable] = useState(true);
+
   return (
     <article className="relative bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
       <div className="flex flex-col h-full">
@@ -37,9 +41,11 @@ const ProductCard = ({
 
         {/* Product Info */}
         <div className="p-4 flex-grow">
-          <h1 className="text-lg font-bold text-gray-800 mb-1 line-clamp-1">
-            {productName}
-          </h1>
+          <Link href={`/admin-dashboard/${productName}`}>
+            <h1 className="text-lg font-bold text-gray-800 mb-1 hover:text-orange-500 transition-colors duration-300 line-clamp-1">
+              {productName}
+            </h1>
+          </Link>
 
           {/* Price */}
           <div className="flex items-center gap-2 mb-3">
@@ -69,11 +75,14 @@ const ProductCard = ({
 
         {/* Availability Toggle */}
         <div className="px-4 pb-4">
-          <AddToCartBtn />
+          <Availabilitybtn
+            isAvailable={isAvailable}
+            setIsAvailable={setIsAvailable}
+          />
         </div>
       </div>
     </article>
   );
 };
 
-export default ProductCard;
+export default AdminProductCard;

@@ -250,29 +250,6 @@ export default function RootLayout({
               <p className="text-background/70 text-sm">
                 &copy; {currentYear} Your Brand. All rights reserved.
               </p>
-
-              <div className="flex space-x-5">
-                {socialLinks.map((social) => (
-                  <Link
-                    key={social.name}
-                    href={social.url}
-                    aria-label={social.name}
-                    className="text-background/80 hover:text-[#FF6B6B] transition-colors duration-200"
-                  >
-                    <svg
-                      className="h-5 w-5"
-                      viewBox="0 0 24 24"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d={social.icon}
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </Link>
-                ))}
-              </div>
             </div>
           </div>
         </div>

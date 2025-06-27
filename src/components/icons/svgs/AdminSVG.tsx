@@ -1,6 +1,6 @@
-import React from "react";
+import { memo } from "react";
 
-const Admin = () => {
+const AdminSVG = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -25,4 +25,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default memo(AdminSVG);

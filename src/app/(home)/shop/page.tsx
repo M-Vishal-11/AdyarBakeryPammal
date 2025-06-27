@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import ProductCategory from "@/src/app/functions/productcategory";
+import ProductCategory from "@/app/functions/productcategory";
 import ExpandCollapseBtn from "./btn";
 
 export default function Page() {
@@ -12,8 +12,8 @@ export default function Page() {
       <div>
         {/* Categories */}
 
-        <ProductCategory open={expand} />
-        <ProductCategory open={expand} />
+        <ProductCategory open={expand} category="Category I" />
+        <ProductCategory open={expand} category="Category II" />
       </div>
     </div>
   );

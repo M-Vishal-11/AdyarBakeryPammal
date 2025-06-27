@@ -1,6 +1,6 @@
-import React from "react";
+import { memo } from "react";
 
-const Operator = () => {
+const ProfileiconSVG = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,4 +19,4 @@ const Operator = () => {
   );
 };
 
-export default Operator;
+export default memo(ProfileiconSVG);
