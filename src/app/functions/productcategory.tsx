@@ -62,6 +62,7 @@ export default function ProductCategory({
                 price={product.price}
                 discountedPrice={product.discountedPrice}
                 descriptions={product.descriptions}
+                isAvailable={product.available}
               />
             ))}
           </div>

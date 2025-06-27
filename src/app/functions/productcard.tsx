@@ -6,6 +6,7 @@ interface ProductCardProps {
   price: number;
   discountedPrice?: number;
   descriptions?: string[];
+  isAvailable: boolean;
 }
 
 const ProductCard = ({
@@ -13,14 +14,28 @@ const ProductCard = ({
   price,
   discountedPrice,
   descriptions,
+  isAvailable,
 }: ProductCardProps) => {
   return (
-    <article className="relative bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
-      <div className="flex flex-col h-full">
+    <article
+      className={`relative rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden ${
+        isAvailable ? "bg-[#ffebe6]" : "bg-gray-100"
+      }`}
+    >
+      {/* Out of Stock Badge - Only shown when not available */}
+      {!isAvailable && (
+        <div className="absolute top-3 right-3 bg-gray-700 text-white text-xs font-bold px-2 py-1 rounded z-10">
+          Out of Stock
+        </div>
+      )}
+
+      <div
+        className={`flex flex-col h-full ${!isAvailable ? "opacity-75" : ""}`}
+      >
         {/* Product Image */}
-        <div className="relative h-48 w-full overflow-hidden bg-gray-100">
+        <div className="relative h-48 w-full overflow-hidden bg-gray-200">
           <ImageClicked />
-          {discountedPrice && (
+          {discountedPrice && isAvailable && (
             <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
               {Math.round(((price - discountedPrice) / price) * 100)}% OFF
             </div>
@@ -29,7 +44,11 @@ const ProductCard = ({
 
         {/* Product Info */}
         <div className="p-4 flex-grow">
-          <h1 className="text-lg font-bold text-gray-800 mb-1 line-clamp-1">
+          <h1
+            className={`text-lg font-bold mb-1 line-clamp-1 ${
+              isAvailable ? "text-gray-800" : "text-gray-500"
+            }`}
+          >
             {productName}
           </h1>
 
@@ -37,32 +56,47 @@ const ProductCard = ({
           <div className="flex items-center gap-2 mb-3">
             {discountedPrice ? (
               <>
-                <span className="text-lg font-bold text-orange-500">
+                <span
+                  className={`text-lg font-bold ${
+                    isAvailable ? "text-orange-500" : "text-gray-400"
+                  }`}
+                >
                   ₹{discountedPrice}
                 </span>
-                <span className="text-sm text-gray-500 line-through">
+                <span className="text-sm text-gray-400 line-through">
                   ₹{price}
                 </span>
               </>
             ) : (
-              <span className="text-lg font-bold text-gray-800">₹{price}</span>
+              <span
+                className={`text-lg font-bold ${
+                  isAvailable ? "text-gray-800" : "text-gray-400"
+                }`}
+              >
+                ₹{price}
+              </span>
             )}
           </div>
 
           {/* Description Lines */}
-          <div className="space-y-1 text-sm text-gray-600">
+          <div className="space-y-1 text-sm">
             {descriptions &&
               descriptions.map((line, i) => (
-                <p className="line-clamp-1" key={i}>
+                <p
+                  className={`line-clamp-1 ${
+                    isAvailable ? "text-gray-600" : "text-gray-400"
+                  }`}
+                  key={i}
+                >
                   {line}
                 </p>
               ))}
           </div>
         </div>
 
-        {/* Availability Toggle */}
+        {/* Add to Cart Button */}
         <div className="px-4 pb-4">
-          <AddToCartBtn />
+          <AddToCartBtn disabled={!isAvailable} isAvailable={isAvailable} />
         </div>
       </div>
     </article>
