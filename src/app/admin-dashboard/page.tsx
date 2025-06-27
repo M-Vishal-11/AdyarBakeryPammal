@@ -1,12 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ShopStatus from "../functions/admin-ShopStatus";
 import AdminCategory from "../functions/admin-category";
 import OffersBtn from "../(home)/offers/offersBtn";
+import axios from "axios";
 
 export default function AdminDashboard() {
   const [isShopOpen, setIsShopOpen] = useState(false);
   const [expand, setExpand] = useState(true);
+
+  useEffect(() => {
+    const infoToEndPoint = async () => {
+      try {
+        const res = await axios.put("/api/shopOpenStatus/updateShopOpen", {
+          isShopOpen: isShopOpen,
+        });
+      } catch (error: any) {
+        console.error("Error sending data:", error);
+      }
+    };
+
+    infoToEndPoint();
+  }, [isShopOpen]);
 
   return (
     <div className="min-h-screen bg-[#ffebe6]">
@@ -24,6 +39,7 @@ export default function AdminDashboard() {
 
           {/* Shop Status Card */}
           <ShopStatus isShopOpen={isShopOpen} setIsShopOpen={setIsShopOpen} />
+
           <div className="mb-6 flex justify-center">
             <OffersBtn expand={expand} setExpand={setExpand} />
           </div>

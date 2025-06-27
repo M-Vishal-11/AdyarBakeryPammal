@@ -1,5 +1,6 @@
 "use client";
 import axios from "axios";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Script from "next/script";
 import toast from "react-hot-toast";
@@ -38,10 +39,28 @@ declare global {
 
 const PlaceOrderbtn = ({ payment }: PlaceOrderBtnProps) => {
   const router = useRouter();
+  const [isShopOpen, setIsShopOpen] = useState(true);
+
+  useEffect(() => {
+    const fetchShopStatus = async () => {
+      try {
+        const res = await axios.get("/api/shopOpenStatus/shopStatus");
+        setIsShopOpen(res.data.shopStatus.isOpen);
+      } catch (error: any) {
+        console.error("Error fetching shop status:", error);
+      }
+    };
+
+    fetchShopStatus();
+  }, []);
 
   const PlaceOrderBtnfn = async () => {
-    if (payment === "") {
+    if (payment == "") {
       toast.error("Please select a payment method");
+      return;
+    }
+    if (!isShopOpen) {
+      toast.error("Shop is currently closed");
       return;
     }
 
@@ -113,7 +132,7 @@ const PlaceOrderbtn = ({ payment }: PlaceOrderBtnProps) => {
         onClick={PlaceOrderBtnfn}
         className={`flex items-center justify-center 
                  ${
-                   !payment
+                   !payment || !isShopOpen
                      ? "bg-amber-300 cursor-not-allowed"
                      : "bg-amber-500 hover:bg-amber-600 active:bg-amber-600"
                  } 
@@ -121,7 +140,6 @@ const PlaceOrderbtn = ({ payment }: PlaceOrderBtnProps) => {
                  shadow-sm hover:shadow-md
                  w-full sm:w-40 h-12 text-lg rounded-lg
                  cursor-pointer active:scale-[98%] transition-all duration-200`}
-        disabled={!payment}
         aria-label="Place order"
       >
         Place Order

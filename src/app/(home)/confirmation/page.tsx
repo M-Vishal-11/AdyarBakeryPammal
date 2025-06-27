@@ -3,6 +3,7 @@ import { useState } from "react";
 import Backbtn from "./functions/backbtn";
 import PlaceOrderbtn from "./functions/placeOrderbtn";
 import InvoiceSummary from "@/components/helperFunctions/InvoiceSummary";
+import PaymentMethodSVG from "@/components/icons/svgs/PaymentMethodSVG";
 
 export default function Page() {
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -26,19 +27,7 @@ export default function Page() {
         {/* Payment Method */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-[#FFE5DC]">
           <h3 className="text-lg font-semibold mb-4 flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 mr-2 text-[#FF6B4A]"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
-              <path
-                fillRule="evenodd"
-                d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
-                clipRule="evenodd"
-              />
-            </svg>
+            <PaymentMethodSVG />
             Payment Method
           </h3>
 

@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
 
 const isOpenSchema = new mongoose.Schema({
-  isOpen: Boolean,
+  isOpen: {
+    type: Boolean,
+    default: true,
+  },
 });
 
-const isOpen = mongoose.model("isopen", isOpenSchema);
+const isOpen = mongoose.models.isopen || mongoose.model("isopen", isOpenSchema);
 
 export default isOpen;

@@ -2,15 +2,38 @@
 import { useState, useEffect } from "react";
 import ProductCategoryOffers from "./productCategoryOffers";
 import OffersBtn from "./offersBtn";
+import UserShopStatus from "@/app/functions/UserShopStatus";
+import axios from "axios";
 
 const Page = () => {
   const [expand, setExpand] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
+  const [isShopOpen, setIsShopOpen] = useState(true);
+
+  useEffect(() => {
+    const fetchShopStatus = async () => {
+      try {
+        const res = await axios.get("/api/shopOpenStatus/shopStatus");
+        setIsShopOpen(res.data.shopStatus.isOpen);
+      } catch (error: any) {
+        console.error("Error fetching shop status:", error);
+      }
+    };
+
+    fetchShopStatus();
+  }, []);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
+  if (!isShopOpen) {
+    return (
+      <>
+        <UserShopStatus />
+      </>
+    );
+  }
   return (
     <div className="px-4 pb-6 max-w-6xl mx-auto">
       {/* Header with animated gradient */}
