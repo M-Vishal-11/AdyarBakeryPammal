@@ -9,6 +9,7 @@ export async function createProduct(formData: FormData) {
   const price = Number(formData.get("price"));
   const category = formData.get("category") as string;
   const discountedPrice = Number(formData.get("discountedPrice"));
+  const offer = formData.get("offer") === "yes";
   const imageFile = formData.get("imageURL") as File;
   const descriptions = [
     formData.get("desc1"),
@@ -38,6 +39,7 @@ export async function createProduct(formData: FormData) {
     discountedPrice: discountedPrice || null,
     imageUrl,
     descriptions,
+    offer,
   };
 
   try {
@@ -46,9 +48,10 @@ export async function createProduct(formData: FormData) {
       productName,
       price,
       category,
+      discountedPrice: discountedPrice || null,
       imageUrl,
-      discountedPrice,
       descriptions,
+      offer: offer,
     });
   } catch (error: any) {
     console.log("Error: ", error);

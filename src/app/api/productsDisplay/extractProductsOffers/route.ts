@@ -8,9 +8,11 @@ export async function GET(request: NextRequest) {
     const category = searchParams.get("category");
 
     await connect();
-    const productData = await Products.find({ category }).select(
-      "-category -_id -offer"
-    );
+    const productData = await Products.find({ category })
+      .find({
+        offer: true,
+      })
+      .select("-category -_id -offer");
 
     return NextResponse.json({
       message: "Extracted Products data successfully",

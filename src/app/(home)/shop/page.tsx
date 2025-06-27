@@ -8,6 +8,7 @@ import UserShopStatus from "@/app/functions/UserShopStatus";
 export default function Page() {
   const [expand, setExpand] = useState(true);
   const [isShopOpen, setIsShopOpen] = useState(true);
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
     const fetchShopStatus = async () => {
@@ -16,10 +17,23 @@ export default function Page() {
         setIsShopOpen(res.data.shopStatus.isOpen);
       } catch (error: any) {
         console.error("Error fetching shop status:", error);
+        setIsShopOpen(true);
       }
     };
 
     fetchShopStatus();
+  }, []);
+
+  useEffect(() => {
+    const exportCategories = async () => {
+      try {
+        const res = await axios.get("/api/productsDisplay/extractCategories");
+        setCategories(res.data.categories);
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+    exportCategories();
   }, []);
 
   if (!isShopOpen) {
@@ -34,8 +48,9 @@ export default function Page() {
     <div>
       <ExpandCollapseBtn setExpand={setExpand} />
       <div>
-        <ProductCategory open={expand} category="Category I" />
-        <ProductCategory open={expand} category="Category II" />
+        {categories.map((category, i) => (
+          <ProductCategory open={expand} category={category} key={i} />
+        ))}
       </div>
     </div>
   );

@@ -29,6 +29,11 @@ const ProductSchema = new mongoose.Schema({
   descriptions: {
     type: [String],
   },
+  offer: {
+    type: Boolean,
+    index: true,
+    default: false,
+  },
 });
 
 const Products =

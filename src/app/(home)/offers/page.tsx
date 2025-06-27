@@ -1,39 +1,47 @@
 "use client";
 import { useState, useEffect } from "react";
-import ProductCategoryOffers from "./productCategoryOffers";
 import OffersBtn from "./offersBtn";
 import UserShopStatus from "@/app/functions/UserShopStatus";
 import axios from "axios";
+import ProductCategory from "@/app/functions/productcategory";
 
 const Page = () => {
   const [expand, setExpand] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
   const [isShopOpen, setIsShopOpen] = useState(true);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const exportCategories = async () => {
+      try {
+        const res = await axios.get(
+          "/api/productsDisplay/extractCategoriesOffers"
+        );
+        setCategories(res.data.categories);
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+    exportCategories();
+  }, []);
 
   useEffect(() => {
     const fetchShopStatus = async () => {
       try {
         const res = await axios.get("/api/shopOpenStatus/shopStatus");
         setIsShopOpen(res.data.shopStatus.isOpen);
-      } catch (error: any) {
+      } catch (error) {
         console.error("Error fetching shop status:", error);
+        setIsShopOpen(true);
       }
     };
 
     fetchShopStatus();
   }, []);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
   if (!isShopOpen) {
-    return (
-      <>
-        <UserShopStatus />
-      </>
-    );
+    return <UserShopStatus />;
   }
+
   return (
     <div className="px-4 pb-6 max-w-6xl mx-auto">
       {/* Header with animated gradient */}
@@ -50,17 +58,22 @@ const Page = () => {
         </p>
       </div>
 
-      {/* Expand/Collapse Button with better visual feedback */}
+      {/* Expand/Collapse Button */}
       <div className="mb-6 flex justify-center">
         <OffersBtn expand={expand} setExpand={setExpand} />
       </div>
 
-      {/* Product Categories with subtle animation */}
-      {isMounted && (
-        <div className="transition-all duration-300 ease-in-out">
-          <ProductCategoryOffers open={expand} />
-        </div>
-      )}
+      {/* Product Categories */}
+      <div className="transition-all duration-300 ease-in-out">
+        {categories.map((category, i) => (
+          <ProductCategory
+            open={expand}
+            category={category}
+            key={i}
+            offer={true}
+          />
+        ))}
+      </div>
     </div>
   );
 };

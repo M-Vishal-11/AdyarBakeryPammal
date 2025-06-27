@@ -7,6 +7,7 @@ import BackSVG from "@/components/icons/svgs/BackSVG";
 
 export default function ProductForm() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [offer, setOffer] = useState<string>("no");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -23,6 +24,7 @@ export default function ProductForm() {
 
   const handleReset = () => {
     setImagePreview(null);
+    setOffer("no");
   };
 
   return (
@@ -102,6 +104,37 @@ export default function ProductForm() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#ff8c66]"
                 placeholder="Enter discounted price"
               />
+            </div>
+
+            {/* Offer Radio Buttons */}
+            <div className="space-y-1">
+              <label className="block text-sm font-medium text-gray-700">
+                Offer *
+              </label>
+              <div className="flex items-center space-x-4">
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="offer"
+                    value="yes"
+                    checked={offer === "yes"}
+                    onChange={() => setOffer("yes")}
+                    className="text-[#ff8c66] focus:ring-[#ff8c66]"
+                  />
+                  <span className="ml-2">Yes</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    name="offer"
+                    value="no"
+                    checked={offer === "no"}
+                    onChange={() => setOffer("no")}
+                    className="text-[#ff8c66] focus:ring-[#ff8c66]"
+                  />
+                  <span className="ml-2">No</span>
+                </label>
+              </div>
             </div>
 
             {/* Image Upload */}

@@ -5,22 +5,14 @@ interface ProductCardProps {
   productName: string;
   price: number;
   discountedPrice?: number;
-  line1?: string;
-  line2?: string;
-  line3?: string;
-  line4?: string;
-  line5?: string;
+  descriptions?: string[];
 }
 
 const ProductCard = ({
   productName,
   price,
   discountedPrice,
-  line1,
-  line2,
-  line3,
-  line4,
-  line5,
+  descriptions,
 }: ProductCardProps) => {
   return (
     <article className="relative bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
@@ -59,11 +51,12 @@ const ProductCard = ({
 
           {/* Description Lines */}
           <div className="space-y-1 text-sm text-gray-600">
-            {line1 && <p className="line-clamp-1">{line1}</p>}
-            {line2 && <p className="line-clamp-1">{line2}</p>}
-            {line3 && <p className="line-clamp-1">{line3}</p>}
-            {line4 && <p className="line-clamp-1">{line4}</p>}
-            {line5 && <p className="line-clamp-1">{line5}</p>}
+            {descriptions &&
+              descriptions.map((line, i) => (
+                <p className="line-clamp-1" key={i}>
+                  {line}
+                </p>
+              ))}
           </div>
         </div>
 

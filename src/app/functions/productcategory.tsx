@@ -1,12 +1,46 @@
+"use client";
+import { useEffect, useState } from "react";
 import DropdownSVG from "../../components/icons/svgs/DropdownSVG";
 import ProductCard from "./productcard";
+import axios from "axios";
 
 interface ProductCardProps {
   open: boolean;
   category: string;
+  offer?: boolean;
 }
 
-export default function ProductCategory({ open, category }: ProductCardProps) {
+export default function ProductCategory({
+  open,
+  category,
+  offer,
+}: ProductCardProps) {
+  const [products, setProducts] = useState<any[]>([]);
+
+  if (!offer) {
+    useEffect(() => {
+      const getData = async () => {
+        const res = await axios.get("/api/productsDisplay/extractProducts", {
+          params: { category },
+        });
+        setProducts(res.data.productData);
+      };
+      getData();
+    }, []);
+  } else {
+    useEffect(() => {
+      const getData = async () => {
+        const res = await axios.get(
+          "/api/productsDisplay/extractProductsOffers",
+          {
+            params: { category },
+          }
+        );
+        setProducts(res.data.productData);
+      };
+      getData();
+    }, []);
+  }
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8 transition-all duration-300 hover:shadow-xl">
       <details className="group" open={open}>
@@ -21,18 +55,15 @@ export default function ProductCategory({ open, category }: ProductCardProps) {
 
         <div className="p-6 pt-0">
           <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <ProductCard
-              productName="Paneer Cake Word Dokf Dklfj"
-              price={100}
-              line1="Pan cake for free"
-              line2="Limited time only"
-              line3="pan cake for free"
-            />
-            <ProductCard productName="Simple Cake" price={100} />
-            <ProductCard productName="Choco Lava Cake" price={120} />
-            <ProductCard productName="Vanilla Delight" price={90} />
-            <ProductCard productName="Classic Brownie" price={80} />
-            <ProductCard productName="Blueberry Pie" price={110} />
+            {products.map((product, i) => (
+              <ProductCard
+                key={i}
+                productName={product.productName}
+                price={product.price}
+                discountedPrice={product.discountedPrice}
+                descriptions={product.descriptions}
+              />
+            ))}
           </div>
         </div>
       </details>

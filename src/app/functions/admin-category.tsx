@@ -56,7 +56,7 @@ export default function AdminCategory({
                   productName={product.productName}
                   price={product.price}
                   discountedPrice={product.discountedPrice}
-                  descriptions={product.description}
+                  descriptions={product.descriptions}
                 />
               ))}
             </div>

@@ -7,7 +7,7 @@ interface adminProductCardProps {
   productName: string;
   price: number;
   discountedPrice?: number;
-  descriptions: Array<string>;
+  descriptions?: Array<string>;
 }
 
 const AdminProductCard = ({
