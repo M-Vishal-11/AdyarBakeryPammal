@@ -1,16 +1,22 @@
 "use client";
+
+import axios from "axios";
 import { FiCheck, FiX } from "react-icons/fi";
 
 export default function Availabilitybtn({
   isAvailable,
   setIsAvailable,
+  toggleAvailability,
 }: {
   setIsAvailable: (isAvailable: boolean) => void;
   isAvailable: boolean;
+  toggleAvailability: () => void;
 }) {
   return (
     <button
-      onClick={() => setIsAvailable(!isAvailable)}
+      onClick={() => {
+        toggleAvailability();
+      }}
       className={`w-full py-2 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 ${
         isAvailable
           ? "bg-green-100 hover:bg-green-200 text-green-800"

@@ -2,12 +2,14 @@ import Link from "next/link";
 import ImageClicked from "./ImageClicked";
 import { useState } from "react";
 import Availabilitybtn from "./admin-availablebtn";
+import axios from "axios";
 
 interface adminProductCardProps {
   productName: string;
   price: number;
   discountedPrice?: number;
   descriptions?: Array<string>;
+  available: boolean;
 }
 
 const AdminProductCard = ({
@@ -15,8 +17,26 @@ const AdminProductCard = ({
   price,
   discountedPrice,
   descriptions,
+  available,
 }: adminProductCardProps) => {
-  const [isAvailable, setIsAvailable] = useState(true);
+  const [isAvailable, setIsAvailable] = useState(available);
+
+  const toggleAvailability = async () => {
+    const newAvailability = !isAvailable;
+    setIsAvailable(newAvailability);
+
+    try {
+      const res = await axios.put("/api/admin/toggleAvailability", {
+        productName,
+        available: newAvailability,
+      });
+      console.log("Availability updated:", res.data);
+    } catch (err) {
+      console.error("Error toggling availability:", err);
+
+      setIsAvailable(isAvailable);
+    }
+  };
 
   return (
     <article className="relative bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
@@ -73,6 +93,7 @@ const AdminProductCard = ({
           <Availabilitybtn
             isAvailable={isAvailable}
             setIsAvailable={setIsAvailable}
+            toggleAvailability={toggleAvailability}
           />
         </div>
       </div>

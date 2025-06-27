@@ -18,10 +18,14 @@ export default function AdminCategory({
 
   useEffect(() => {
     const getData = async () => {
-      const res = await axios.get("/api/productsDisplay/extractProducts", {
-        params: { category },
-      });
-      setProducts(res.data.productData);
+      try {
+        const res = await axios.get("/api/productsDisplay/extractProducts", {
+          params: { category },
+        });
+        setProducts(res.data.productData);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getData();
   }, []);
@@ -57,6 +61,7 @@ export default function AdminCategory({
                   price={product.price}
                   discountedPrice={product.discountedPrice}
                   descriptions={product.descriptions}
+                  available={product.available}
                 />
               ))}
             </div>
