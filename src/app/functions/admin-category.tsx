@@ -62,6 +62,7 @@ export default function AdminCategory({
                   discountedPrice={product.discountedPrice}
                   descriptions={product.descriptions}
                   available={product.available}
+                  imageURL={product.imageUrl}
                 />
               ))}
             </div>

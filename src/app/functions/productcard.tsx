@@ -7,6 +7,7 @@ interface ProductCardProps {
   discountedPrice?: number;
   descriptions?: string[];
   isAvailable: boolean;
+  imageURL: string;
 }
 
 const ProductCard = ({
@@ -15,6 +16,7 @@ const ProductCard = ({
   discountedPrice,
   descriptions,
   isAvailable,
+  imageURL,
 }: ProductCardProps) => {
   return (
     <article
@@ -34,7 +36,7 @@ const ProductCard = ({
       >
         {/* Product Image */}
         <div className="relative h-48 w-full overflow-hidden bg-gray-200">
-          <ImageClicked />
+          {imageURL && <ImageClicked imageURL={imageURL} />}
           {discountedPrice && isAvailable && (
             <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
               {Math.round(((price - discountedPrice) / price) * 100)}% OFF

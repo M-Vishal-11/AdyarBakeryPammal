@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import XSVG from "../../components/icons/svgs/XSVG";
 
-const ImageClicked = () => {
+const ImageClicked = ({ imageURL }: { imageURL: string }) => {
   const [isClicked, setIsClicked] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -24,7 +24,7 @@ const ImageClicked = () => {
   return (
     <>
       <Image
-        src="/imgs/img.svg"
+        src={imageURL}
         width={96}
         height={96}
         alt="Click to enlarge"
@@ -50,7 +50,7 @@ const ImageClicked = () => {
 
             <div className="w-full h-full flex justify-center">
               <Image
-                src="/imgs/img.svg"
+                src={imageURL}
                 width={800}
                 height={800}
                 alt="Enlarged view"

@@ -5,15 +5,10 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
-    const category = searchParams.get("category");
+    const productName = searchParams.get("productName");
 
     await connect();
-    const productData = await Products.find({ category })
-      .find({
-        offer: true,
-      })
-      .sort({ available: -1 })
-      .select("-category -_id -offer");
+    const productData = await Products.find({ productName }).select("-_id");
 
     return NextResponse.json({
       message: "Extracted Products data successfully",

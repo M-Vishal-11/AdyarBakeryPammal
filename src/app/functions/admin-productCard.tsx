@@ -10,6 +10,7 @@ interface adminProductCardProps {
   discountedPrice?: number;
   descriptions?: Array<string>;
   available: boolean;
+  imageURL: string;
 }
 
 const AdminProductCard = ({
@@ -18,6 +19,7 @@ const AdminProductCard = ({
   discountedPrice,
   descriptions,
   available,
+  imageURL,
 }: adminProductCardProps) => {
   const [isAvailable, setIsAvailable] = useState(available);
 
@@ -43,7 +45,8 @@ const AdminProductCard = ({
       <div className="flex flex-col h-full">
         {/* Product Image */}
         <div className="relative h-48 w-full overflow-hidden bg-gray-100">
-          <ImageClicked />
+          {imageURL && <ImageClicked imageURL={imageURL} />}
+
           {discountedPrice && (
             <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
               {Math.round(((price - discountedPrice) / price) * 100)}% OFF

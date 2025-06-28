@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
         hostname: "img.clerk.com",
       },
     ],
+    domains: ["res.cloudinary.com"],
   },
 };
 
