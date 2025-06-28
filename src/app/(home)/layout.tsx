@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 // import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import axios from "axios";
 
 // Lazy load components that aren't immediately needed
 const NavbarPhone = dynamic(() => import("../functions/NavbarPhone"), {
@@ -83,15 +82,6 @@ export default function RootLayout({
   // const router = useRouter();
   const [isClient, setIsClient] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [cartLength, setCartLength] = useState<number | undefined>();
-
-  useEffect(() => {
-    const getLength = async () => {
-      const res = await axios.get("/api/cart/getCookies");
-      setCartLength(Object.keys(res.data.cartCookies).length);
-    };
-    getLength();
-  }, []);
 
   useEffect(() => {
     setIsClient(true);
@@ -153,9 +143,6 @@ export default function RootLayout({
             >
               <CartIcon />
               <span className="font-medium text-lg">Cart</span>
-              <span className="absolute -top-1 -right-2 bg-[#FF6B6B] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                {cartLength}
-              </span>
             </Link>
           </div>
         </div>

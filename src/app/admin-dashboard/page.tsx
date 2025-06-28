@@ -50,13 +50,7 @@ export default function AdminDashboard() {
     extractCategories();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white bg-opacity-80">
-        <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-gray-200 border-t-blue-500"></div>
-      </div>
-    );
-  }
+  if (loading) return <p className="text-center">Loading...</p>;
 
   return (
     <div className="min-h-screen bg-[#ffebe6]">
