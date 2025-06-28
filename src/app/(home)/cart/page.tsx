@@ -1,9 +1,37 @@
+"use client";
 import ProductCard from "@/app/functions/productcard";
 import BuyNowlg from "./functions/buynowlg";
 import BuyNowPhone from "./functions/buynowphone";
 import InvoiceSummary from "@/components/helperFunctions/InvoiceSummary";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Page() {
+  const [products, setProducts] = useState<any[]>([]);
+  const [cartData, setCartData] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await axios.get("/api/cart/getCookies");
+        const cart = res.data.cartCookies;
+        setCartData(cart);
+        const productNames = Object.keys(cart);
+
+        const res2 = await axios.post(
+          "/api/productsDisplay/extractProductsCart",
+          {
+            productNames,
+          }
+        );
+        setProducts(res2.data.productData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getData();
+  }, []);
+
   return (
     <div className="p-4 lg:p-8 bg-[#FFF9F7] min-h-screen">
       <div className="max-w-6xl mx-auto">
@@ -16,17 +44,18 @@ export default function Page() {
           {/* Left: Product List + Cart Summary */}
           <div>
             <div className="flex flex-col gap-5">
-              <ProductCard
-                productName="Paneer Cake Deluxe"
-                price={100}
-                discountedPrice={20}
-                line1="Pan cake for free"
-                line2="Extra Cheese"
-                line3="Limited Edition"
-              />
-              <ProductCard productName="Choco Muffin" price={90} />
-              <ProductCard productName="Vanilla Bliss" price={120} />
-              <ProductCard productName="Red Velvet Dream" price={130} />
+              {products.map((product, i) => (
+                <ProductCard
+                  key={i}
+                  productName={product.productName}
+                  price={product.price}
+                  discountedPrice={product.discountedPrice}
+                  descriptions={product.descriptions}
+                  isAvailable={product.available}
+                  imageURL={product.imageUrl}
+                  qnty={cartData[product.productName] ?? 0}
+                />
+              ))}
             </div>
 
             {/* Cart Total */}

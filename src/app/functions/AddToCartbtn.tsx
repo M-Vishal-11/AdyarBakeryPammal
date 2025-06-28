@@ -1,16 +1,27 @@
 "use client";
+import axios from "axios";
 import { useState } from "react";
 
 export default function AddToCartBtn({
   disabled,
   isAvailable,
+  productName,
+  userQnty,
 }: {
   disabled: boolean;
   isAvailable: boolean;
+  productName: string;
+  userQnty?: number;
 }) {
-  const [qnty, setQnty] = useState(0);
+  const [qnty, setQnty] = useState(userQnty ? userQnty : 0);
 
-  // Base button classes
+  const updateQnty = async (newQnty: number) => {
+    const res = await axios.post("/api/cart/postCookies", {
+      productName,
+      qnty: newQnty,
+    });
+  };
+
   const baseClasses = `absolute bottom-1 right-2 px-3 py-2 text-white w-28 h-10 text-sm font-semibold rounded-full shadow-md 
     active:scale-95 transition-all duration-200 cursor-default
     xs:w-24 xs:h-9 xs:text-xs
@@ -34,7 +45,11 @@ export default function AddToCartBtn({
       {qnty === 0 ? (
         <button
           disabled={disabled}
-          onClick={() => setQnty(qnty + 1)}
+          onClick={() => {
+            const newQnty = qnty + 1;
+            setQnty(newQnty);
+            updateQnty(newQnty);
+          }}
           className={`${baseClasses} bg-gradient-to-r from-gray-500 to-gray-600 
           hover:shadow-lg hover:brightness-110 cursor-pointer`}
           aria-label="Add to cart"
@@ -52,7 +67,9 @@ export default function AddToCartBtn({
           <span
             onClick={(e) => {
               e.stopPropagation();
-              setQnty((prev) => Math.max(prev - 1, 0));
+              const newQnty = Math.max(qnty - 1, 0);
+              setQnty(newQnty);
+              updateQnty(newQnty);
             }}
             className="text-xl w-1/3 grow text-left flex items-center justify-start hover:brightness-110
             xs:text-lg
@@ -73,7 +90,9 @@ export default function AddToCartBtn({
           <span
             onClick={(e) => {
               e.stopPropagation();
-              setQnty(qnty + 1);
+              const newQnty = qnty + 1;
+              setQnty(newQnty);
+              updateQnty(newQnty);
             }}
             className="text-xl w-1/3 grow text-right flex items-center justify-end hover:brightness-110
             xs:text-lg

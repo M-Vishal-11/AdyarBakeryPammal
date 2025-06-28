@@ -8,6 +8,7 @@ interface ProductCardProps {
   descriptions?: string[];
   isAvailable: boolean;
   imageURL: string;
+  qnty?: number;
 }
 
 const ProductCard = ({
@@ -17,6 +18,7 @@ const ProductCard = ({
   descriptions,
   isAvailable,
   imageURL,
+  qnty,
 }: ProductCardProps) => {
   return (
     <article
@@ -98,7 +100,12 @@ const ProductCard = ({
 
         {/* Add to Cart Button */}
         <div className="px-4 pb-4">
-          <AddToCartBtn disabled={!isAvailable} isAvailable={isAvailable} />
+          <AddToCartBtn
+            disabled={!isAvailable}
+            isAvailable={isAvailable}
+            productName={productName}
+            userQnty={qnty}
+          />
         </div>
       </div>
     </article>
