@@ -8,11 +8,12 @@ import axios from "axios";
 
 export default function Page() {
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [cartData, setCartData] = useState<any>();
 
   useEffect(() => {
     const getData = async () => {
       const res = await axios.get("/api/cart/invoiceMaker");
-      console.log(res);
+      setCartData(res.data.invoice);
     };
     getData();
   }, []);
@@ -31,7 +32,16 @@ export default function Page() {
         </div>
 
         {/* Invoice */}
-        <InvoiceSummary />
+        <InvoiceSummary
+          cartTotal={cartData?.CartTotal ?? 0}
+          discount={cartData?.discountedPrice ?? 0}
+          delivery={cartData?.delivery ?? 0}
+          total={
+            (cartData?.CartTotal ?? 0) -
+            (cartData?.discountedPrice ?? 0) +
+            (cartData?.delivery ?? 0)
+          }
+        />
 
         {/* Payment Method */}
         <div className="bg-white rounded-xl shadow-sm p-6 border border-[#FFE5DC]">

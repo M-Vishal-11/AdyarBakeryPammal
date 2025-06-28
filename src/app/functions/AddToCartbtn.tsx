@@ -7,13 +7,11 @@ export default function AddToCartBtn({
   isAvailable,
   productName,
   userQnty,
-  setChangeFromCart,
 }: {
   disabled: boolean;
   isAvailable: boolean;
   productName: string;
   userQnty?: number;
-  setChangeFromCart?: (value: number) => void;
 }) {
   const [qnty, setQnty] = useState(userQnty ? userQnty : 0);
 
@@ -51,7 +49,6 @@ export default function AddToCartBtn({
             const newQnty = qnty + 1;
             setQnty(newQnty);
             updateQnty(newQnty);
-            setChangeFromCart?.(Date.now());
           }}
           className={`${baseClasses} bg-gradient-to-r from-gray-500 to-gray-600 
           hover:shadow-lg hover:brightness-110 cursor-pointer`}
@@ -73,7 +70,6 @@ export default function AddToCartBtn({
               const newQnty = Math.max(qnty - 1, 0);
               setQnty(newQnty);
               updateQnty(newQnty);
-              setChangeFromCart?.(Date.now());
             }}
             className="text-xl w-1/3 grow text-left flex items-center justify-start hover:brightness-110
             xs:text-lg
@@ -97,7 +93,6 @@ export default function AddToCartBtn({
               const newQnty = qnty + 1;
               setQnty(newQnty);
               updateQnty(newQnty);
-              setChangeFromCart?.(Date.now());
             }}
             className="text-xl w-1/3 grow text-right flex items-center justify-end hover:brightness-110
             xs:text-lg
