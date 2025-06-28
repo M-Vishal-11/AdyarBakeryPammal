@@ -12,6 +12,7 @@ export default function Page() {
   const [cartTotal, setCartTotal] = useState<number | null>(0);
   const [discount, setDiscount] = useState<number | null>(0);
   const [delivery, setDelivery] = useState<number | null>(1);
+  const [change, setChange] = useState<number | null>(0);
 
   useEffect(() => {
     const getData = async () => {
@@ -56,7 +57,11 @@ export default function Page() {
       }
     };
     getData();
-  }, []);
+  }, [change]);
+
+  useEffect(() => {
+    console.log(change);
+  }, [change]);
 
   return (
     <div className="p-4 lg:p-8 bg-[#FFF9F7] min-h-screen">
@@ -80,6 +85,7 @@ export default function Page() {
                   isAvailable={product.available}
                   imageURL={product.imageUrl}
                   qnty={cartData[product.productName] ?? 0}
+                  setChangeFromCart={setChange}
                 />
               ))}
             </div>
@@ -95,7 +101,7 @@ export default function Page() {
 
           {/* Right: Buy & Invoice */}
           <div className="lg:border-l-2 border-[#E8E8E8] lg:pl-8 mt-8 lg:mt-0 flex flex-col gap-6">
-            <BuyNowlg />
+            <BuyNowlg cartData={cartData} />
 
             <InvoiceSummary
               cartTotal={cartTotal ?? 0}
@@ -104,7 +110,7 @@ export default function Page() {
               total={(cartTotal ?? 0) - (discount ?? 0) + (delivery ?? 0)}
             />
 
-            <BuyNowPhone />
+            <BuyNowPhone cartData={cartData} />
           </div>
         </div>
       </div>

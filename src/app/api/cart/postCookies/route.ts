@@ -14,8 +14,6 @@ export async function POST(request: NextRequest) {
 
     res.cookies.set("bakeryCart", cart);
 
-    console.log(res.cookies.get("bakeryCart"));
-
     return res;
   }
   cart[productName] = qnty;
@@ -23,8 +21,6 @@ export async function POST(request: NextRequest) {
   cart = JSON.stringify(cart);
 
   res.cookies.set("bakeryCart", cart);
-
-  console.log(res.cookies.get("bakeryCart"));
 
   return res;
 }

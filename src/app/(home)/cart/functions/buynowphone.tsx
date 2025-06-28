@@ -1,19 +1,26 @@
 "use client";
 import { useRouter } from "next/navigation";
 
-const BuyNowPhone = () => {
+const BuyNowPhone = ({ cartData }: { cartData: { [key: string]: number } }) => {
   const router = useRouter();
+  const isCartEmpty = Object.keys(cartData).length <= 0;
+
   return (
     <button
       onClick={() => {
-        router.push("/address");
+        if (!isCartEmpty) router.push("/address");
       }}
-      className="inline-block lg:hidden bg-amber-500 hover:bg-amber-600 active:bg-amber-600 text-white
-      shadow-md hover:shadow-lg
-      text-lg w-30 rounded-xl mb-5 p-2 ml-auto mt-3 mr-2 cursor-pointer 
-      active:scale-90 transition-transform duration-200"
+      disabled={isCartEmpty}
+      className={`inline-block lg:hidden text-white shadow-md text-lg w-30 rounded-xl mb-5 p-2 ml-auto mt-3 mr-2 
+        transition-all duration-200 ${
+          isCartEmpty
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-amber-500 hover:bg-amber-600 active:bg-amber-600 hover:shadow-lg active:scale-90 cursor-pointer"
+        }`}
+      aria-disabled={isCartEmpty}
+      title={isCartEmpty ? "Your cart is empty" : "Proceed to checkout"}
     >
-      Buy Now
+      {isCartEmpty ? "Cart Empty" : "Buy Now"}
     </button>
   );
 };

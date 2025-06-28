@@ -1,12 +1,21 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Backbtn from "./functions/backbtn";
 import PlaceOrderbtn from "./functions/placeOrderbtn";
 import InvoiceSummary from "@/components/helperFunctions/InvoiceSummary";
 import PaymentMethodSVG from "@/components/icons/svgs/PaymentMethodSVG";
+import axios from "axios";
 
 export default function Page() {
   const [paymentMethod, setPaymentMethod] = useState("");
+
+  useEffect(() => {
+    const getData = async () => {
+      const res = await axios.get("/api/cart/invoiceMaker");
+      console.log(res);
+    };
+    getData();
+  }, []);
 
   return (
     <div className="bg-[#FFF9F7] min-h-screen p-4 lg:p-8 text-gray-800">

@@ -76,6 +76,7 @@ export default function Page() {
                 className="w-full bg-white text-gray-800 border border-[#ffb8a1] rounded-lg px-4 py-2 
         focus:outline-none focus:border-[#ff8a65] focus:ring-2 focus:ring-[#ffccbc] 
         transition duration-200 placeholder-[#aaa]"
+                required
               />
             </div>
 
@@ -90,6 +91,7 @@ export default function Page() {
                 className="w-full bg-white text-gray-800 border border-[#ffb8a1] rounded-lg px-4 py-2 
         focus:outline-none focus:border-[#ff8a65] focus:ring-2 focus:ring-[#ffccbc] 
         transition duration-200 placeholder-[#aaa]"
+                required
               />
             </div>
 
@@ -104,6 +106,7 @@ export default function Page() {
                 className="w-full bg-white text-gray-800 border border-[#ffb8a1] rounded-lg px-4 py-2 
         focus:outline-none focus:border-[#ff8a65] focus:ring-2 focus:ring-[#ffccbc] 
         transition duration-200 placeholder-[#aaa]"
+                required
               />
             </div>
 
@@ -118,6 +121,7 @@ export default function Page() {
                 className="w-full bg-white text-gray-800 border border-[#ffb8a1] rounded-lg px-4 py-2 
         focus:outline-none focus:border-[#ff8a65] focus:ring-2 focus:ring-[#ffccbc] 
         transition duration-200 placeholder-[#aaa]"
+                required
               />
             </div>
 
@@ -132,6 +136,7 @@ export default function Page() {
                 className="w-full bg-white text-gray-800 border border-[#ffb8a1] rounded-lg px-4 py-2 
         focus:outline-none focus:border-[#ff8a65] focus:ring-2 focus:ring-[#ffccbc] 
         transition duration-200 placeholder-[#aaa]"
+                required
               />
             </div>
 

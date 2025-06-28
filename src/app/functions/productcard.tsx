@@ -9,6 +9,7 @@ interface ProductCardProps {
   isAvailable: boolean;
   imageURL: string;
   qnty?: number;
+  setChangeFromCart?: (value: number) => void;
 }
 
 const ProductCard = ({
@@ -19,6 +20,7 @@ const ProductCard = ({
   isAvailable,
   imageURL,
   qnty,
+  setChangeFromCart,
 }: ProductCardProps) => {
   return (
     <article
@@ -105,6 +107,7 @@ const ProductCard = ({
             isAvailable={isAvailable}
             productName={productName}
             userQnty={qnty}
+            setChangeFromCart={setChangeFromCart}
           />
         </div>
       </div>
