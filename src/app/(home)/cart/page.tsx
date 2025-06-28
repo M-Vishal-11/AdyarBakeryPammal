@@ -9,6 +9,9 @@ import axios from "axios";
 export default function Page() {
   const [products, setProducts] = useState<any[]>([]);
   const [cartData, setCartData] = useState<Record<string, number>>({});
+  const [cartTotal, setCartTotal] = useState<number | null>(0);
+  const [discount, setDiscount] = useState<number | null>(0);
+  const [delivery, setDelivery] = useState<number | null>(1);
 
   useEffect(() => {
     const getData = async () => {
@@ -16,15 +19,38 @@ export default function Page() {
         const res = await axios.get("/api/cart/getCookies");
         const cart = res.data.cartCookies;
         setCartData(cart);
+
         const productNames = Object.keys(cart);
 
+        // 2. Get product info
         const res2 = await axios.post(
           "/api/productsDisplay/extractProductsCart",
-          {
-            productNames,
-          }
+          { productNames }
         );
-        setProducts(res2.data.productData);
+        const productList = res2.data.productData;
+        setProducts(productList);
+
+        // 3. Calculate totals
+        let newTotal = 0;
+        let newDiscount = 0;
+
+        productList.forEach((product: any) => {
+          const quantity = cart[product.productName] ?? 0;
+          const itemTotal = product.price * quantity;
+          newTotal += itemTotal;
+
+          if (product.discountedPrice) {
+            const discountedTotal = product.discountedPrice * quantity;
+            newDiscount += itemTotal - discountedTotal;
+          }
+        });
+
+        setCartTotal(newTotal);
+        setDiscount(newDiscount);
+
+        // 4. Get delivery fee
+        const res3 = await axios.get("/api/admin/getDelivery");
+        setDelivery(res3.data.data[0]?.delivery ?? 0);
       } catch (error) {
         console.log(error);
       }
@@ -61,7 +87,7 @@ export default function Page() {
             {/* Cart Total */}
             <div className="mt-8 rounded-xl bg-white border border-[#FFD5C8] text-lg font-semibold flex justify-between px-6 py-4 shadow-sm hover:shadow-md transition-shadow">
               <span className="text-gray-700">Cart Total:</span>
-              <span className="text-[#FF6B4A]">₹150</span>
+              <span className="text-[#FF6B4A]">₹{cartTotal ?? 0}</span>
             </div>
 
             <hr className="my-6 border-t border-[#E8E8E8]" />
@@ -71,7 +97,12 @@ export default function Page() {
           <div className="lg:border-l-2 border-[#E8E8E8] lg:pl-8 mt-8 lg:mt-0 flex flex-col gap-6">
             <BuyNowlg />
 
-            <InvoiceSummary />
+            <InvoiceSummary
+              cartTotal={cartTotal ?? 0}
+              delivery={delivery ?? 1}
+              discount={discount ?? 0}
+              total={(cartTotal ?? 0) - (discount ?? 0) + (delivery ?? 0)}
+            />
 
             <BuyNowPhone />
           </div>

@@ -11,7 +11,9 @@ export default function ProductForm() {
   const categoryParams = searchParams.get("category");
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [offer, setOffer] = useState<string>("no");
-  const [category, setCategory] = useState(categoryParams);
+  const [category, setCategory] = useState<string | null>(
+    categoryParams ?? null
+  );
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
