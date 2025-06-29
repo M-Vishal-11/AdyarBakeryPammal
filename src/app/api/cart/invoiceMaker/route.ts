@@ -4,7 +4,7 @@ import Products from "@/lib/products";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const res = NextResponse.json({ message: "cookies sent successfully" });
+  NextResponse.json({ message: "cookies sent successfully" });
 
   let cart: { [key: string]: number } = {};
 

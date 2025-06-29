@@ -30,7 +30,7 @@ const OrderRejectedPage = () => {
             <div className="mb-6">
               <DangerSVG />
               <p className="text-gray-600 mb-2">
-                We're sorry, your order couldn't be processed.
+                We&apos;re sorry, your order couldn&apos;t be processed.
               </p>
               <p className="text-gray-600">
                 This might be due to product availability.

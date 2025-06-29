@@ -6,7 +6,7 @@ const DeliveryAmountInput = () => {
   const [deliveryFee, setDeliveryFee] = useState<number | null>(0);
 
   const changeDeliveryAmt = async () => {
-    const res = await axios.post("/api/admin/updateDelivery", { deliveryFee });
+    await axios.post("/api/admin/updateDelivery", { deliveryFee });
   };
 
   useEffect(() => {

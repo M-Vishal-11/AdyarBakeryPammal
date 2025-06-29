@@ -15,7 +15,7 @@ export async function handleForm(formData: FormData) {
 
   await connect();
 
-  const data = await Users.findOneAndUpdate(
+  await Users.findOneAndUpdate(
     { userId: userID },
     {
       userId: userID,

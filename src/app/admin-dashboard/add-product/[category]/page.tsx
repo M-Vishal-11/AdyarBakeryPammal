@@ -4,16 +4,16 @@ import { createProduct } from "@/app/api/admin/addProduct/actions";
 import { useState } from "react";
 import Link from "next/link";
 import BackSVG from "@/components/icons/svgs/BackSVG";
-import { useSearchParams } from "next/navigation";
+import Image from "next/image";
+import { useParams } from "next/navigation";
 
 export default function ProductForm() {
-  const searchParams = useSearchParams();
-  const categoryParams = searchParams.get("category");
+  const params = useParams();
+  const categoryParams = params?.category as string;
+
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [offer, setOffer] = useState<string>("no");
-  const [category, setCategory] = useState<string | null>(
-    categoryParams ?? null
-  );
+  const [category, setCategory] = useState<string>(categoryParams);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -165,7 +165,7 @@ export default function ProductForm() {
                     Image Preview:
                   </h3>
                   <div className="flex justify-center">
-                    <img
+                    <Image
                       src={imagePreview}
                       alt="Preview"
                       className="max-w-full h-auto max-h-60 rounded-md border border-gray-200 object-contain"

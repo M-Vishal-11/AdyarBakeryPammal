@@ -5,18 +5,33 @@ import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import axios from "axios";
 
+// ✅ Types for order and items
+type OrderItem = {
+  productName: string;
+  qnty: number;
+  price?: number;
+  discountedPrice?: number;
+};
+
+type Order = {
+  date: string;
+  orders: OrderItem[];
+  totalAmount: number;
+  status: string;
+};
+
 export default function OrderDetails() {
   const { user } = useUser();
   const userId = user?.id;
 
-  const [order, setOrder] = useState<any | null>(null);
+  const [order, setOrder] = useState<Order | null>(null);
 
   useEffect(() => {
     if (!userId) return;
 
     const getData = async () => {
       const res = await axios.post("/api/orderStuff/getOrders", { userId });
-      let orderData = res.data.order;
+      const orderData = res.data.order;
 
       if (orderData?.orders && typeof orderData.orders === "string") {
         orderData.orders = JSON.parse(orderData.orders);
@@ -93,7 +108,7 @@ export default function OrderDetails() {
             {/* Order items */}
             <div className="space-y-3 mb-4">
               <h3 className="text-sm font-medium text-gray-500 mb-2">ITEMS</h3>
-              {order.orders.map((item: any, index: number) => (
+              {order.orders.map((item: OrderItem, index: number) => (
                 <div key={index} className="flex justify-between items-center">
                   <div className="flex items-center">
                     <span className="w-2 h-2 rounded-full bg-[#FF6B4A] mr-3"></span>
@@ -102,7 +117,7 @@ export default function OrderDetails() {
                     </p>
                   </div>
                   <p className="text-gray-800 font-medium">
-                    ₹{(item.discountedPrice || item.price) * item.qnty}
+                    ₹{(item.discountedPrice || item.price || 0) * item.qnty}
                   </p>
                 </div>
               ))}

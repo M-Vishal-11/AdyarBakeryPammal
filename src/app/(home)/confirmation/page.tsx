@@ -6,8 +6,14 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 
+type Invoice = {
+  CartTotal: number;
+  discountedPrice?: number | undefined;
+  delivery: number;
+};
+
 export default function Confirmation() {
-  const [invoice, setInvoice] = useState<any>();
+  const [invoice, setInvoice] = useState<Invoice | null>();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { user } = useUser();
@@ -47,7 +53,7 @@ export default function Confirmation() {
           delivery={invoice?.delivery ?? 0}
           total={
             (invoice?.CartTotal ?? 0) -
-            invoice?.discountedPrice +
+            (invoice?.discountedPrice ?? 0) +
             (invoice?.delivery ?? 0)
           }
         />

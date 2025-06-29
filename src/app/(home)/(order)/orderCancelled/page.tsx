@@ -31,7 +31,7 @@ const OrderCancelledPage = () => {
             <div className="mb-6">
               <SadfaceSVG />
               <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                We're Sorry
+                We&apos;re Sorry
               </h2>
               <p className="text-gray-600">
                 Your order has been successfully cancelled. We apologize for any

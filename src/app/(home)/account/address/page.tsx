@@ -1,14 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import Prebtn from "./functions/prebtn";
-import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { handleForm } from "@/app/api/users/postAddress/action";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 export default function Page() {
-  const router = useRouter();
   const { user } = useUser();
   const userID = user?.id;
 

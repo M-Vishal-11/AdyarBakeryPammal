@@ -39,7 +39,7 @@ const WaitingPage = () => {
     const channel = pusher.subscribe("customer");
     const eventName = userId;
 
-    const handler = (data: any) => {
+    const handler = () => {
       router.push("/orderAccepted");
     };
 
@@ -49,7 +49,7 @@ const WaitingPage = () => {
       channel.unbind(eventName, handler);
       pusher.unsubscribe("customer");
     };
-  }, [userId]);
+  }, [userId, router]);
 
   // Animate progress bar with easing
   useEffect(() => {

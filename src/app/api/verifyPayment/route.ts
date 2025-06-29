@@ -52,11 +52,16 @@ export async function POST(request: NextRequest) {
       { message: "Payment verified successfully", success: true },
       { status: 200 }
     );
-  } catch (error: any) {
-    console.error("Payment verification error:", error);
-    return NextResponse.json(
-      { message: "Internal server error", error: error.message || error },
-      { status: 500 }
-    );
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error:", error.message);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    } else {
+      console.error("Unexpected error:", error);
+      return NextResponse.json(
+        { error: "An unknown error occurred" },
+        { status: 500 }
+      );
+    }
   }
 }

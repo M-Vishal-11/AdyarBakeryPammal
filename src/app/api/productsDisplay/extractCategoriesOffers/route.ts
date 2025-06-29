@@ -17,8 +17,16 @@ export async function GET() {
       success: true,
       categories,
     });
-  } catch (error: any) {
-    console.log(error);
-    return NextResponse.json({ error: error });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error:", error.message);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    } else {
+      console.error("Unexpected error:", error);
+      return NextResponse.json(
+        { error: "An unknown error occurred" },
+        { status: 500 }
+      );
+    }
   }
 }

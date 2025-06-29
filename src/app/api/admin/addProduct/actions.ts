@@ -53,8 +53,12 @@ export async function createProduct(formData: FormData) {
       descriptions,
       offer: offer,
     });
-  } catch (error: any) {
-    console.log("Error: ", error);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.log("Error:", error.message);
+    } else {
+      console.log("Unexpected error:", error);
+    }
   }
 
   return { success: true, product };

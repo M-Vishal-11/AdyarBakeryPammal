@@ -17,8 +17,12 @@ const Page = () => {
           "/api/productsDisplay/extractCategoriesOffers"
         );
         setCategories(res.data.categories);
-      } catch (error: any) {
-        console.log(error);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("Error:", error.message);
+        } else {
+          console.error("Unknown error:", error);
+        }
       }
     };
     exportCategories();

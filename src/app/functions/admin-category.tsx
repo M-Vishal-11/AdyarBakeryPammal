@@ -10,11 +10,20 @@ interface AdminCategoryProps {
   expand: boolean;
 }
 
+interface Product {
+  productName: string;
+  price: number;
+  discountedPrice?: number;
+  descriptions: string[];
+  available: boolean;
+  imageUrl: string;
+}
+
 export default function AdminCategory({
   category,
   expand,
 }: AdminCategoryProps) {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     const getData = async () => {
@@ -28,7 +37,7 @@ export default function AdminCategory({
       }
     };
     getData();
-  }, []);
+  }, [category]);
 
   return (
     <>
@@ -42,7 +51,7 @@ export default function AdminCategory({
             </div>
             <div className="flex items-center gap-3">
               <Link
-                href={`/admin-dashboard/add-product?category=${category}`}
+                href={`/admin-dashboard/add-product/${category}`}
                 className="p-2 bg-green-500 hover:bg-green-600 rounded-full text-white transition-colors duration-300 flex items-center justify-center"
                 title="Add Product"
               >

@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import BackSVG from "@/components/icons/svgs/BackSVG";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { editProduct } from "@/app/api/admin/editProduct/actions";
+import Image from "next/image";
 
 export default function UpdateProduct() {
-  const searchParams = useSearchParams();
+  const params = useParams();
+  const productNameparams = params.productName as string;
   const router = useRouter();
-  const productNameparams = searchParams.get("productName");
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [deleteImageConfirmation, setDeleteImageConfirmation] = useState(false);
@@ -255,7 +256,7 @@ export default function UpdateProduct() {
                     Current Product Image
                   </h3>
                   <div className="flex justify-center">
-                    <img
+                    <Image
                       src={imageUrl}
                       alt="Preview"
                       className="max-w-full h-auto max-h-60 rounded-md border border-gray-200 object-contain"
@@ -269,7 +270,7 @@ export default function UpdateProduct() {
                     New Image Preview
                   </h3>
                   <div className="flex justify-center">
-                    <img
+                    <Image
                       src={imagePreview}
                       alt="Preview"
                       className="max-w-full h-auto max-h-60 rounded-md border border-gray-200 object-contain"

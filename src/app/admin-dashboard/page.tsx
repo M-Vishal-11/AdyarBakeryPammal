@@ -18,8 +18,12 @@ export default function AdminDashboard() {
       try {
         const res = await axios.get("/api/shopOpenStatus/shopStatus");
         setIsShopOpen(res.data.shopStatus.isOpen);
-      } catch (error: any) {
-        console.error("Error fetching shop status:", error);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("Error:", error.message);
+        } else {
+          console.error("Unknown error:", error);
+        }
       } finally {
         setLoading(false);
       }
@@ -34,8 +38,12 @@ export default function AdminDashboard() {
         await axios.put("/api/shopOpenStatus/updateShopOpen", {
           isShopOpen: isShopOpen,
         });
-      } catch (error: any) {
-        console.error("Error sending data:", error);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("Error:", error.message);
+        } else {
+          console.error("Unknown error:", error);
+        }
       }
     };
 

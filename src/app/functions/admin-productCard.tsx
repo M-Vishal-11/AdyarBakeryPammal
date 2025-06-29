@@ -56,9 +56,7 @@ const AdminProductCard = ({
 
         {/* Product Info */}
         <div className="p-4 flex-grow">
-          <Link
-            href={`/admin-dashboard/productDetails?productName=${productName}`}
-          >
+          <Link href={`/admin-dashboard/productDetails/${productName}`}>
             <h1 className="text-lg font-bold text-gray-800 mb-1 hover:text-orange-500 active:text-orange-500 transition-colors duration-300 line-clamp-1">
               {productName}
             </h1>
@@ -95,7 +93,6 @@ const AdminProductCard = ({
         <div className="px-4 pb-4">
           <Availabilitybtn
             isAvailable={isAvailable}
-            setIsAvailable={setIsAvailable}
             toggleAvailability={toggleAvailability}
           />
         </div>

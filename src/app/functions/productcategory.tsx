@@ -10,37 +10,41 @@ interface ProductCardProps {
   offer?: boolean;
 }
 
+interface Product {
+  productName: string;
+  price: number;
+  discountedPrice?: number;
+  descriptions: string[];
+  available: boolean;
+  imageUrl: string;
+}
+
 export default function ProductCategory({
   open,
   category,
   offer,
 }: ProductCardProps) {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
-  if (!offer) {
-    useEffect(() => {
-      const getData = async () => {
-        const res = await axios.get("/api/productsDisplay/extractProducts", {
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const url = offer
+          ? "/api/productsDisplay/extractProductsOffers"
+          : "/api/productsDisplay/extractProducts";
+
+        const res = await axios.get(url, {
           params: { category },
         });
         setProducts(res.data.productData);
-      };
-      getData();
-    }, []);
-  } else {
-    useEffect(() => {
-      const getData = async () => {
-        const res = await axios.get(
-          "/api/productsDisplay/extractProductsOffers",
-          {
-            params: { category },
-          }
-        );
-        setProducts(res.data.productData);
-      };
-      getData();
-    }, []);
-  }
+      } catch (err) {
+        console.error("Error fetching products:", err);
+      }
+    };
+
+    getData();
+  }, [category, offer]);
+
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8 transition-all duration-300 hover:shadow-xl">
       <details className="group" open={open}>

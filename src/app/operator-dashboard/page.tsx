@@ -67,12 +67,12 @@ export default function OperatorDashboard() {
 
     const channel = pusher.subscribe("orders");
     channel.bind("new-order", (data: Order) => {
-      const newOrder = {
+      const newOrder: Order = {
         ...data,
         status: "waiting",
         elapsedSeconds: 0,
       };
-      setOrders((prev: any) => [newOrder, ...prev]);
+      setOrders((prev) => [newOrder, ...prev]);
 
       if (audioAllowed) {
         try {
@@ -313,7 +313,7 @@ export default function OperatorDashboard() {
                       <div>
                         <h2 className="text-lg font-semibold text-gray-800 truncate w-2/3">
                           <Link
-                            href={`/operator-dashboard/getUserInformation?orderId=${order.orderId}`}
+                            href={`/operator-dashboard/getUserInformation/${order.orderId}`}
                             className="hover:text-[#FF6B4A] active:text-[#FF6B4A]"
                           >
                             Order #{order.orderId}

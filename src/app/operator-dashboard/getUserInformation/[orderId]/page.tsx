@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useState, use } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -24,9 +23,12 @@ interface OrderData {
   userId: string;
 }
 
-const GetOrderInformation = () => {
-  const searchParams = useSearchParams();
-  const orderId = searchParams.get("orderId");
+type Props = {
+  params: Promise<{ orderId: string }>;
+};
+
+const GetOrderInformation = ({ params }: Props) => {
+  const { orderId } = use(params);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [orderData, setOrderData] = useState<OrderData | null>(null);
   const [loading, setLoading] = useState(true);

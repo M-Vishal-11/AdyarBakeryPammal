@@ -8,15 +8,19 @@ import UserShopStatus from "@/app/functions/UserShopStatus";
 export default function Page() {
   const [expand, setExpand] = useState(true);
   const [isShopOpen, setIsShopOpen] = useState(true);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchShopStatus = async () => {
       try {
         const res = await axios.get("/api/shopOpenStatus/shopStatus");
         setIsShopOpen(res.data.shopStatus.isOpen);
-      } catch (error: any) {
-        console.error("Error fetching shop status:", error);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.log(error.message);
+        } else {
+          console.log("Unknown error", error);
+        }
         setIsShopOpen(true);
       }
     };
@@ -29,8 +33,12 @@ export default function Page() {
       try {
         const res = await axios.get("/api/productsDisplay/extractCategories");
         setCategories(res.data.categories);
-      } catch (error: any) {
-        console.log(error);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("Error:", error.message);
+        } else {
+          console.error("Unknown error:", error);
+        }
       }
     };
     exportCategories();

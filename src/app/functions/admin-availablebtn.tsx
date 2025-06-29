@@ -1,14 +1,10 @@
 "use client";
-
-import axios from "axios";
 import { FiCheck, FiX } from "react-icons/fi";
 
 export default function Availabilitybtn({
   isAvailable,
-  setIsAvailable,
   toggleAvailability,
 }: {
-  setIsAvailable: (isAvailable: boolean) => void;
   isAvailable: boolean;
   toggleAvailability: () => void;
 }) {

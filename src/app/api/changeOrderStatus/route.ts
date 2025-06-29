@@ -17,17 +17,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false });
     }
 
-    const res = await UserOrders.findOneAndUpdate(
-      { orderId: orderId },
-      { status: status }
-    );
+    await UserOrders.findOneAndUpdate({ orderId: orderId }, { status: status });
 
     return NextResponse.json({
       Message: "Changed status successfully",
       success: true,
     });
-  } catch (error: any) {
-    console.log(error);
-    return NextResponse.json({ message: "Error", error });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error:", error.message);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    } else {
+      console.error("Unexpected error:", error);
+      return NextResponse.json(
+        { error: "An unknown error occurred" },
+        { status: 500 }
+      );
+    }
   }
 }

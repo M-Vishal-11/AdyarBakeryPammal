@@ -16,7 +16,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    const updated = await Products.findOneAndUpdate(
+    await Products.findOneAndUpdate(
       { productName },
       { available: available },
       { new: true }
@@ -28,8 +28,16 @@ export async function PUT(request: NextRequest) {
       message: "Toggled availability successfully",
       success: true,
     });
-  } catch (error: any) {
-    console.log("Error: ", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error:", error.message);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    } else {
+      console.error("Unexpected error:", error);
+      return NextResponse.json(
+        { error: "An unknown error occurred" },
+        { status: 500 }
+      );
+    }
   }
 }

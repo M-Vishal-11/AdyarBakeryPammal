@@ -7,7 +7,6 @@ import { handleForm } from "@/app/api/users/postAddress/action";
 import axios from "axios";
 
 export default function Page() {
-  const router = useRouter();
   const { user } = useUser();
   const userID = user?.id;
 
@@ -49,6 +48,7 @@ export default function Page() {
     getData();
   }, [userID]);
 
+  const router = useRouter();
   const handleNext = () => {
     router.push("/confirmation");
   };

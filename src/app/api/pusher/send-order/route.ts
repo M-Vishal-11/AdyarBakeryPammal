@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
     const date = new Date();
 
     // send order to db
-    const res = await UserOrders.findOneAndUpdate(
+    await UserOrders.findOneAndUpdate(
       { userId: userID },
       {
         userId: userID,
@@ -82,9 +82,7 @@ export async function POST(request: NextRequest) {
       { new: true, upsert: true } // creates if not found
     );
 
-    // console.log(res);
-
-    // cookieStore.delete("bakeryCart"); //deletes cookies
+    cookieStore.delete("bakeryCart"); //deletes cookies
 
     // Optional: trigger real-time notification
 
@@ -96,8 +94,16 @@ export async function POST(request: NextRequest) {
     });
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("Error in /api/pusher/send-order:", error);
-    return NextResponse.json({ message: "Error", error }, { status: 500 });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error("Error:", error.message);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    } else {
+      console.error("Unexpected error:", error);
+      return NextResponse.json(
+        { error: "An unknown error occurred" },
+        { status: 500 }
+      );
+    }
   }
 }

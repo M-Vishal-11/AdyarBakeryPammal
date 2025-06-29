@@ -6,8 +6,18 @@ import InvoiceSummary from "@/components/helperFunctions/InvoiceSummary";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+// Top of the file
+type Product = {
+  productName: string;
+  price: number;
+  discountedPrice?: number;
+  descriptions: Array<string>;
+  available: boolean;
+  imageUrl: string;
+};
+
 export default function Page() {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [cartData, setCartData] = useState<Record<string, number>>({});
   const [cartTotal, setCartTotal] = useState<number | null>(0);
   const [discount, setDiscount] = useState<number | null>(0);
@@ -22,19 +32,17 @@ export default function Page() {
 
         const productNames = Object.keys(cart);
 
-        // 2. Get product info
         const res2 = await axios.post(
           "/api/productsDisplay/extractProductsCart",
           { productNames }
         );
-        const productList = res2.data.productData;
+        const productList: Product[] = res2.data.productData;
         setProducts(productList);
 
-        // 3. Calculate totals
         let newTotal = 0;
         let newDiscount = 0;
 
-        productList.forEach((product: any) => {
+        productList.forEach((product: Product) => {
           const quantity = cart[product.productName] ?? 0;
           const itemTotal = product.price * quantity;
           newTotal += itemTotal;
@@ -48,7 +56,6 @@ export default function Page() {
         setCartTotal(newTotal);
         setDiscount(newDiscount);
 
-        // 4. Get delivery fee
         const res3 = await axios.get("/api/admin/getDelivery");
         setDelivery(res3.data.data[0]?.delivery ?? 0);
       } catch (error) {

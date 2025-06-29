@@ -16,7 +16,7 @@ export default function AddToCartBtn({
   const [qnty, setQnty] = useState(userQnty ? userQnty : 0);
 
   const updateQnty = async (newQnty: number) => {
-    const res = await axios.post("/api/cart/postCookies", {
+    await axios.post("/api/cart/postCookies", {
       productName,
       qnty: newQnty,
     });
