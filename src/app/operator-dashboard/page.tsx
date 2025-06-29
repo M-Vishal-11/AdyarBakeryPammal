@@ -17,7 +17,7 @@ type Order = {
   date: string;
   orderId: string;
   orders: string;
-  status: "waiting" | "preparing" | "on-the-way" | "delivered" | "cancelled";
+  status: "waiting" | "preparing" | "on_the_way" | "delivered" | "cancelled";
   totalAmount: number;
   payment: string;
   elapsedSeconds?: number;
@@ -29,59 +29,38 @@ export default function OperatorDashboard() {
   >("Waiting");
   const [orders, setOrders] = useState<Order[]>([]);
   const [isClient, setIsClient] = useState(false);
+  const [audioAllowed, setAudioAllowed] = useState(false);
 
+  // Format the elapsed time for display
   const formatDuration = useCallback((order: Order) => {
-    let seconds = 0;
-
-    if (order.elapsedSeconds !== undefined) {
-      seconds = order.elapsedSeconds;
-    } else {
-      const now = new Date();
-      const orderDate = new Date(order.date);
-      seconds = Math.floor((now.getTime() - orderDate.getTime()) / 1000);
-    }
-
+    const seconds = order.elapsedSeconds || 0;
     const hours = Math.floor(seconds / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
 
-    if (hours > 0) {
-      return `${hours}h ${minutes}m ${secs}s`;
-    } else if (minutes > 0) {
-      return `${minutes}m ${secs}s`;
-    } else {
-      return `${secs}s`;
-    }
+    if (hours > 0) return `${hours}h ${minutes}m ${secs}s`;
+    if (minutes > 0) return `${minutes}m ${secs}s`;
+    return `${secs}s`;
   }, []);
 
+  // Fetch initial orders
   useEffect(() => {
     const getdata = async () => {
       const res = await axios.get("/api/getOrders");
-      const now = new Date();
-      setOrders(
-        res.data.orders.map((order: Order) => ({
-          ...order,
-          elapsedSeconds:
-            order.status === "waiting"
-              ? Math.floor(
-                  (now.getTime() - new Date(order.date).getTime()) / 1000
-                )
-              : undefined,
-        }))
-      );
+      setOrders(res.data.orders);
     };
     getdata();
   }, []);
 
+  // Setup Pusher for real-time updates
   useEffect(() => {
     setIsClient(true);
-
     const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
       cluster: "ap2",
     });
 
     const channel = pusher.subscribe("orders");
-    channel.bind("new-order", function (data: Order) {
+    channel.bind("new-order", (data: Order) => {
       const newOrder = {
         ...data,
         status: "waiting",
@@ -89,22 +68,29 @@ export default function OperatorDashboard() {
       };
       setOrders((prev: any) => [newOrder, ...prev]);
 
+      if (audioAllowed) {
+        try {
+          new Audio("/sounds/notification.mp3")
+            .play()
+            .catch((e) => console.log("Audio play failed:", e));
+        } catch (e) {
+          console.log("Audio error:", e);
+        }
+      }
+
       if (Notification.permission === "granted") {
-        const itemCount = JSON.parse(data.orders).reduce(
-          (sum: number, item: OrderItem) => sum + item.qnty,
-          0
-        );
+        const items = JSON.parse(data.orders) as OrderItem[];
+        const itemCount = items.reduce((sum, item) => sum + item.qnty, 0);
         new Notification("New Order", {
           body: `New order with ${itemCount} items - ₹${data.totalAmount}`,
         });
       }
     });
 
-    return () => {
-      pusher.unsubscribe("orders");
-    };
-  }, []);
+    return () => pusher.unsubscribe("orders");
+  }, [audioAllowed]);
 
+  // Request notification permission
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -114,19 +100,18 @@ export default function OperatorDashboard() {
     }
   }, []);
 
+  // Timer effect - only runs for waiting orders
   useEffect(() => {
-    if (orders.length === 0) return;
+    if (!orders.some((order) => order.status === "waiting")) return;
 
     const interval = setInterval(() => {
       setOrders((prev) =>
         prev.map((order) => {
           if (order.status === "waiting") {
-            const now = new Date();
-            const orderDate = new Date(order.date);
-            const elapsedSeconds = Math.floor(
-              (now.getTime() - orderDate.getTime()) / 1000
+            const elapsed = Math.floor(
+              (new Date().getTime() - new Date(order.date).getTime()) / 1000
             );
-            return { ...order, elapsedSeconds };
+            return { ...order, elapsedSeconds: elapsed };
           }
           return order;
         })
@@ -136,17 +121,57 @@ export default function OperatorDashboard() {
     return () => clearInterval(interval);
   }, [orders]);
 
-  const formatDate = (dateString: string) => {
-    if (!isClient) return "";
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
+  // Update order status and freeze timer when leaving waiting state
+  const updateOrderStatus = async (
+    orderId: string,
+    newStatus: Order["status"]
+  ) => {
+    setOrders((prev) =>
+      prev.map((order) => {
+        if (order.orderId === orderId) {
+          // Freeze timer when status changes from waiting
+          if (order.status === "waiting" && newStatus !== "waiting") {
+            const elapsed = Math.floor(
+              (new Date().getTime() - new Date(order.date).getTime()) / 1000
+            );
+            return { ...order, status: newStatus, elapsedSeconds: elapsed };
+          }
+          return { ...order, status: newStatus };
+        }
+        return order;
+      })
+    );
+
+    await axios.post("/api/changeOrderStatus", {
+      orderId,
+      status: newStatus,
+    });
   };
 
-  const formatTime = (dateString: string) => {
-    if (!isClient) return "";
-    const date = new Date(dateString);
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  // Action handlers
+  const handleAccept = (orderId: string) =>
+    updateOrderStatus(orderId, "preparing");
+  const handleReject = (orderId: string) =>
+    updateOrderStatus(orderId, "cancelled");
+  const handlePrepareComplete = (orderId: string) =>
+    updateOrderStatus(orderId, "on_the_way");
+  const handleDeliveryComplete = (orderId: string) =>
+    updateOrderStatus(orderId, "delivered");
+
+  // Parse order items from string
+  const parseOrderItems = (orderString: string): OrderItem[] => {
+    try {
+      return JSON.parse(orderString);
+    } catch {
+      return [];
+    }
   };
+
+  // Get display price (uses discounted price if available)
+  const getDisplayPrice = (item: OrderItem) =>
+    item.discountedPrice ?? item.price;
+
+  const enableAudio = () => setAudioAllowed(true);
 
   const categories = [
     "Waiting",
@@ -159,7 +184,7 @@ export default function OperatorDashboard() {
   const statusMap = {
     Waiting: "waiting",
     Preparing: "preparing",
-    "On the Way": "on-the-way",
+    "On the Way": "on_the_way",
     Delivered: "delivered",
     Cancelled: "cancelled",
   };
@@ -171,58 +196,23 @@ export default function OperatorDashboard() {
   const orderCounts = {
     Waiting: orders.filter((order) => order.status === "waiting").length,
     Preparing: orders.filter((order) => order.status === "preparing").length,
-    "On the Way": orders.filter((order) => order.status === "on-the-way")
+    "On the Way": orders.filter((order) => order.status === "on_the_way")
       .length,
     Delivered: orders.filter((order) => order.status === "delivered").length,
     Cancelled: orders.filter((order) => order.status === "cancelled").length,
   };
 
-  const updateOrderStatus = (orderId: string, newStatus: Order["status"]) => {
-    setOrders((prev) =>
-      prev.map((order) => {
-        if (order.orderId === orderId) {
-          if (newStatus === "preparing" && order.status === "waiting") {
-            const now = new Date();
-            const orderDate = new Date(order.date);
-            const elapsedSeconds = Math.floor(
-              (now.getTime() - orderDate.getTime()) / 1000
-            );
-            return { ...order, status: newStatus, elapsedSeconds };
-          }
-          return { ...order, status: newStatus };
-        }
-        return order;
-      })
-    );
+  // Format date and time
+  const formatDate = (dateString: string) => {
+    if (!isClient) return "";
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
   };
 
-  const handleAccept = (orderId: string) => {
-    updateOrderStatus(orderId, "preparing");
-  };
-
-  const handleReject = (orderId: string) => {
-    updateOrderStatus(orderId, "cancelled");
-  };
-
-  const handlePrepareComplete = (orderId: string) => {
-    updateOrderStatus(orderId, "on-the-way");
-  };
-
-  const handleDeliveryComplete = (orderId: string) => {
-    updateOrderStatus(orderId, "delivered");
-  };
-
-  const parseOrderItems = (orderString: string): OrderItem[] => {
-    try {
-      return JSON.parse(orderString);
-    } catch {
-      return [];
-    }
-  };
-
-  // Helper function to get the display price
-  const getDisplayPrice = (item: OrderItem) => {
-    return item.discountedPrice !== null ? item.discountedPrice : item.price;
+  const formatTime = (dateString: string) => {
+    if (!isClient) return "";
+    const date = new Date(dateString);
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
   return (
@@ -234,16 +224,27 @@ export default function OperatorDashboard() {
           </h1>
           <div className="flex justify-between items-center">
             <p className="text-gray-600">Manage incoming orders in real-time</p>
-            <button
-              className="bg-[#FF6B4A] hover:bg-[#e55a3a] text-white px-4 py-2 rounded-lg transition-colors shadow-md"
-              onClick={() => {
-                setOrders((prev) =>
-                  prev.filter((order) => order.status !== "delivered")
-                );
-              }}
-            >
-              Delete all delivered data
-            </button>
+            <div className="flex gap-2">
+              {!audioAllowed && (
+                <button
+                  className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors shadow-md"
+                  onClick={enableAudio}
+                >
+                  Enable Sound Notifications
+                </button>
+              )}
+              <button
+                className="bg-[#FF6B4A] hover:bg-[#e55a3a] text-white px-4 py-2 rounded-lg transition-colors shadow-md"
+                onClick={async () => {
+                  setOrders((prev) =>
+                    prev.filter((order) => order.status !== "delivered")
+                  );
+                  await axios.delete("/api/deleteDeliveredData");
+                }}
+              >
+                Delete all delivered data
+              </button>
+            </div>
           </div>
         </header>
 
@@ -251,7 +252,7 @@ export default function OperatorDashboard() {
           <div className="flex space-x-2 min-w-max">
             {categories.map((category) => (
               <button
-                key={category}
+                key={`tab-${category}`}
                 onClick={() => setActiveTab(category)}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                   activeTab === category
@@ -268,7 +269,7 @@ export default function OperatorDashboard() {
         <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
           {categories.map((category) => (
             <div
-              key={category}
+              key={`summary-${category}`}
               className="bg-white p-4 rounded-xl shadow-sm border border-[#FFD1C2]"
             >
               <p className="text-gray-500 text-sm">{category}</p>
@@ -290,7 +291,7 @@ export default function OperatorDashboard() {
 
               return (
                 <div
-                  key={order.orderId}
+                  key={`order-${order.orderId}`}
                   className="bg-white rounded-xl shadow-sm overflow-hidden border border-[#FFD1C2] transition-transform hover:scale-[1.01]"
                 >
                   <div className="p-5 sm:p-6">
@@ -321,7 +322,7 @@ export default function OperatorDashboard() {
                             ? "bg-blue-100 text-blue-800"
                             : order.status === "preparing"
                             ? "bg-yellow-100 text-yellow-800"
-                            : order.status === "on-the-way"
+                            : order.status === "on_the_way"
                             ? "bg-purple-100 text-purple-800"
                             : order.status === "delivered"
                             ? "bg-green-100 text-green-800"
@@ -336,9 +337,9 @@ export default function OperatorDashboard() {
                       <h3 className="text-sm font-medium text-gray-500 mb-2">
                         ITEMS ({itemCount})
                       </h3>
-                      {orderItems.map((item) => (
+                      {orderItems.map((item, index) => (
                         <div
-                          key={`${order.orderId}-${item._id}`}
+                          key={`${order.orderId}-${item._id}-${index}`}
                           className="flex justify-between items-center"
                         >
                           <div className="flex items-center">
@@ -386,7 +387,7 @@ export default function OperatorDashboard() {
                           Mark as On the Way
                         </button>
                       )}
-                      {order.status === "on-the-way" && (
+                      {order.status === "on_the_way" && (
                         <button
                           className="flex-1 bg-[#FF6B4A] hover:bg-[#e55a3a] text-white px-4 py-2 rounded-lg transition-colors"
                           onClick={() => handleDeliveryComplete(order.orderId)}
