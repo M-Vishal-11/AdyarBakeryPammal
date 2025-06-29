@@ -2,6 +2,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Pusher from "pusher-js";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 type OrderItem = {
   _id: string;
@@ -142,10 +143,13 @@ export default function OperatorDashboard() {
       })
     );
 
-    await axios.post("/api/changeOrderStatus", {
+    const res = await axios.post("/api/changeOrderStatus", {
       orderId,
       status: newStatus,
     });
+    if (res.data.success == false) {
+      toast.error("Order was cancelled. reload the page");
+    }
   };
 
   // Action handlers

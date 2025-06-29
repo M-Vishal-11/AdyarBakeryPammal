@@ -62,6 +62,8 @@ export async function POST(request: NextRequest) {
 
     const strProducts = JSON.stringify(plainProducts);
 
+    const date = new Date();
+
     // send order to db
     const res = await UserOrders.findOneAndUpdate(
       { userId: userID },
@@ -69,6 +71,8 @@ export async function POST(request: NextRequest) {
         userId: userID,
         orders: strProducts,
         totalAmount: totalAmount,
+        status: "waiting",
+        date: date,
       },
       { new: true, upsert: true } // creates if not found
     );

@@ -8,6 +8,15 @@ export async function POST(request: NextRequest) {
 
     await connect();
 
+    const res1 = await UserOrders.find(
+      { orderId: orderId },
+      { status: 1, _id: 0 }
+    );
+
+    if (res1[0].status === "cancelled") {
+      return NextResponse.json({ success: false });
+    }
+
     const res = await UserOrders.findOneAndUpdate(
       { orderId: orderId },
       { status: status }

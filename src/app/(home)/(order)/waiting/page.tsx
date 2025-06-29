@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 const WaitingPage = () => {
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
@@ -53,8 +54,9 @@ const WaitingPage = () => {
     return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     setIsCancelled(true);
+    await axios.get("/api/orderStuff/cancelOrder");
     router.push("/orderCancelled");
   };
 
