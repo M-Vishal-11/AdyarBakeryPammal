@@ -98,7 +98,7 @@ export default function SettingsPage() {
           {role === "admin" && (
             <>
               <GeneralIcon
-                address="/operator"
+                address="/operator-dashboard"
                 IconName="Order Management"
                 IconDescription="Accept and manage incoming orders"
               >
@@ -115,7 +115,7 @@ export default function SettingsPage() {
           )}
           {role === "operator" && (
             <GeneralIcon
-              address="/operator"
+              address="/operator-dashboard"
               IconName="Order Management"
               IconDescription="Accept and manage incoming orders"
             >

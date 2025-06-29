@@ -15,12 +15,15 @@
     "framer-motion": "^12.17.0",
     "mongoose": "^8.16.0",
     "next": "15.3.3",
+    "pusher": "^5.2.0",
+    "pusher-js": "^8.4.0",
     "razorpay": "^2.9.6",
     "react": "^19.0.0",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
