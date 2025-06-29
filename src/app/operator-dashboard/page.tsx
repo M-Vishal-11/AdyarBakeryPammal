@@ -93,7 +93,10 @@ export default function OperatorDashboard() {
       }
     });
 
-    return () => pusher.unsubscribe("orders");
+    return () => {
+      pusher.unsubscribe("orders");
+      pusher.unbind_all();
+    };
   }, [audioAllowed]);
 
   // Request notification permission
@@ -158,8 +161,10 @@ export default function OperatorDashboard() {
   };
 
   // Action handlers
-  const handleAccept = (orderId: string) =>
+  const handleAccept = async (orderId: string, userId: string) => {
+    await axios.post("/api/pusher/send-custormer", { userId });
     updateOrderStatus(orderId, "preparing");
+  };
   const handleReject = (orderId: string) =>
     updateOrderStatus(orderId, "cancelled");
   const handlePrepareComplete = (orderId: string) =>
@@ -381,7 +386,9 @@ export default function OperatorDashboard() {
                         <>
                           <button
                             className="flex-1 bg-[#FF6B4A] hover:bg-[#e55a3a] text-white px-4 py-2 rounded-lg transition-colors"
-                            onClick={() => handleAccept(order.orderId)}
+                            onClick={() =>
+                              handleAccept(order.orderId, order.userId)
+                            }
                           >
                             Accept
                           </button>

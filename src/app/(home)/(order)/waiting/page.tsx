@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
+import Pusher from "pusher-js";
 
 const WaitingPage = () => {
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
@@ -15,6 +16,40 @@ const WaitingPage = () => {
   const router = useRouter();
   const { user } = useUser(); // ✅ correct
   const userId = user?.id;
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+      cluster: "ap2",
+    });
+
+    const channel = pusher.subscribe("customer");
+    const eventName = userId;
+
+    const handler = (data: any) => {
+      router.push("/orderAccepted");
+    };
+
+    channel.bind(eventName, handler);
+
+    return () => {
+      channel.unbind(eventName, handler);
+      pusher.unsubscribe("customer");
+    };
+  }, [userId]);
 
   // Animate progress bar with easing
   useEffect(() => {
@@ -118,7 +153,7 @@ const WaitingPage = () => {
           <p className="text-gray-600 mb-6">
             {isCancelled
               ? "Your order cancellation is being processed."
-              : "Please wait while the owner reviews your order."}
+              : "Please wait while the manager reviews your order."}
             <br />
             {!isCancelled && "Typically takes less than 5 minutes."}
           </p>

@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Head from "next/head";
 import TickSVG from "@/components/icons/svgs/TickSVG";
 import TimerSVG from "@/components/icons/svgs/TimerSVG";
@@ -41,10 +41,25 @@ declare global {
 
 const OrderAcceptedPage = () => {
   const [selectedPayment, setSelectedPayment] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
   const handleOnlinePayment = async () => {
+    setLoading(true);
     if (!selectedPayment) {
+      setLoading(false);
       toast.error("Please select a payment method");
       return;
     }
@@ -60,6 +75,7 @@ const OrderAcceptedPage = () => {
 
       if (res?.data?.cash) {
         router.push("/gratitude");
+        return;
       } else {
         const data = res.data;
         const paymentData: RazorpayOptions = {
@@ -112,6 +128,8 @@ const OrderAcceptedPage = () => {
       } else {
         toast.error("An unknown error occurred");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -191,7 +209,7 @@ const OrderAcceptedPage = () => {
 
             <button
               onClick={handleOnlinePayment}
-              disabled={!selectedPayment}
+              disabled={!selectedPayment || loading}
               className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition-all duration-300 ${
                 selectedPayment
                   ? "bg-gradient-to-r from-pink-500 to-orange-500 hover:from-pink-600 hover:to-orange-600 shadow-md hover:shadow-lg"
