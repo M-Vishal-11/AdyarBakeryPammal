@@ -308,7 +308,7 @@ export default function OperatorDashboard() {
                       <div>
                         <h2 className="text-lg font-semibold text-gray-800 truncate w-2/3">
                           <Link
-                            href={`/operator-dashboard/getOrderInformation?orderId=${order.orderId}`}
+                            href={`/operator-dashboard/getUserInformation?orderId=${order.orderId}`}
                             className="hover:text-[#FF6B4A] active:text-[#FF6B4A]"
                           >
                             Order #{order.orderId}
