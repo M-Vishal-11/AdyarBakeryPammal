@@ -3,6 +3,7 @@ import { useEffect, useState, useCallback } from "react";
 import Pusher from "pusher-js";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 type OrderItem = {
   _id: string;
@@ -20,7 +21,11 @@ type Order = {
   orders: string;
   status: "waiting" | "preparing" | "on_the_way" | "delivered" | "cancelled";
   totalAmount: number;
-  payment: string;
+  payment?: string;
+  isPaid?: boolean;
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
+  razorpaySignature?: string;
   elapsedSeconds?: number;
 };
 
@@ -302,7 +307,12 @@ export default function OperatorDashboard() {
                     <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-3">
                       <div>
                         <h2 className="text-lg font-semibold text-gray-800 truncate w-2/3">
-                          Order #{order.orderId}
+                          <Link
+                            href={`/operator-dashboard/getOrderInformation?orderId=${order.orderId}`}
+                            className="hover:text-[#FF6B4A] active:text-[#FF6B4A]"
+                          >
+                            Order #{order.orderId}
+                          </Link>
                         </h2>
                         {isClient && (
                           <>

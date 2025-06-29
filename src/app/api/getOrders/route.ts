@@ -6,7 +6,9 @@ export async function GET() {
   try {
     await connect();
 
-    const res = await UserOrders.find();
+    const res = await UserOrders.find().select(
+      "-razorpayOrderId -razorpayPaymentId -razorpaySignature -isPaid -payment"
+    );
 
     return NextResponse.json({ message: "sent successfully", orders: res });
   } catch (error) {

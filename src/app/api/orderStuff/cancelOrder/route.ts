@@ -1,11 +1,10 @@
 import { connect } from "@/lib/mongoConnections";
 import UserOrders from "@/lib/userOrders";
-import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function POST(request: NextRequest) {
   try {
-    const { userId } = await auth();
+    const { userId } = await request.json();
 
     await connect();
 

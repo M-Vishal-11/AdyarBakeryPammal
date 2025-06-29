@@ -34,9 +34,15 @@ const OrderSchema = new mongoose.Schema({
   },
   payment: {
     type: String,
-    enum: ["Payment not selected", "Payment cash", "Payment online"],
-    default: "Payment not selected",
+    default: "pending",
   },
+  isPaid: {
+    type: Boolean,
+    default: false,
+  },
+  razorpayOrderId: String,
+  razorpayPaymentId: String,
+  razorpaySignature: String,
 });
 
 const UserOrders =

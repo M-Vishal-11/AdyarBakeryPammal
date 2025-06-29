@@ -1,20 +1,65 @@
+"use client";
 import { FiArrowLeft } from "react-icons/fi";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useUser } from "@clerk/nextjs";
+import axios from "axios";
 
 export default function OrderDetails() {
-  // Sample order data
-  const order = {
-    id: "#123456",
-    date: "May 15, 2023",
-    status: "Delivered",
-    items: [
-      { name: "Chocolate Croissant", price: 50, quantity: 2 },
-      { name: "Red Velvet Cake", price: 50, quantity: 1 },
-      { name: "Butter Cookies", price: 50, quantity: 3 },
-      { name: "Fruit Tart", price: 50, quantity: 1 },
-    ],
-    total: 300,
-  };
+  const { user } = useUser();
+  const userId = user?.id;
+
+  const [order, setOrder] = useState<any | null>(null);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const getData = async () => {
+      const res = await axios.post("/api/orderStuff/getOrders", { userId });
+      let orderData = res.data.order;
+
+      if (orderData?.orders && typeof orderData.orders === "string") {
+        orderData.orders = JSON.parse(orderData.orders);
+        const d = new Date(orderData.date);
+
+        const days = [
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ];
+        const months = [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July",
+          "August",
+          "September",
+          "October",
+          "November",
+          "December",
+        ];
+
+        orderData.date = `${days[d.getDay()]}, ${d.getDate()} ${
+          months[d.getMonth()]
+        } ${d.getFullYear()}`;
+      }
+
+      setOrder(orderData);
+    };
+
+    getData();
+  }, [userId]);
+
+  if (!order) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen p-4 sm:p-6">
@@ -24,7 +69,7 @@ export default function OrderDetails() {
           <Link
             href="/account"
             className="flex items-center text-[#FF6B4A] hover:text-[#e55a3a] mr-4"
-            prefetch={false} // Disable prefetching if not needed
+            prefetch={false}
           >
             <FiArrowLeft className="mr-1" />
             Back
@@ -38,9 +83,6 @@ export default function OrderDetails() {
             {/* Order header */}
             <div className="flex justify-between items-start mb-4">
               <div>
-                <h2 className="text-lg font-semibold text-gray-800">
-                  Order {order.id}
-                </h2>
                 <p className="text-sm text-gray-500 mt-1">{order.date}</p>
               </div>
               <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -51,16 +93,16 @@ export default function OrderDetails() {
             {/* Order items */}
             <div className="space-y-3 mb-4">
               <h3 className="text-sm font-medium text-gray-500 mb-2">ITEMS</h3>
-              {order.items.map((item, index) => (
+              {order.orders.map((item: any, index: number) => (
                 <div key={index} className="flex justify-between items-center">
                   <div className="flex items-center">
                     <span className="w-2 h-2 rounded-full bg-[#FF6B4A] mr-3"></span>
                     <p className="text-gray-700">
-                      {item.name} × {item.quantity}
+                      {item.productName} × {item.qnty}
                     </p>
                   </div>
                   <p className="text-gray-800 font-medium">
-                    ₹{item.price * item.quantity}
+                    ₹{(item.discountedPrice || item.price) * item.qnty}
                   </p>
                 </div>
               ))}
@@ -69,7 +111,9 @@ export default function OrderDetails() {
             {/* Order footer */}
             <div className="flex justify-between items-center pt-4 border-t border-[#FFE5DC]">
               <p className="text-gray-600 font-medium">Total Amount</p>
-              <p className="text-lg font-bold text-[#FF6B4A]">₹{order.total}</p>
+              <p className="text-lg font-bold text-[#FF6B4A]">
+                ₹{order.totalAmount}
+              </p>
             </div>
           </div>
         </article>

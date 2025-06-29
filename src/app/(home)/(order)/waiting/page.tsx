@@ -5,6 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useUser } from "@clerk/nextjs";
 
 const WaitingPage = () => {
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
@@ -12,6 +13,8 @@ const WaitingPage = () => {
   const progress = useMotionValue(0);
   const controls = useAnimation();
   const router = useRouter();
+  const { user } = useUser(); // ✅ correct
+  const userId = user?.id;
 
   // Animate progress bar with easing
   useEffect(() => {
@@ -56,7 +59,7 @@ const WaitingPage = () => {
 
   const handleCancel = async () => {
     setIsCancelled(true);
-    await axios.get("/api/orderStuff/cancelOrder");
+    await axios.post("/api/orderStuff/cancelOrder", { userId });
     router.push("/orderCancelled");
   };
 

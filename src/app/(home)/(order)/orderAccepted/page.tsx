@@ -44,25 +44,37 @@ const OrderAcceptedPage = () => {
   const router = useRouter();
 
   const handleOnlinePayment = async () => {
-    if (selectedPayment == "cash") {
-      router.push("/gratitude");
-    } else {
-      try {
-        const response = await axios.post("/api/createPayment", {
-          amount: 10000,
-        });
-        const data = response.data;
+    if (!selectedPayment) {
+      toast.error("Please select a payment method");
+      return;
+    }
 
+    const createToastId = toast.loading("Creating Razorpay order...");
+
+    try {
+      const res = await axios.post("/api/createPayment", {
+        selectedPayment,
+      });
+
+      toast.dismiss(createToastId);
+
+      if (res?.data?.cash) {
+        router.push("/gratitude");
+      } else {
+        const data = res.data;
         const paymentData: RazorpayOptions = {
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
           order_id: data.id,
           handler: async function (response: PaymentHandlerResponse) {
+            const verifyToastId = toast.loading("Verifying payment...");
             try {
               const res = await axios.post("/api/verifyPayment", {
                 orderId: response.razorpay_order_id,
                 razorpayPaymentId: response.razorpay_payment_id,
                 razorpaySignature: response.razorpay_signature,
               });
+
+              toast.dismiss(verifyToastId);
 
               if (res.data.success) {
                 toast.success("Payment Successful!");
@@ -71,6 +83,7 @@ const OrderAcceptedPage = () => {
                 toast.error("Payment Failed!");
               }
             } catch (error) {
+              toast.dismiss(verifyToastId);
               if (error instanceof Error) {
                 toast.error(error.message);
               } else {
@@ -90,19 +103,16 @@ const OrderAcceptedPage = () => {
 
         const rzp = new window.Razorpay(paymentData);
         rzp.open();
-      } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message);
-          console.error("Payment Error:", error.message);
-        } else {
-          toast.error("An unknown error occurred");
-        }
+      }
+    } catch (error) {
+      toast.dismiss(createToastId);
+      if (error instanceof Error) {
+        toast.error(error.message);
+        console.error("Payment Error:", error.message);
+      } else {
+        toast.error("An unknown error occurred");
       }
     }
-  };
-
-  const handlePaymentSelect = (method: string) => {
-    setSelectedPayment(method);
   };
 
   return (
@@ -148,7 +158,7 @@ const OrderAcceptedPage = () => {
 
               <div className="space-y-3">
                 <button
-                  onClick={() => handlePaymentSelect("cash")}
+                  onClick={() => setSelectedPayment("cash")}
                   className={`w-full flex items-center justify-between p-4 rounded-lg border-2 transition-all duration-200 ${
                     selectedPayment === "cash"
                       ? "border-orange-500 bg-orange-50"
@@ -163,7 +173,7 @@ const OrderAcceptedPage = () => {
                 </button>
 
                 <button
-                  onClick={() => handlePaymentSelect("online")}
+                  onClick={() => setSelectedPayment("online")}
                   className={`w-full flex items-center justify-between p-4 rounded-lg border-2 transition-all duration-200 ${
                     selectedPayment === "online"
                       ? "border-orange-500 bg-orange-50"

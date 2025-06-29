@@ -73,6 +73,11 @@ export async function POST(request: NextRequest) {
         totalAmount: totalAmount,
         status: "waiting",
         date: date,
+        payment: "pending",
+        isPaid: false,
+        razorpayOrderId: "none",
+        razorpayPaymentId: "none",
+        razorpaySignature: "none",
       },
       { new: true, upsert: true } // creates if not found
     );
