@@ -4,10 +4,14 @@ import Backbtn from "./functions/backbtn";
 import InvoiceSummary from "@/components/helperFunctions/InvoiceSummary";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 export default function Confirmation() {
   const [invoice, setInvoice] = useState<any>();
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { user } = useUser();
+  const userID = user?.id;
 
   useEffect(() => {
     const getData = async () => {
@@ -18,13 +22,8 @@ export default function Confirmation() {
   }, []);
 
   const handlePlaceOrder = async () => {
-    const data = {
-      orderId: "ORD-001",
-      name: "Vishal",
-      totalAmount: 150,
-      phone: "9876543210",
-    };
-    const res = await axios.post("/api/pusher/send-order", data);
+    setLoading(true);
+    await axios.post("/api/pusher/send-order", { userID });
     router.push("/waiting");
   };
 
@@ -48,7 +47,7 @@ export default function Confirmation() {
           delivery={invoice?.delivery ?? 0}
           total={
             (invoice?.CartTotal ?? 0) -
-            (invoice?.discountedPrice ?? 0) +
+            invoice?.discountedPrice +
             (invoice?.delivery ?? 0)
           }
         />
@@ -56,9 +55,9 @@ export default function Confirmation() {
         {/* Action Buttons */}
         <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-4 mt-8">
           <Backbtn />
-          {/* <PlaceOrderbtn payment={paymentMethod} /> */}
           <button
-            onClick={handlePlaceOrder}
+            disabled={loading}
+            onClick={!loading ? handlePlaceOrder : undefined}
             className="flex items-center justify-center bg-amber-500 hover:bg-amber-600 active:bg-amber-600                 
                  text-white border border-amber-600
                  shadow-sm hover:shadow-md

@@ -56,7 +56,7 @@ export default function Page() {
       }
     };
     getData();
-  });
+  }, []);
 
   return (
     <div className="p-4 lg:p-8 bg-[#FFF9F7] min-h-screen">

@@ -41,11 +41,11 @@ export async function GET(request: NextRequest) {
 
     for (const product of products) {
       const quantity = cart[product.productName] || 0;
-      const price = product.discountedPrice || product.price;
+      const price = product.price;
       CartTotal += price * quantity;
 
       if (product.discountedPrice) {
-        discountedPrice += product.discountedPrice * quantity;
+        discountedPrice += (product.price - product.discountedPrice) * quantity;
       }
     }
 

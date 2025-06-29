@@ -1,5 +1,10 @@
 import Pusher from "pusher";
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { connect } from "@/lib/mongoConnections";
+import isOpen from "@/lib/isOpen";
+import Products from "@/lib/products";
+import UserOrders from "@/lib/userOrders";
 
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID!,
@@ -10,14 +15,80 @@ const pusher = new Pusher({
 });
 
 export async function POST(request: NextRequest) {
-  const data = await request.json();
+  try {
+    const { userID } = await request.json(); //get userID
 
-  await pusher.trigger("orders", "new-order", {
-    orderId: data.orderId, // Unique order ID
-    name: data.name, // User's name
-    totalAmount: data.totalAmount, // Total ₹ of the order
-    phone: data.phone, // Phone number (if needed)
-  });
+    if (!userID) {
+      return NextResponse.json({ message: "Missing userID", success: false });
+    }
 
-  return NextResponse.json({ success: true });
+    const cookieStore = await cookies();
+    const cartCookie = cookieStore.get("bakeryCart")?.value;
+    if (!cartCookie) {
+      return NextResponse.json({ message: "Cart is empty", success: false });
+    }
+
+    const cartData = JSON.parse(cartCookie); //got cookies
+    if (Object.keys(cartData).length === 0) {
+      return NextResponse.json({ message: "Cart is empty", success: false });
+    }
+
+    const productNames = Object.keys(cartData); //extracted product names
+    let cartTotal = 0,
+      totalAmount = 0,
+      delivery = 0;
+
+    await connect();
+
+    const getDelivery = await isOpen.find({}, { delivery: 1 }); //get delivery amount
+    delivery = getDelivery[0]?.delivery || 0;
+
+    const products = await Products.find(
+      { productName: { $in: productNames } },
+      { productName: 1, price: 1, discountedPrice: 1 }
+    ); //extracted products data
+
+    const plainProducts = products.map((p) => p.toObject()); // actual products data + order
+
+    for (const product of plainProducts) {
+      const quantity = cartData[product.productName] || 0;
+      product.qnty = quantity;
+      const price = product.discountedPrice || product.price;
+      cartTotal += price * quantity;
+    }
+    // console.log(cartTotal);
+
+    totalAmount = cartTotal + delivery;
+
+    const strProducts = JSON.stringify(plainProducts);
+
+    // send order to db
+    const res = await UserOrders.findOneAndUpdate(
+      { userId: userID },
+      {
+        userId: userID,
+        orders: strProducts,
+        totalAmount: totalAmount,
+      },
+      { new: true, upsert: true } // creates if not found
+    );
+
+    // console.log(res);
+
+    // cookieStore.delete("bakeryCart"); //deletes cookies
+
+    // Optional: trigger real-time notification
+
+    await pusher.trigger("orders", "new-order", {
+      userID,
+      products: plainProducts,
+      totalAmount: totalAmount,
+      productCount: productNames.length,
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error in /api/pusher/send-order:", error);
+    return NextResponse.json({ message: "Error", error }, { status: 500 });
+  }
 }
