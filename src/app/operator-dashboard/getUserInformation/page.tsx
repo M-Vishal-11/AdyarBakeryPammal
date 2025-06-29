@@ -43,7 +43,6 @@ const GetOrderInformation = () => {
         const { data } = await axios.post("/api/orderStuff/getUser", {
           orderId,
         });
-        console.log(data.orderData);
         setUserData(data.userData);
         setOrderData(data.orderData);
       } catch (err) {
