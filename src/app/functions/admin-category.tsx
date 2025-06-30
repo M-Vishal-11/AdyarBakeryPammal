@@ -28,8 +28,8 @@ export default function AdminCategory({
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await axios.get("/api/productsDisplay/extractProducts", {
-          params: { category },
+        const res = await axios.post("/api/productsDisplay/extractProducts", {
+          category,
         });
         setProducts(res.data.productData);
       } catch (error) {
