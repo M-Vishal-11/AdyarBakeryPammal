@@ -4,6 +4,7 @@ import Pusher from "pusher-js";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import NavbarPhone from "../functions/NavbarPhone";
 
 type OrderItem = {
   _id: string;
@@ -443,6 +444,11 @@ export default function OperatorDashboard() {
           )}
         </div>
       </div>
+      {isClient && (
+        <div className="lg:hidden">
+          <NavbarPhone />
+        </div>
+      )}
     </div>
   );
 }

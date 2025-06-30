@@ -6,14 +6,17 @@ import AdminCategory from "../functions/admin-category";
 import OffersBtn from "../(home)/offers/offersBtn";
 import axios from "axios";
 import Link from "next/link";
+import NavbarPhone from "../functions/NavbarPhone";
 
 export default function AdminDashboard() {
   const [isShopOpen, setIsShopOpen] = useState(true);
   const [loading, setLoading] = useState(true);
   const [expand, setExpand] = useState(true);
   const [categories, setCategories] = useState([]);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const fetchShopStatus = async () => {
       try {
         const res = await axios.get("/api/shopOpenStatus/shopStatus");
@@ -116,6 +119,11 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+      {isClient && (
+        <div className="lg:hidden">
+          <NavbarPhone />
+        </div>
+      )}
     </div>
   );
 }
