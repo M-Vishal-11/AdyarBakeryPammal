@@ -6,7 +6,8 @@ export async function POST(request: NextRequest) {
     message: "cookies created successfully",
   });
 
-  let cart = JSON.parse(request.cookies.get("bakeryCart")?.value as string);
+  const cartCookie = request.cookies.get("bakeryCart")?.value;
+  let cart = cartCookie ? JSON.parse(cartCookie) : {};
 
   if (qnty === 0) {
     delete cart[productName];

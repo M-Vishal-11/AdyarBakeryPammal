@@ -5,6 +5,7 @@ import BuyNowPhone from "./functions/buynowphone";
 import InvoiceSummary from "@/components/helperFunctions/InvoiceSummary";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 // Top of the file
 type Product = {
@@ -22,6 +23,13 @@ export default function Page() {
   const [cartTotal, setCartTotal] = useState<number | null>(0);
   const [discount, setDiscount] = useState<number | null>(0);
   const [delivery, setDelivery] = useState<number | null>(1);
+  const [changed, setChanged] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (changed) {
+      toast.error("Reload the page to update invoice");
+    }
+  }, [changed]);
 
   useEffect(() => {
     const getData = async () => {
@@ -87,6 +95,7 @@ export default function Page() {
                   isAvailable={product.available}
                   imageURL={product.imageUrl}
                   qnty={cartData[product.productName] ?? 0}
+                  setChanged={setChanged}
                 />
               ))}
             </div>

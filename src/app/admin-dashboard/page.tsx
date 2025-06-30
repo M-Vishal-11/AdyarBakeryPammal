@@ -80,7 +80,7 @@ export default function AdminDashboard() {
                 className="inline-flex items-center bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 shadow-sm hover:shadow-md"
               >
                 <FiTruck className="h-5 w-5 mr-2" />
-                Delivery Details
+                Delivery Settings
               </Link>
               <Link
                 href="/admin-dashboard/add-product"
