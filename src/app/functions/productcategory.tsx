@@ -33,9 +33,7 @@ export default function ProductCategory({
           ? "/api/productsDisplay/extractProductsOffers"
           : "/api/productsDisplay/extractProducts";
 
-        const res = await axios.get(url, {
-          params: { category },
-        });
+        const res = await axios.post(url, { category });
         setProducts(res.data.productData);
       } catch (err) {
         console.error("Error fetching products:", err);
