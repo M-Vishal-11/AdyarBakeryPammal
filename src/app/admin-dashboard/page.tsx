@@ -101,7 +101,13 @@ export default function AdminDashboard() {
           <div className="mb-8 flex justify-center">
             <OffersBtn expand={expand} setExpand={setExpand} />
           </div>
-
+          <Link
+            href="/admin-dashboard/addCategory"
+            className="inline-flex items-center bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200 shadow-sm hover:shadow-md mb-8"
+          >
+            <FiPlus className="h-5 w-5 mr-2" />
+            Add Category
+          </Link>
           {/* Products Section */}
           <div className="space-y-6">
             {categories.map((category, i) => (
