@@ -6,7 +6,6 @@ import AdminCategory from "../functions/admin-category";
 import OffersBtn from "../(home)/offers/offersBtn";
 import axios from "axios";
 import Link from "next/link";
-import NavbarPhone from "../functions/NavbarPhone";
 
 export default function AdminDashboard() {
   const [isShopOpen, setIsShopOpen] = useState(true);

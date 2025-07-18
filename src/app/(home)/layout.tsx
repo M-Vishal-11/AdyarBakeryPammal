@@ -2,14 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 // import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import Link from "next/link";
-
-// Lazy load components that aren't immediately needed
-const NavbarPhone = dynamic(() => import("../functions/NavbarPhone"), {
-  loading: () => <div className="h-16" />,
-  ssr: false,
-});
 
 // Static SVG components - optimized with memo
 const SearchIcon = () => (

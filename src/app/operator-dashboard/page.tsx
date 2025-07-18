@@ -4,7 +4,6 @@ import Pusher from "pusher-js";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import NavbarPhone from "../functions/NavbarPhone";
 
 type OrderItem = {
   _id: string;
@@ -75,6 +74,8 @@ export default function OperatorDashboard() {
       };
       setOrders((prev) => [newOrder, ...prev]);
 
+      toast.error("Please reload the page!");
+
       if (audioAllowed) {
         try {
           new Audio("/sounds/notification.mp3")
@@ -86,9 +87,6 @@ export default function OperatorDashboard() {
       }
 
       if (Notification.permission === "granted") {
-        if (!data?.orders) {
-          toast.error("Please reload the page!");
-        }
         const items = JSON.parse(data.orders) as OrderItem[];
         const itemCount = items.reduce((sum, item) => sum + item.qnty, 0);
         new Notification("New Order", {
@@ -166,11 +164,13 @@ export default function OperatorDashboard() {
 
   // Action handlers
   const handleAccept = async (orderId: string, userId: string) => {
-    await axios.post("/api/pusher/send-custormer", { userId });
+    await axios.post("/api/pusher/send-custormer", { userId, accepted: true });
     updateOrderStatus(orderId, "preparing");
   };
-  const handleReject = (orderId: string) =>
+  const handleReject = async (orderId: string, userId: string) => {
+    await axios.post("/api/pusher/send-custormer", { userId, accepted: false });
     updateOrderStatus(orderId, "cancelled");
+  };
   const handlePrepareComplete = (orderId: string) =>
     updateOrderStatus(orderId, "on_the_way");
   const handleDeliveryComplete = (orderId: string) =>
@@ -398,7 +398,9 @@ export default function OperatorDashboard() {
                           </button>
                           <button
                             className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg transition-colors"
-                            onClick={() => handleReject(order.orderId)}
+                            onClick={() =>
+                              handleReject(order.orderId, order.userId)
+                            }
                           >
                             Reject
                           </button>

@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 interface UserData {
   name: string;
@@ -147,6 +148,25 @@ const GetOrderInformation = ({ params }: Props) => {
             </div>
           </div>
         </div>
+        <Link
+          href="/operator-dashboard"
+          className="mt-5 inline-flex items-center px-3 py-1.5 border border-transparent hover:border-gray-200 active:border-gray-200 rounded-md text-gray-600 hover:text-gray-900 active:text-gray-900 hover:bg-gray-300 active:bg-gray-300  font-medium transition-all duration-200"
+        >
+          <svg
+            className="w-4 h-4 mr-1.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
+          </svg>
+          Back
+        </Link>
       </div>
     </div>
   );

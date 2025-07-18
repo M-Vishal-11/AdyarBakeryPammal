@@ -14,7 +14,7 @@ const WaitingPage = () => {
   const progress = useMotionValue(0);
   const controls = useAnimation();
   const router = useRouter();
-  const { user } = useUser(); // ✅ correct
+  const { user } = useUser();
   const userId = user?.id;
 
   useEffect(() => {
@@ -39,8 +39,12 @@ const WaitingPage = () => {
     const channel = pusher.subscribe("customer");
     const eventName = userId;
 
-    const handler = () => {
-      router.push("/orderAccepted");
+    const handler = (data: { accepted: boolean; userId: string }) => {
+      if (data.accepted == true) {
+        router.push("/orderAccepted");
+      } else {
+        router.push("/orderRejected");
+      }
     };
 
     channel.bind(eventName, handler);

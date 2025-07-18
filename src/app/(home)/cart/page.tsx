@@ -33,6 +33,9 @@ export default function Page() {
         const res = await axios.get("/api/cart/getCookies");
         const cart = res.data.cartCookies;
         setCartData(cart);
+        if (cart.length == 0) {
+          return;
+        }
 
         const productNames = Object.keys(cart);
 

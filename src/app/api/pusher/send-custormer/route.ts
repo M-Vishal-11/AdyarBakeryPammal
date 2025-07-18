@@ -10,12 +10,13 @@ const pusher = new Pusher({
 });
 
 export async function POST(request: NextRequest) {
-  const { userId } = await request.json();
+  const { userId, accepted } = await request.json();
   console.log(userId);
 
   try {
     await pusher.trigger("customer", userId, {
       userId,
+      accepted,
     });
 
     return NextResponse.json({ message: "sent trigger", success: true });
