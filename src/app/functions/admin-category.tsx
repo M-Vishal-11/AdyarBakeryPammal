@@ -52,7 +52,7 @@ export default function AdminCategory({
             <div className="flex items-center gap-3">
               <Link
                 href={`/admin-dashboard/add-product/${category}`}
-                className="p-2 bg-green-500 hover:bg-green-600 rounded-full text-white transition-colors duration-300 flex items-center justify-center"
+                className="p-2 bg-green-500 hover:bg-green-600 active:bg-green-600 rounded-full text-white transition-colors duration-300 flex items-center justify-center"
                 title="Add Product"
               >
                 <FiPlus className="text-lg" />

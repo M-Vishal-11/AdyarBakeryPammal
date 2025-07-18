@@ -17,7 +17,7 @@ const GeneralIcon = ({
   return (
     <>
       <Link href={address}>
-        <div className="bg-white hover:bg-[#FFF4F0] rounded-xl p-6 border border-[#FFD1C2] transition-all hover:shadow-md cursor-pointer">
+        <div className="bg-white hover:bg-[#FFF4F0] transform active:scale-95 active:duration-initial rounded-xl p-6 border border-[#FFD1C2] transition-all hover:shadow-md cursor-pointer">
           <div className="flex items-center gap-4">
             <div className="p-3 rounded-full bg-[#FFEBE6]">{children}</div>
             <div>

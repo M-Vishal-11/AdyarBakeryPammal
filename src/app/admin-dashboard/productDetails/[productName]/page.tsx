@@ -10,7 +10,8 @@ import Image from "next/image";
 
 export default function UpdateProduct() {
   const params = useParams();
-  const productNameparams = params.productName as string;
+  let productNameparams = params.productName as string;
+  productNameparams = decodeURIComponent(productNameparams);
   const router = useRouter();
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -36,8 +37,8 @@ export default function UpdateProduct() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await axios.get("/api/productsDisplay/getProduct", {
-        params: { productName: productNameparams },
+      const res = await axios.post("/api/productsDisplay/getProduct", {
+        productName: productNameparams,
       });
 
       const productInfo = res.data.productData[0];
@@ -48,6 +49,7 @@ export default function UpdateProduct() {
         setOffer("no");
       }
 
+      setOffer(productInfo.offer ? "yes" : "no");
       setPrice(productInfo.price || 0);
       setCategory(productInfo.category || "");
       setImageURL(productInfo.imageUrl || "");
@@ -260,6 +262,8 @@ export default function UpdateProduct() {
                       src={imageUrl}
                       alt="Preview"
                       className="max-w-full h-auto max-h-60 rounded-md border border-gray-200 object-contain"
+                      width={400}
+                      height={400}
                     />
                   </div>
                 </div>

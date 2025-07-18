@@ -444,11 +444,6 @@ export default function OperatorDashboard() {
           )}
         </div>
       </div>
-      {isClient && (
-        <div className="lg:hidden">
-          <NavbarPhone />
-        </div>
-      )}
     </div>
   );
 }

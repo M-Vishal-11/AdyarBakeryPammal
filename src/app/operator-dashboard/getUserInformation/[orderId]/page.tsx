@@ -60,8 +60,11 @@ const GetOrderInformation = ({ params }: Props) => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-screen bg-[#ffebe6]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#ff6b6b]"></div>
+      <div className="flex flex-col items-center justify-center gap-3">
+        <div className="w-8 h-8 rounded-full border-4 border-rose-500 border-t-transparent animate-spin"></div>
+        <div className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent animate-pulse">
+          Loading...
+        </div>
       </div>
     );
   }

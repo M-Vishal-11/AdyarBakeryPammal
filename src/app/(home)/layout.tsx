@@ -80,11 +80,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   // const router = useRouter();
-  const [isClient, setIsClient] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -233,13 +231,6 @@ export default function RootLayout({
           </div>
         </div>
       </footer>
-
-      {/* Mobile Navigation - Client-side only */}
-      {isClient && (
-        <div className="lg:hidden">
-          <NavbarPhone />
-        </div>
-      )}
     </div>
   );
 }

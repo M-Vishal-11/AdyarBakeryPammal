@@ -26,11 +26,6 @@ export default function Home() {
           <OrderNowHome />
         </div>
       </main>
-
-      {/* Footer Navigation - Positioned at bottom */}
-      <footer className="sticky bottom-0 z-10">
-        <NavbarPhone />
-      </footer>
     </div>
   );
 }

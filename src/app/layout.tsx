@@ -3,6 +3,7 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { ClerkProvider } from "@clerk/nextjs";
+import ClientWrapper from "./functions/ClientWrapper";
 
 // const playfair = Playfair({
 //   variable: "--font-playfair-head",
@@ -31,6 +32,7 @@ export default function RootLayout({
           className={`${montserrat.variable} antialiased min-h-full flex flex-col`}
         >
           {children}
+          <ClientWrapper />
           <Toaster position="top-center" />
         </body>
       </html>

@@ -2,10 +2,10 @@ import { connect } from "@/lib/mongoConnections";
 import Products from "@/lib/products";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url);
-    const productName = searchParams.get("productName");
+    const body = await request.json();
+    const { productName } = body;
 
     await connect();
     const productData = await Products.find({ productName }).select("-_id");
