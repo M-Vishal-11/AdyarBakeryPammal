@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import Prebtn from "./functions/prebtn";
-import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { handleForm } from "@/app/api/users/postAddress/action";
 import axios from "axios";
@@ -48,12 +47,18 @@ export default function Page() {
     getData();
   }, [userID]);
 
-  const router = useRouter();
-  const handleNext = () => {
-    router.push("/confirmation");
-  };
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 py-6">
+        {/* Pin-inspired spinner (location theme) */}
+        <div className="w-8 h-8 rounded-full border-[3px] border-indigo-500 border-t-transparent animate-spin duration-700"></div>
 
-  if (loading) return <p className="text-center">Loading...</p>;
+        {/* Text with map-inspired gradient */}
+        <div className="text-2xl font-medium bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
+          Loading your addresses...
+        </div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen flex flex-col p-6">
@@ -176,7 +181,6 @@ export default function Page() {
             <Prebtn />
             <button
               type="submit"
-              onClick={handleNext}
               className="bg-amber-500 hover:bg-amber-600 active:bg-amber-600 text-white text-lg rounded-xl px-4 py-2  
         shadow-md hover:shadow-lg
         cursor-pointer active:scale-90 transition-transform duration-200"

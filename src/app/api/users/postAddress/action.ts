@@ -2,6 +2,7 @@
 
 import { connect } from "@/lib/mongoConnections";
 import Users from "@/lib/users";
+import { redirect } from "next/navigation";
 
 export async function handleForm(formData: FormData) {
   const name = formData.get("name") as string;
@@ -29,4 +30,7 @@ export async function handleForm(formData: FormData) {
     },
     { new: true, upsert: true } // creates if not found
   );
+
+  // Use redirect from next/navigation to navigate after server action
+  redirect("/confirmation");
 }

@@ -13,12 +13,12 @@ export default function AddToCartBtn({
   isAvailable: boolean;
   productName: string;
   userQnty?: number;
-  setChanged?: (value: number) => void;
+  setChanged?: (change: { productName: string; value: number }) => void;
 }) {
   const [qnty, setQnty] = useState(userQnty ? userQnty : 0);
 
   const updateQnty = async (newQnty: number) => {
-    if (setChanged) setChanged(newQnty);
+    if (setChanged) setChanged({ productName, value: newQnty });
 
     await axios.post("/api/cart/postCookies", {
       productName,

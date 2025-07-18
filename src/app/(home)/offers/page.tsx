@@ -9,24 +9,7 @@ const Page = () => {
   const [expand, setExpand] = useState(true);
   const [isShopOpen, setIsShopOpen] = useState(true);
   const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    const exportCategories = async () => {
-      try {
-        const res = await axios.get(
-          "/api/productsDisplay/extractCategoriesOffers"
-        );
-        setCategories(res.data.categories);
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Error:", error.message);
-        } else {
-          console.error("Unknown error:", error);
-        }
-      }
-    };
-    exportCategories();
-  }, []);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchShopStatus = async () => {
@@ -42,8 +25,40 @@ const Page = () => {
     fetchShopStatus();
   }, []);
 
+  useEffect(() => {
+    const exportCategories = async () => {
+      try {
+        const res = await axios.get(
+          "/api/productsDisplay/extractCategoriesOffers"
+        );
+        setCategories(res.data.categories);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("Error:", error.message);
+        } else {
+          console.error("Unknown error:", error);
+        }
+      }
+      setLoading(false);
+    };
+    exportCategories();
+  }, []);
+
   if (!isShopOpen) {
     return <UserShopStatus />;
+  }
+
+  if (loading) {
+    return (
+      <>
+        <div className="flex flex-col items-center justify-center gap-3">
+          <div className="w-8 h-8 rounded-full border-4 border-rose-500 border-t-transparent animate-spin"></div>
+          <div className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent animate-pulse">
+            Loading...
+          </div>
+        </div>
+      </>
+    );
   }
 
   return (

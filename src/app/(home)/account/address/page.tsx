@@ -52,7 +52,18 @@ export default function Page() {
     toast.success("Data updated");
   };
 
-  if (loading) return <p className="text-center">Loading...</p>;
+  if (loading)
+    return (
+      <div className="flex flex-col items-center justify-center gap-3 py-6">
+        {/* Pin-inspired spinner (location theme) */}
+        <div className="w-8 h-8 rounded-full border-[3px] border-indigo-500 border-t-transparent animate-spin duration-700"></div>
+
+        {/* Text with map-inspired gradient */}
+        <div className="text-2xl font-medium bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
+          Loading your addresses...
+        </div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen flex flex-col p-6">

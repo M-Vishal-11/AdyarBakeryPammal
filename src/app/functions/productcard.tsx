@@ -9,7 +9,7 @@ interface ProductCardProps {
   isAvailable: boolean;
   imageURL: string;
   qnty?: number;
-  setChanged?: (value: number) => void;
+  setChanged?: (change: { productName: string; value: number }) => void;
 }
 
 const ProductCard = ({

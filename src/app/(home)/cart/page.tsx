@@ -5,7 +5,6 @@ import BuyNowPhone from "./functions/buynowphone";
 import InvoiceSummary from "@/components/helperFunctions/InvoiceSummary";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import toast from "react-hot-toast";
 
 // Top of the file
 type Product = {
@@ -23,13 +22,10 @@ export default function Page() {
   const [cartTotal, setCartTotal] = useState<number | null>(0);
   const [discount, setDiscount] = useState<number | null>(0);
   const [delivery, setDelivery] = useState<number | null>(1);
-  const [changed, setChanged] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (changed) {
-      toast.error("Reload the page to update invoice");
-    }
-  }, [changed]);
+  const [changed, setChanged] = useState<{
+    productName: string;
+    value: number;
+  } | null>(null);
 
   useEffect(() => {
     const getData = async () => {
@@ -47,11 +43,23 @@ export default function Page() {
         const productList: Product[] = res2.data.productData;
         setProducts(productList);
 
+        const res3 = await axios.get("/api/admin/getDelivery");
+        setDelivery(res3.data.data[0]?.delivery ?? 0);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getData();
+  }, []);
+
+  useEffect(() => {
+    if (cartData && products) {
+      const getData = () => {
         let newTotal = 0;
         let newDiscount = 0;
 
-        productList.forEach((product: Product) => {
-          const quantity = cart[product.productName] ?? 0;
+        products.forEach((product: Product) => {
+          const quantity = cartData[product.productName] ?? 0;
           const itemTotal = product.price * quantity;
           newTotal += itemTotal;
 
@@ -63,15 +71,19 @@ export default function Page() {
 
         setCartTotal(newTotal);
         setDiscount(newDiscount);
+      };
+      getData();
+    }
+  }, [cartData, products]);
 
-        const res3 = await axios.get("/api/admin/getDelivery");
-        setDelivery(res3.data.data[0]?.delivery ?? 0);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
-  }, []);
+  useEffect(() => {
+    if (changed) {
+      setCartData((prev) => ({
+        ...prev,
+        [changed.productName]: changed.value,
+      }));
+    }
+  }, [changed]);
 
   return (
     <div className="p-4 lg:p-8 bg-[#FFF9F7] min-h-screen">

@@ -14,14 +14,32 @@ export default function SettingsPage() {
   const [userImageUrl, setUserImageUrl] = useState("");
   const [emailAddress, setEmailAddress] = useState("");
   const [role, setRole] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
       setUserImageUrl(user.imageUrl);
       setEmailAddress(user.primaryEmailAddress?.emailAddress || "");
       setRole((user.publicMetadata.role as string) || "");
+      setLoading(false);
     }
   }, [user]);
+
+  if (loading) {
+    return (
+      <>
+        <div className="flex flex-col items-center justify-center gap-3 py-8">
+          {/* Smoother spinner with softer pink */}
+          <div className="w-8 h-8 rounded-full border-[3px] border-rose-400 border-t-transparent animate-spin duration-700"></div>
+
+          {/* More professional gradient text */}
+          <div className="text-2xl font-semibold bg-gradient-to-r from-rose-500 to-fuchsia-500 bg-clip-text text-transparent">
+            Loading your account...
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <div className="min-h-screen p-6 bg-[#FFEBE6]">
