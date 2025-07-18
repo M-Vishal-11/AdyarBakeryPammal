@@ -86,6 +86,9 @@ export default function OperatorDashboard() {
       }
 
       if (Notification.permission === "granted") {
+        if (!data?.orders) {
+          toast.error("Please reload the page!");
+        }
         const items = JSON.parse(data.orders) as OrderItem[];
         const itemCount = items.reduce((sum, item) => sum + item.qnty, 0);
         new Notification("New Order", {
@@ -444,6 +447,7 @@ export default function OperatorDashboard() {
           )}
         </div>
       </div>
+      <div className="mt-[20vh] w-full"></div>
     </div>
   );
 }

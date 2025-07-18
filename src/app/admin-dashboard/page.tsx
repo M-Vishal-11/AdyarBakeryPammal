@@ -125,6 +125,7 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+      <div className="mt-[20vh] w-full"></div>
     </div>
   );
 }

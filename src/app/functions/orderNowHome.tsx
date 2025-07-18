@@ -5,15 +5,12 @@ export default function OrderNowHome() {
   const router = useRouter();
   return (
     <button
-      onClick={() => {
-        router.push("/shop");
-      }}
-      style={{ textShadow: "2px 2px 4px rgba(0, 0, 0, 0.7)" }}
-      className="bg-[#b02b03] text-[4.5vh] text-[#ffebe6] p-[1.5vh] rounded-xl block mx-auto mt-[30vh] 
-      shadow-md hover:shadow-lg
-      cursor-pointer active:scale-90 transition-transform duration-200"
+      onClick={() => router.push("/shop")}
+      className="bg-[#b02b03] text-white text-xl font-semibold py-4 px-12 rounded-full
+      shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95
+      transition-all duration-200 ease-out"
     >
-      Order Now
+      Order Now →
     </button>
   );
 }

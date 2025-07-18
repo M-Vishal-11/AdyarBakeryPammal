@@ -25,6 +25,7 @@ export default function OrderDetails() {
   const userId = user?.id;
 
   const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!userId) return;
@@ -67,12 +68,22 @@ export default function OrderDetails() {
       }
 
       setOrder(orderData);
+      setLoading(false);
     };
 
     getData();
   }, [userId]);
 
-  if (!order) {
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-3">
+        <div className="w-8 h-8 rounded-full border-4 border-rose-500 border-t-transparent animate-spin"></div>
+        <div className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent animate-pulse">
+          Loading...
+        </div>
+      </div>
+    );
+  } else if (!order) {
     return (
       <div className="flex flex-col items-center justify-center gap-4 py-8 text-center">
         {/* Modified spinner (now a static icon) */}

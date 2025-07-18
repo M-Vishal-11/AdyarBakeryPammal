@@ -46,7 +46,7 @@ export default function ProductCategory({
   return (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8 transition-all duration-300 hover:shadow-xl">
       <details className="group" open={open}>
-        <summary className="flex justify-between items-center p-6 cursor-pointer bg-gradient-to-r from-orange-100 to-orange-200 hover:from-orange-200 hover:to-orange-300 transition-all duration-300 mb-3">
+        <summary className="flex justify-between items-center p-6 cursor-pointer bg-gradient-to-r from-orange-100 to-orange-200 hover:from-orange-200 hover:to-orange-300 active:from-orange-200 active:to-orange-300 transition-all duration-300 mb-3">
           <div className="flex items-center">
             <h2 className="text-xl font-semibold text-gray-800">{category}</h2>
           </div>
