@@ -1,5 +1,6 @@
 "use client";
 import dynamic from "next/dynamic";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 // Dynamically import icons to reduce initial bundle size
@@ -26,6 +27,10 @@ export default function ContactUS() {
     navigator.clipboard.writeText(text);
     toast.success("Copied to clipboard!");
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#FFF9F7] to-[#FFEBE6] py-12 px-4 sm:px-6 lg:px-8">

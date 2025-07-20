@@ -1,7 +1,7 @@
 "use client";
 
 import { createProduct } from "@/app/api/admin/addProduct/actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import BackSVG from "@/components/icons/svgs/BackSVG";
 import Image from "next/image";

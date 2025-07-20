@@ -17,6 +17,10 @@ export default function SettingsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+
+  useEffect(() => {
     if (user) {
       setUserImageUrl(user.imageUrl);
       setEmailAddress(user.primaryEmailAddress?.emailAddress || "");

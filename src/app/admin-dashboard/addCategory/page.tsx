@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiSave } from "react-icons/fi";
 import Link from "next/link";
 import axios from "axios";
@@ -9,6 +9,7 @@ const AddCategoryPage = () => {
   const [category, setCategory] = useState<string>("");
   const [productName, setProductName] = useState<string>("");
   const [price, setPrice] = useState<string>("");
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const data = {

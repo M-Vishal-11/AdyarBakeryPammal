@@ -45,6 +45,10 @@ const OrderAcceptedPage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+
+  useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
     };

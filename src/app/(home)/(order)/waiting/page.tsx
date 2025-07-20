@@ -18,6 +18,10 @@ const WaitingPage = () => {
   const userId = user?.id;
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  });
+
+  useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
     };
@@ -39,7 +43,8 @@ const WaitingPage = () => {
     const channel = pusher.subscribe("customer");
     const eventName = userId;
 
-    const handler = (data: { accepted: boolean; userId: string }) => {
+    const handler = async (data: { accepted: boolean; userId: string }) => {
+      await axios.post("/api/delete-bakery-cart");
       if (data.accepted == true) {
         router.push("/orderAccepted");
       } else {

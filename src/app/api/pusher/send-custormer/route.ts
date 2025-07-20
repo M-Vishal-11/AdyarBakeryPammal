@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import Pusher from "pusher";
 
@@ -11,7 +12,6 @@ const pusher = new Pusher({
 
 export async function POST(request: NextRequest) {
   const { userId, accepted } = await request.json();
-  console.log(userId);
 
   try {
     await pusher.trigger("customer", userId, {

@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
       { new: true, upsert: true } // creates if not found
     );
 
-    cookieStore.delete("bakeryCart"); //deletes cookies
+    // cookieStore.delete("bakeryCart"); //deletes cookies
 
     // Optional: trigger real-time notification
 

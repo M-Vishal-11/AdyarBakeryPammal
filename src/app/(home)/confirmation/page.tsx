@@ -20,6 +20,10 @@ export default function Confirmation() {
   const userID = user?.id;
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Always scroll to top when mounted
+  }, []);
+
+  useEffect(() => {
     const getData = async () => {
       const res = await axios.get("/api/cart/invoiceMaker");
       setInvoice(res.data.invoice);
