@@ -6,6 +6,7 @@ import Link from "next/link";
 import BackSVG from "@/components/icons/svgs/BackSVG";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function ProductForm() {
   const params = useParams();
@@ -49,7 +50,10 @@ export default function ProductForm() {
 
         <form
           className="space-y-4"
-          action={createProduct as unknown as (formData: FormData) => void}
+          action={async (formData) => {
+            await createProduct(formData);
+            toast.success("Created successfully");
+          }}
         >
           {/* Rest of your form remains exactly the same */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

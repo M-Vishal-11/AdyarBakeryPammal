@@ -22,6 +22,28 @@ const WaitingPage = () => {
   });
 
   useEffect(() => {
+    history.pushState(null, "", window.location.href);
+
+    const handlePopState = () => {
+      const confirmation = confirm("your changes may not be saved");
+
+      if (!confirmation) {
+        // Stay on the page by pushing state again
+        history.pushState(null, "", window.location.href);
+      } else {
+        // If user confirms, allow going back
+        history.back();
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
     };

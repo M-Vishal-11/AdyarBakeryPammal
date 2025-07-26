@@ -7,6 +7,7 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import { editProduct } from "@/app/api/admin/editProduct/actions";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 export default function UpdateProduct() {
   const params = useParams();
@@ -139,7 +140,10 @@ export default function UpdateProduct() {
 
         <form
           className="space-y-4"
-          action={editProduct as unknown as (formData: FormData) => void}
+          action={async (formData) => {
+            await editProduct(formData);
+            toast.success("Updated successfully");
+          }}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Product Name */}

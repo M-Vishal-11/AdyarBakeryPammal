@@ -32,7 +32,7 @@ export default function RootLayout({
           className={`${montserrat.variable} antialiased min-h-full flex flex-col`}
         >
           {children}
-          <ClientWrapper />
+          <ClientWrapper /> {/* contains navbar */}
           <Toaster position="top-center" />
         </body>
       </html>
