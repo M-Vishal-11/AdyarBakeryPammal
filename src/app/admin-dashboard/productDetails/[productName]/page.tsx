@@ -11,8 +11,7 @@ import toast from "react-hot-toast";
 
 export default function UpdateProduct() {
   const params = useParams();
-  let productNameparams = params.productName as string;
-  productNameparams = decodeURIComponent(productNameparams);
+  const productNameparams = decodeURIComponent(params.productName as string);
   const router = useRouter();
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);

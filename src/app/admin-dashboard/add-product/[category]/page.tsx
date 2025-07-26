@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 
 export default function ProductForm() {
   const params = useParams();
-  const categoryParams = params?.category as string;
+  const categoryParams = decodeURIComponent(params?.category as string);
 
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [offer, setOffer] = useState<string>("no");
