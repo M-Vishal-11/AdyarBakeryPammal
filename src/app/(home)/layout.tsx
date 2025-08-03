@@ -5,17 +5,6 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 // Static SVG components - optimized with memo
-const SearchIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-    <path
-      d="M21 21L15 15M17 10a7 7 0 11-14 0 7 7 0 0114 0z"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    />
-  </svg>
-);
 
 const CartIcon = () => (
   <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
@@ -72,7 +61,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const router = useRouter();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -116,17 +104,6 @@ export default function RootLayout({
             </nav>
           </div>
 
-          <div className="relative w-1/3">
-            <input
-              type="text"
-              placeholder="Search products..."
-              className="bg-white/90 text-gray-800 p-3 rounded-full w-full pl-5 pr-12 focus:ring-2 focus:ring-[#FF6B6B] focus:outline-none transition-all duration-200 shadow-sm"
-            />
-            <button className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-[#FF6B6B] p-2 rounded-full hover:bg-[#e60000] transition-colors duration-200">
-              <SearchIcon />
-            </button>
-          </div>
-
           <div className="flex items-center space-x-6">
             <Link
               href="/cart"
@@ -156,17 +133,6 @@ export default function RootLayout({
               className="hover:scale-105 transition-transform duration-200"
             />
           </Link>
-
-          <div className="relative w-1/2">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="bg-white/90 text-gray-800 p-2 rounded-full w-full pl-4 pr-10 focus:ring-2 focus:ring-[#FF6B6B] focus:outline-none transition-all duration-200 text-sm"
-            />
-            <button className="absolute right-2 top-1/2 transform -translate-y-1/2">
-              <SearchIcon />
-            </button>
-          </div>
         </div>
       </header>
 
