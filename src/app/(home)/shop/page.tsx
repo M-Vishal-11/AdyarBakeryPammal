@@ -36,24 +36,6 @@ export default function Page() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    const fetchShopStatus = async () => {
-      try {
-        const res = await axios.get("/api/shopOpenStatus/shopStatus");
-        setIsShopOpen(res.data.shopStatus.isOpen);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.log(error.message);
-        } else {
-          console.log("Unknown error", error);
-        }
-        setIsShopOpen(true);
-      }
-    };
-
-    fetchShopStatus();
-  }, []);
-
-  useEffect(() => {
     const call = async () => {
       const res = await axios.post(
         "/api/productsDisplay/extractProductsSearch",
@@ -79,6 +61,24 @@ export default function Page() {
       setLoading(false);
     };
     exportCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchShopStatus = async () => {
+      try {
+        const res = await axios.get("/api/shopOpenStatus/shopStatus");
+        setIsShopOpen(res.data.shopStatus.isOpen);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.log(error.message);
+        } else {
+          console.log("Unknown error", error);
+        }
+        setIsShopOpen(true);
+      }
+    };
+
+    fetchShopStatus();
   }, []);
 
   if (!isShopOpen) {

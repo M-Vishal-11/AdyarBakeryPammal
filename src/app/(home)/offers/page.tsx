@@ -12,20 +12,6 @@ const Page = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchShopStatus = async () => {
-      try {
-        const res = await axios.get("/api/shopOpenStatus/shopStatus");
-        setIsShopOpen(res.data.shopStatus.isOpen);
-      } catch (error) {
-        console.error("Error fetching shop status:", error);
-        setIsShopOpen(true);
-      }
-    };
-
-    fetchShopStatus();
-  }, []);
-
-  useEffect(() => {
     const exportCategories = async () => {
       try {
         const res = await axios.get(
@@ -42,6 +28,20 @@ const Page = () => {
       setLoading(false);
     };
     exportCategories();
+  }, []);
+
+  useEffect(() => {
+    const fetchShopStatus = async () => {
+      try {
+        const res = await axios.get("/api/shopOpenStatus/shopStatus");
+        setIsShopOpen(res.data.shopStatus.isOpen);
+      } catch (error) {
+        console.error("Error fetching shop status:", error);
+        setIsShopOpen(true);
+      }
+    };
+
+    fetchShopStatus();
   }, []);
 
   if (!isShopOpen) {

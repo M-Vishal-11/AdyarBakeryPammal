@@ -5,6 +5,7 @@ import BuyNowPhone from "./functions/buynowphone";
 import InvoiceSummary from "@/components/helperFunctions/InvoiceSummary";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import UserShopStatus from "@/app/functions/UserShopStatus";
 
 // Top of the file
 type Product = {
@@ -26,6 +27,7 @@ export default function Page() {
     productName: string;
     value: number;
   } | null>(null);
+  const [isShopOpen, setIsShopOpen] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
@@ -87,6 +89,32 @@ export default function Page() {
       }));
     }
   }, [changed]);
+
+  useEffect(() => {
+    const fetchShopStatus = async () => {
+      try {
+        const res = await axios.get("/api/shopOpenStatus/shopStatus");
+        setIsShopOpen(res.data.shopStatus.isOpen);
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.log(error.message);
+        } else {
+          console.log("Unknown error", error);
+        }
+        setIsShopOpen(true);
+      }
+    };
+
+    fetchShopStatus();
+  }, []);
+
+  if (!isShopOpen) {
+    return (
+      <>
+        <UserShopStatus />
+      </>
+    );
+  }
 
   return (
     <div className="p-4 lg:p-8 bg-[#FFF9F7] min-h-screen">
