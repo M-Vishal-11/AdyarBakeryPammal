@@ -68,7 +68,7 @@ const OrderAcceptedPage = () => {
       return;
     }
 
-    const createToastId = toast.loading("Creating Razorpay order...");
+    const createToastId = toast.loading("Creating order...");
 
     try {
       const res = await axios.post("/api/createPayment", {
