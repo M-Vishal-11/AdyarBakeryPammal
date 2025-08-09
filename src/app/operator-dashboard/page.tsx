@@ -35,7 +35,7 @@ export default function OperatorDashboard() {
   >("Waiting");
   const [orders, setOrders] = useState<Order[]>([]);
   const [isClient, setIsClient] = useState(false);
-  // const [audioAllowed, setAudioAllowed] = useState(false);
+  const [audioAllowed, setAudioAllowed] = useState(false);
 
   // Format the elapsed time for display
   const formatDuration = useCallback((order: Order) => {
@@ -76,15 +76,15 @@ export default function OperatorDashboard() {
 
       toast.error("Please reload the page!");
 
-      // if (audioAllowed) {
-      //   try {
-      //     new Audio("/sounds/notification.mp3")
-      //       .play()
-      //       .catch((e) => console.log("Audio play failed:", e));
-      //   } catch (e) {
-      //     console.log("Audio error:", e);
-      //   }
-      // }
+      if (audioAllowed) {
+        try {
+          new Audio("/sounds/notification.mp3")
+            .play()
+            .catch((e) => console.log("Audio play failed:", e));
+        } catch (e) {
+          console.log("Audio error:", e);
+        }
+      }
 
       if (Notification.permission === "granted") {
         const items = JSON.parse(data.orders) as OrderItem[];
@@ -99,7 +99,7 @@ export default function OperatorDashboard() {
       pusher.unsubscribe("orders");
       pusher.unbind_all();
     };
-  }, []);
+  }, [audioAllowed]);
 
   // Request notification permission
   useEffect(() => {
@@ -186,7 +186,7 @@ export default function OperatorDashboard() {
   const getDisplayPrice = (item: OrderItem) =>
     item.discountedPrice ?? item.price;
 
-  // const enableAudio = () => setAudioAllowed(true);
+  const enableAudio = () => setAudioAllowed(true);
 
   const categories = [
     "Waiting",
@@ -240,14 +240,14 @@ export default function OperatorDashboard() {
           <div className="flex justify-between items-center">
             <p className="text-gray-600">Manage incoming orders in real-time</p>
             <div className="flex gap-2">
-              {/* {!audioAllowed && (
+              {!audioAllowed && (
                 <button
                   className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors shadow-md"
                   onClick={enableAudio}
                 >
                   Enable Sound Notifications
                 </button>
-              )} */}
+              )}
               <button
                 className="bg-[#FF6B4A] hover:bg-[#e55a3a] text-white px-4 py-2 rounded-lg transition-colors shadow-md"
                 onClick={async () => {
