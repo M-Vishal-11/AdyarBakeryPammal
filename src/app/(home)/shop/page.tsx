@@ -5,6 +5,7 @@ import ExpandCollapseBtn from "./btn";
 import axios from "axios";
 import UserShopStatus from "@/app/functions/UserShopStatus";
 import ProductCard from "@/app/functions/productcard";
+import { debounce } from "lodash";
 
 const SearchIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -36,14 +37,17 @@ export default function Page() {
   const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    const call = async () => {
+    const fetchProducts = debounce(async () => {
+      if (!searchVal) return setProducts([]);
       const res = await axios.post(
         "/api/productsDisplay/extractProductsSearch",
         { searchVal }
       );
       setProducts(res.data.productData);
-    };
-    call();
+    }, 300);
+    fetchProducts();
+
+    return () => fetchProducts.cancel();
   }, [searchVal]);
 
   useEffect(() => {
