@@ -55,7 +55,7 @@ const ImageClicked = ({ imageURL }: { imageURL: string }) => {
                 height={800}
                 alt="Enlarged view"
                 className="rounded-lg object-contain max-w-[90vw] max-h-[80vh]"
-                priority
+                loading="lazy"
                 onLoad={() => setIsLoaded(true)}
               />
             </div>
@@ -73,3 +73,6 @@ const ImageClicked = ({ imageURL }: { imageURL: string }) => {
 };
 
 export default ImageClicked;
+function useWindowSize(): { width: any } {
+  throw new Error("Function not implemented.");
+}

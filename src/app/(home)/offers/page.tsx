@@ -48,19 +48,6 @@ const Page = () => {
     return <UserShopStatus />;
   }
 
-  if (loading) {
-    return (
-      <>
-        <div className="flex flex-col items-center justify-center gap-3">
-          <div className="w-8 h-8 rounded-full border-4 border-rose-500 border-t-transparent animate-spin"></div>
-          <div className="text-2xl font-bold bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text text-transparent animate-pulse">
-            Loading...
-          </div>
-        </div>
-      </>
-    );
-  }
-
   return (
     <div className="px-4 pb-6 max-w-6xl mx-auto">
       {/* Header with animated gradient */}
@@ -76,6 +63,52 @@ const Page = () => {
           Don&apos;t miss out on these exclusive deals!
         </p>
       </div>
+
+      {loading && (
+        <div className="mb-[90vh] mt-15">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <details className="group" open>
+              <summary className="flex justify-between items-center p-6 cursor-pointer bg-gradient-to-r from-orange-100 to-orange-200 mb-3">
+                <div className="flex items-center">
+                  <div className="h-5 w-32 bg-gray-200 rounded animate-pulse" />
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="h-5 w-5 bg-gray-200 rounded-full animate-pulse" />
+                </div>
+              </summary>
+
+              <div className="p-6 pt-0">
+                <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                  <article className="relative rounded-xl shadow-md overflow-hidden bg-gray-100">
+                    <div className="flex flex-col h-full">
+                      {/* Product Image Placeholder */}
+                      <div className="relative h-48 w-full bg-gray-200 animate-pulse" />
+
+                      {/* Product Info Placeholder */}
+                      <div className="p-4 flex-grow space-y-3">
+                        {/* Product Name */}
+                        <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse" />
+
+                        {/* Price */}
+                        <div className="h-4 w-1/4 bg-gray-200 rounded animate-pulse" />
+
+                        {/* Description lines */}
+                        <div className="h-3 w-full bg-gray-200 rounded animate-pulse" />
+                        <div className="h-3 w-5/6 bg-gray-200 rounded animate-pulse" />
+                      </div>
+
+                      {/* Add to Cart Button Placeholder */}
+                      <div className="px-4 pb-4">
+                        <div className="h-10 w-full bg-gray-200 rounded-lg animate-pulse" />
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      )}
 
       {/* Expand/Collapse Button */}
       <div className="mb-6 flex justify-center">

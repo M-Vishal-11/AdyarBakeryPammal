@@ -85,7 +85,7 @@ export default function RootLayout({
     <div className="min-h-screen flex flex-col">
       {/* Desktop Header */}
       <header
-        className={`bg-topcolor w-full py-2 hidden lg:block sticky top-0 z-50 transition-shadow duration-300 mb-[3vh] ${
+        className={`bg-topcolor w-full h-20 py-2 hidden lg:block sticky top-0 z-50 transition-shadow duration-300 mb-[3vh] ${
           scrolled ? "shadow-lg" : ""
         }`}
       >
@@ -130,7 +130,7 @@ export default function RootLayout({
 
       {/* Mobile Header */}
       <header
-        className={`bg-topcolor w-full py-3 lg:hidden sticky top-0 z-40 transition-shadow duration-300 mb-[3vh] ${
+        className={`bg-topcolor w-full h-20 py-3 lg:hidden sticky top-0 z-40 transition-shadow duration-300 mb-[3vh] ${
           scrolled ? "shadow-md" : ""
         }`}
       >
