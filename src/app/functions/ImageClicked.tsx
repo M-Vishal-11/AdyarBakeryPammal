@@ -73,6 +73,3 @@ const ImageClicked = ({ imageURL }: { imageURL: string }) => {
 };
 
 export default ImageClicked;
-function useWindowSize(): { width: any } {
-  throw new Error("Function not implemented.");
-}
