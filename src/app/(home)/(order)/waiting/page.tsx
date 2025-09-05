@@ -2,7 +2,6 @@
 import { motion, useAnimation, useMotionValue } from "framer-motion";
 import { useEffect, useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
@@ -182,11 +181,18 @@ const WaitingPage = () => {
               : "Order Under Review"}
           </h1>
           <p className="text-gray-600 mb-6">
-            {isCancelled
-              ? "Your order cancellation is being processed."
-              : "Please wait while the manager reviews your order."}
-            <br />
-            {!isCancelled && "Typically takes less than 5 minutes."}
+            {isCancelled ? (
+              "Your order cancellation is being processed."
+            ) : (
+              <>
+                Please wait while the manager reviews your order.
+                <br />
+                Typically takes less than 5 minutes. <br />
+                <span className="font-semibold text-red-600 bg-red-50 px-2 py-0.5 rounded-md">
+                  Please don&apos;t close or navigate to other tabs
+                </span>
+              </>
+            )}
           </p>
 
           {/* Progress bar */}
@@ -239,15 +245,12 @@ const WaitingPage = () => {
 
           {/* Support link */}
           <div className="mt-8 pt-5 border-t border-gray-100">
-            <p className="text-sm text-gray-500 mb-2">
-              Need immediate assistance?
-            </p>
-            <Link
-              href="/account/contactus"
-              className="text-sm text-amber-600 hover:text-amber-700 font-medium"
+            <a
+              href="tel:9841733588"
+              className="inline-block text-blue-600 hover:text-blue-800 font-semibold underline underline-offset-4 transition"
             >
-              Contact Support
-            </Link>
+              Contact Us: <span className="font-bold">98417 33588</span>
+            </a>
           </div>
         </div>
       </div>
