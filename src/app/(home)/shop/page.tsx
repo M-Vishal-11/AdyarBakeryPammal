@@ -6,6 +6,7 @@ import axios from "axios";
 import UserShopStatus from "@/app/functions/UserShopStatus";
 import ProductCard from "@/app/functions/productcard";
 import { debounce } from "lodash";
+import toast from "react-hot-toast";
 
 const SearchIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -53,8 +54,10 @@ export default function Page() {
   useEffect(() => {
     const exportCategories = async () => {
       try {
+        const loading = toast.loading("Almost there... 🚀");
         const res = await axios.get("/api/productsDisplay/extractCategories");
         setCategories(res.data.categories);
+        toast.dismiss(loading);
       } catch (error) {
         if (error instanceof Error) {
           console.error("Error:", error.message);
