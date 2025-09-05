@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import OffersBtn from "./offersBtn";
 import UserShopStatus from "@/app/functions/UserShopStatus";
 import axios from "axios";
@@ -10,22 +10,16 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const Page = () => {
   const [expand, setExpand] = useState(true);
-  const [isShopOpen, setIsShopOpen] = useState(true);
 
-  const { data, error, isLoading } = useSWR(
+  const { data, isLoading } = useSWR(
     "/api/productsDisplay/extractCategoriesOffers",
     fetcher
   );
   const categories: string[] = data?.categories ?? [];
 
-  if (error) return <p>Error loading categories</p>;
-
   const { data: status } = useSWR("/api/shopOpenStatus/shopStatus", fetcher);
-  useEffect(() => {
-    if (status?.shopStatus?.isOpen !== undefined) {
-      setIsShopOpen(status.shopStatus.isOpen);
-    }
-  }, [status]);
+
+  const isShopOpen = status?.shopStatus?.isOpen ?? true; // fallback
 
   if (!isShopOpen) {
     return <UserShopStatus />;

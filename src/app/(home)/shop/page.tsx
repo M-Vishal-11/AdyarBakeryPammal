@@ -45,8 +45,6 @@ export default function Page() {
 
   const categories: string[] = data?.categories ?? [];
 
-  if (error) return <p>Error loading categories</p>;
-
   useEffect(() => {
     const toastId = "loading-categories";
     if (isLoading) {
@@ -78,6 +76,8 @@ export default function Page() {
       setIsShopOpen(status.shopStatus.isOpen);
     }
   }, [status]);
+
+  if (error) return <p>Error loading categories</p>;
 
   if (!isShopOpen) {
     return (
