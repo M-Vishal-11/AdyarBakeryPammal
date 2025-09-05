@@ -64,8 +64,9 @@ export default function Page() {
         } else {
           console.error("Unknown error:", error);
         }
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
     exportCategories();
   }, []);
