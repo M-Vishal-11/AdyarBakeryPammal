@@ -1,8 +1,8 @@
 "use client";
-import { useEffect, useState } from "react";
 import DropdownSVG from "../../components/icons/svgs/DropdownSVG";
 import ProductCard from "./productcard";
 import axios from "axios";
+import useSWR from "swr";
 
 interface ProductCardProps {
   open: boolean;
@@ -19,29 +19,23 @@ interface Product {
   imageUrl: string;
 }
 
+const postFetcher = async ([offer, category]: [boolean, string]) => {
+  const endpoint = offer
+    ? "/api/productsDisplay/extractProductsOffers"
+    : "/api/productsDisplay/extractProducts";
+
+  const res = await axios.post(endpoint, { category });
+  return res.data;
+};
+
 export default function ProductCategory({
   open,
   category,
   offer,
 }: ProductCardProps) {
-  const [products, setProducts] = useState<Product[]>([]);
+  const { data } = useSWR([offer, category], postFetcher);
 
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const url = offer
-          ? "/api/productsDisplay/extractProductsOffers"
-          : "/api/productsDisplay/extractProducts";
-
-        const res = await axios.post(url, { category });
-        setProducts(res.data.productData);
-      } catch (err) {
-        console.error("Error fetching products:", err);
-      }
-    };
-
-    getData();
-  }, [category, offer]);
+  const products: Product[] = data?.productData ?? [];
 
   return (
     <div>

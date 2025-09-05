@@ -4,45 +4,28 @@ import OffersBtn from "./offersBtn";
 import UserShopStatus from "@/app/functions/UserShopStatus";
 import axios from "axios";
 import ProductCategory from "@/app/functions/productcategory";
+import useSWR from "swr";
+
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 const Page = () => {
   const [expand, setExpand] = useState(true);
   const [isShopOpen, setIsShopOpen] = useState(true);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  const { data, error, isLoading } = useSWR(
+    "/api/productsDisplay/extractCategoriesOffers",
+    fetcher
+  );
+  const categories: string[] = data?.categories ?? [];
+
+  if (error) return <p>Error loading categories</p>;
+
+  const { data: status } = useSWR("/api/shopOpenStatus/shopStatus", fetcher);
   useEffect(() => {
-    const exportCategories = async () => {
-      try {
-        const res = await axios.get(
-          "/api/productsDisplay/extractCategoriesOffers"
-        );
-        setCategories(res.data.categories);
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Error:", error.message);
-        } else {
-          console.error("Unknown error:", error);
-        }
-      }
-      setLoading(false);
-    };
-    exportCategories();
-  }, []);
-
-  useEffect(() => {
-    const fetchShopStatus = async () => {
-      try {
-        const res = await axios.get("/api/shopOpenStatus/shopStatus");
-        setIsShopOpen(res.data.shopStatus.isOpen);
-      } catch (error) {
-        console.error("Error fetching shop status:", error);
-        setIsShopOpen(true);
-      }
-    };
-
-    fetchShopStatus();
-  }, []);
+    if (status?.shopStatus?.isOpen !== undefined) {
+      setIsShopOpen(status.shopStatus.isOpen);
+    }
+  }, [status]);
 
   if (!isShopOpen) {
     return <UserShopStatus />;
@@ -64,7 +47,7 @@ const Page = () => {
         </p>
       </div>
 
-      {loading && (
+      {isLoading && (
         <div className="mb-[90vh] mt-15">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
             <details className="group" open>

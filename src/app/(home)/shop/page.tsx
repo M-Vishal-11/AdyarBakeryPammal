@@ -7,6 +7,7 @@ import UserShopStatus from "@/app/functions/UserShopStatus";
 import ProductCard from "@/app/functions/productcard";
 import { debounce } from "lodash";
 import toast from "react-hot-toast";
+import useSWR from "swr";
 
 const SearchIcon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -29,13 +30,31 @@ interface Product {
   imageUrl: string;
 }
 
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
 export default function Page() {
   const [expand, setExpand] = useState(true);
   const [isShopOpen, setIsShopOpen] = useState(true);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
   const [searchVal, setSearchVal] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
+
+  const { data, error, isLoading } = useSWR(
+    "/api/productsDisplay/extractCategories",
+    fetcher
+  );
+
+  const categories: string[] = data?.categories ?? [];
+
+  if (error) return <p>Error loading categories</p>;
+
+  useEffect(() => {
+    const toastId = "loading-categories";
+    if (isLoading) {
+      toast.loading("Almost there... 🚀", { id: toastId });
+    } else {
+      toast.dismiss(toastId);
+    }
+  }, [isLoading]);
 
   useEffect(() => {
     const fetchProducts = debounce(async () => {
@@ -51,43 +70,14 @@ export default function Page() {
     return () => fetchProducts.cancel();
   }, [searchVal]);
 
-  useEffect(() => {
-    const exportCategories = async () => {
-      try {
-        const loading = toast.loading("Almost there... 🚀");
-        const res = await axios.get("/api/productsDisplay/extractCategories");
-        setCategories(res.data.categories);
-        toast.dismiss(loading);
-      } catch (error) {
-        if (error instanceof Error) {
-          console.error("Error:", error.message);
-        } else {
-          console.error("Unknown error:", error);
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    exportCategories();
-  }, []);
+  //Shop status
+  const { data: status } = useSWR("/api/shopOpenStatus/shopStatus", fetcher);
 
   useEffect(() => {
-    const fetchShopStatus = async () => {
-      try {
-        const res = await axios.get("/api/shopOpenStatus/shopStatus");
-        setIsShopOpen(res.data.shopStatus.isOpen);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.log(error.message);
-        } else {
-          console.log("Unknown error", error);
-        }
-        setIsShopOpen(true);
-      }
-    };
-
-    fetchShopStatus();
-  }, []);
+    if (status?.shopStatus?.isOpen !== undefined) {
+      setIsShopOpen(status.shopStatus.isOpen);
+    }
+  }, [status]);
 
   if (!isShopOpen) {
     return (
@@ -119,7 +109,7 @@ export default function Page() {
           </button>
         </div>
       </div>
-      {loading && (
+      {isLoading && (
         <div className="mb-[90vh] mt-10">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
             <details className="group" open>
