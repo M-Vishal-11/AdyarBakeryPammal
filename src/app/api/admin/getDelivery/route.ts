@@ -11,7 +11,7 @@ export async function GET() {
     return NextResponse.json({
       success: true,
       message: "Connected and fetched successfully",
-      data,
+      delivery: data[0].delivery,
     });
   } catch (error) {
     console.error("Database connection error:", error);

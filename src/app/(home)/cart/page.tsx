@@ -6,6 +6,7 @@ import InvoiceSummary from "@/components/helperFunctions/InvoiceSummary";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import UserShopStatus from "@/app/functions/UserShopStatus";
+import useSWR from "swr";
 
 // Top of the file
 type Product = {
@@ -17,17 +18,22 @@ type Product = {
   imageUrl: string;
 };
 
+const fetcher = (url: string) => axios.get(url).then((res) => res.data);
+
 export default function Page() {
   const [products, setProducts] = useState<Product[]>([]);
   const [cartData, setCartData] = useState<Record<string, number>>({});
   const [cartTotal, setCartTotal] = useState<number | null>(0);
   const [discount, setDiscount] = useState<number | null>(0);
-  const [delivery, setDelivery] = useState<number | null>(1);
   const [changed, setChanged] = useState<{
     productName: string;
     value: number;
   } | null>(null);
-  const [isShopOpen, setIsShopOpen] = useState(true);
+
+  const { data: status } = useSWR("/api/shopOpenStatus/shopStatus", fetcher);
+  const isShopOpen = status?.shopStatus?.isOpen ?? true;
+  const { data: deliveryDB } = useSWR("/api/admin/getDelivery", fetcher);
+  const delivery = deliveryDB?.delivery;
 
   useEffect(() => {
     const getData = async () => {
@@ -47,9 +53,6 @@ export default function Page() {
         );
         const productList: Product[] = res2.data.productData;
         setProducts(productList);
-
-        const res3 = await axios.get("/api/admin/getDelivery");
-        setDelivery(res3.data.data[0]?.delivery ?? 0);
       } catch (error) {
         console.log(error);
       }
@@ -89,24 +92,6 @@ export default function Page() {
       }));
     }
   }, [changed]);
-
-  useEffect(() => {
-    const fetchShopStatus = async () => {
-      try {
-        const res = await axios.get("/api/shopOpenStatus/shopStatus");
-        setIsShopOpen(res.data.shopStatus.isOpen);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.log(error.message);
-        } else {
-          console.log("Unknown error", error);
-        }
-        setIsShopOpen(true);
-      }
-    };
-
-    fetchShopStatus();
-  }, []);
 
   if (!isShopOpen) {
     return (
