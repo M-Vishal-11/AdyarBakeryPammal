@@ -34,7 +34,6 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export default function Page() {
   const [expand, setExpand] = useState(true);
-  const [isShopOpen, setIsShopOpen] = useState(true);
   const [searchVal, setSearchVal] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -44,6 +43,9 @@ export default function Page() {
   );
 
   const categories: string[] = data?.categories ?? [];
+
+  const { data: status } = useSWR("/api/shopOpenStatus/shopStatus", fetcher);
+  const isShopOpen = status?.shopStatus?.isOpen ?? true;
 
   useEffect(() => {
     const toastId = "loading-categories";
@@ -67,15 +69,6 @@ export default function Page() {
 
     return () => fetchProducts.cancel();
   }, [searchVal]);
-
-  //Shop status
-  const { data: status } = useSWR("/api/shopOpenStatus/shopStatus", fetcher);
-
-  useEffect(() => {
-    if (status?.shopStatus?.isOpen !== undefined) {
-      setIsShopOpen(status.shopStatus.isOpen);
-    }
-  }, [status]);
 
   if (error) return <p>Error loading categories</p>;
 
