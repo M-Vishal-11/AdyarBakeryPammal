@@ -9,7 +9,7 @@ import { debounce } from "lodash";
 import toast from "react-hot-toast";
 import useSWR from "swr";
 
-const SearchIcon = React.memo(() => (
+const SearchIconComponent = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
     <path
       d="M21 21L15 15M17 10a7 7 0 11-14 0 7 7 0 0114 0z"
@@ -19,7 +19,9 @@ const SearchIcon = React.memo(() => (
       strokeLinejoin="round"
     />
   </svg>
-));
+);
+
+const SearchIcon = React.memo(SearchIconComponent);
 
 interface Product {
   productName: string;
