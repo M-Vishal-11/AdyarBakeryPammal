@@ -20,13 +20,15 @@ export const metadata: Metadata = {
   description: "door step delivery",
 };
 
+const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "pk_test_Y29udGFjdC11cy1jbGVyay1rZXktOTkuY2xlcmsuYWNjb3VudHMuZGV2JA";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider publishableKey={publishableKey}>
       <html lang="en" className="scroll-smooth">
         <body
           className={`${montserrat.variable} antialiased min-h-full flex flex-col`}

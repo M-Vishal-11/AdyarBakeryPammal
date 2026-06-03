@@ -4,14 +4,13 @@ import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { auth } from "@clerk/nextjs/server";
 
-// Initialize Razorpay instance
-const razorpay = new Razorpay({
-  key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
-  key_secret: process.env.RAZORPAY_SECRET_ID!,
-});
-
 export async function POST(request: NextRequest) {
   try {
+    const razorpay = new Razorpay({
+      key_id: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID!,
+      key_secret: process.env.RAZORPAY_SECRET_ID!,
+    });
+
     const { selectedPayment } = await request.json();
 
     // Validate selectedPayment
